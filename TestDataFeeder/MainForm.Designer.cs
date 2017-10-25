@@ -138,6 +138,7 @@
             // 
             // textLog
             // 
+            this.textLog.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.textLog.Location = new System.Drawing.Point(0, 0);
             this.textLog.Multiline = true;
             this.textLog.Name = "textLog";
