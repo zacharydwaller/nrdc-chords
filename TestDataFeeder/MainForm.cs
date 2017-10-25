@@ -12,9 +12,12 @@ namespace TestDataFeeder
 {
     public partial class MainForm : Form
     {
-        public MainForm()
+        ChordsInterface chords;
+
+        public MainForm(ChordsInterface chords_)
         {
             InitializeComponent();
+            chords = chords_;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
