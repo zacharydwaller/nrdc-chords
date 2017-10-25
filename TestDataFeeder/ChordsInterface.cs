@@ -47,7 +47,8 @@ namespace TestDataFeeder
                 return false;
             }
 
-            Logger.Instance.Log("HTTP Request Successful");
+            string message = await httpTask.Content.ReadAsStringAsync();
+            Logger.Instance.Log(message);
 
             return true;
         }
