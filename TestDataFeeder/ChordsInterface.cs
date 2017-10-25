@@ -36,16 +36,18 @@ namespace TestDataFeeder
             // Send HTTP GET request to CHORDS to log a measurement
             string uri = CreateMeasurementUri(instrumentId, dataValue, true);
 
-            System.Console.WriteLine("Sending HTTP GET to: " + uri);
+            Logger.Instance.Log("Sending HTTP GET for: " + uri);
 
-            var httpTask = await http.GetAsync(uri);
+            var httpTask = await http.GetAsync(PortalUrl + uri);
 
             if(!httpTask.IsSuccessStatusCode)
             {
-                System.Console.Error.WriteLine("HTTP Request failed. Uri: " + uri);
-                System.Console.Error.WriteLine(httpTask.ReasonPhrase);
+                Logger.Instance.LogError("HTTP Request failed. Uri: " + uri);
+                Logger.Instance.LogError(httpTask.ReasonPhrase);
                 return false;
             }
+
+            Logger.Instance.Log("HTTP Request Successful");
 
             return true;
         }
@@ -53,7 +55,6 @@ namespace TestDataFeeder
         private string CreateMeasurementUri(uint instrumentId, int dataValue, bool isTestData = true)
         {
             string uri =
-                PortalUrl +
                 createMeasurementPath +
                 instrumentIdPath + instrumentId.ToString() +
                 "&" + dataPath + dataValue.ToString() +

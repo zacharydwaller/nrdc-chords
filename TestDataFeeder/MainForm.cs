@@ -26,31 +26,38 @@ namespace TestDataFeeder
         private void MainForm_Load(object sender, EventArgs e)
         {
             linkPortalUrl.Text = chords.PortalUrl;
+            Logger.Instance.LogBox = textLog;
         }
 
         private void textInstrumentId_TextChanged(object sender, EventArgs e)
         {
             uint tmp;
+
+            if (textInstrumentId.Text == string.Empty) return;
+
             if(UInt32.TryParse(textInstrumentId.Text, out tmp))
             {
                 instrumentId = tmp;
             }
             else
             {
-                textInstrumentId.Clear();
+                Logger.Instance.LogError("Must enter a valid instrument ID.");
             }
         }
 
         private void textDataValue_TextChanged(object sender, EventArgs e)
         {
             int tmp;
+
+            if (textDataValue.Text == string.Empty) return;
+
             if (Int32.TryParse(textDataValue.Text, out tmp))
             {
                 dataValue = tmp;
             }
             else
             {
-                textDataValue.Clear();
+                Logger.Instance.LogError("Must enter a valid value.");
             }
         }
 
