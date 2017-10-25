@@ -31,7 +31,7 @@ namespace TestDataFeeder
         /*
          *Async method that attempts to log a measurement to the CHORDS instrument
          */
-        public async Task<bool> CreateMeasurementAsync(int instrumentId, int dataValue)
+        public async Task<bool> CreateMeasurementAsync(uint instrumentId, int dataValue)
         {
             // Send HTTP GET request to CHORDS to log a measurement
             string uri = CreateMeasurementUri(instrumentId, dataValue, true);
@@ -47,7 +47,7 @@ namespace TestDataFeeder
             return true;
         }
 
-        private string CreateMeasurementUri(int instrumentId, int dataValue, bool isTestData = true)
+        private string CreateMeasurementUri(uint instrumentId, int dataValue, bool isTestData = true)
         {
             string uri =
                 PortalUrl +
