@@ -14,6 +14,9 @@ namespace TestDataFeeder
     {
         ChordsInterface chords;
 
+        uint instrumentId;
+        int dataValue;
+
         public MainForm(ChordsInterface chords_)
         {
             InitializeComponent();
@@ -22,7 +25,38 @@ namespace TestDataFeeder
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            // Do nothing
+            linkPortalUrl.Text = chords.PortalUrl;
+        }
+
+        private void textInstrumentId_TextChanged(object sender, EventArgs e)
+        {
+            uint tmp;
+            if(UInt32.TryParse(textInstrumentId.Text, out tmp))
+            {
+                instrumentId = tmp;
+            }
+            else
+            {
+                textInstrumentId.Clear();
+            }
+        }
+
+        private void textDataValue_TextChanged(object sender, EventArgs e)
+        {
+            int tmp;
+            if (Int32.TryParse(textDataValue.Text, out tmp))
+            {
+                dataValue = tmp;
+            }
+            else
+            {
+                textDataValue.Clear();
+            }
+        }
+
+        private async void buttonSubmit_ClickAsync(object sender, EventArgs e)
+        {
+            await chords.CreateMeasurementAsync(instrumentId, dataValue);
         }
     }
 }

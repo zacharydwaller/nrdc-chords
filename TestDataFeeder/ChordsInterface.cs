@@ -35,6 +35,9 @@ namespace TestDataFeeder
         {
             // Send HTTP GET request to CHORDS to log a measurement
             string uri = CreateMeasurementUri(instrumentId, dataValue, true);
+
+            System.Console.WriteLine("Sending HTTP GET to: " + uri);
+
             var httpTask = await http.GetAsync(uri);
 
             if(!httpTask.IsSuccessStatusCode)
