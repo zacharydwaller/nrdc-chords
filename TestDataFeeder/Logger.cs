@@ -43,8 +43,8 @@ namespace TestDataFeeder
         {
             if (LogBox != null)
             {
-                LogBox.AppendText(Environment.NewLine + Environment.NewLine);
                 LogBox.AppendText(str);
+                LogBox.AppendText(Environment.NewLine + Environment.NewLine);
             }
         }
     }
