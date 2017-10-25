@@ -74,6 +74,7 @@
             // 
             // textDataValue
             // 
+            this.textDataValue.AcceptsReturn = true;
             this.textDataValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.textDataValue.Location = new System.Drawing.Point(157, 66);
             this.textDataValue.MaxLength = 3;

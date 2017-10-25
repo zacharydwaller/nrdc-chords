@@ -20,6 +20,9 @@ namespace TestDataFeeder
         public MainForm(ChordsInterface chords_)
         {
             InitializeComponent();
+
+            textDataValue.KeyDown += new KeyEventHandler(OnKeyDownHandler);
+
             chords = chords_;
         }
 
@@ -64,6 +67,16 @@ namespace TestDataFeeder
         private async void buttonSubmit_ClickAsync(object sender, EventArgs e)
         {
             await chords.CreateMeasurementAsync(instrumentId, dataValue);
+        }
+
+        private async void OnKeyDownHandler(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                await chords.CreateMeasurementAsync(instrumentId, dataValue);
+            }
         }
     }
 }
