@@ -61,8 +61,8 @@ namespace TestDataFeeder
 
             // Insert timestamp
             // Get measurement timestamp, using current local time for now
-            // The ToString() args format the date as ISO-8601
-            String timestamp = DateTime.Now.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
+            // The ToString() arg formats the date as ISO-8601
+            String timestamp = DateTime.Now.ToString("o");
 
             uri += "&" + timestampPath + timestamp;
 
