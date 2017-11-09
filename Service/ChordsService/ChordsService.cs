@@ -24,7 +24,7 @@ namespace ChordsService
             HttpClient http = new HttpClient();
             string uri = CreateMeasurementUri(measurement.Instrument, measurement.Value, true);
             var httpTask = http.GetAsync(portalUrl + uri);
-
+            
             try
             {
                 httpTask.Wait();
