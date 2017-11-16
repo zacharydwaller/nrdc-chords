@@ -43,7 +43,6 @@ namespace ChordsInterface.Nrdc
         public Decimal value { get; set; }
     }
 
-    //put actual data structure
     public class AggregateMeasurement : NrdcType
     {
         public int Stream { get; set; }
@@ -55,10 +54,17 @@ namespace ChordsInterface.Nrdc
 
     public class Deployment : NrdcType
     {
-        
         public int ID { get; set; }
         public string Name { get; set; }
     }
+
+    public class Category : NrdcType
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+
+    }
+
 
     public class Property : NrdcType
     {
@@ -70,14 +76,48 @@ namespace ChordsInterface.Nrdc
     {
         public int ID { get; set; }
         public string Name { get; set; }
-
         public string Abbreviation { get; set; }
     }
 
-    public class Datatype : NrdcType
+    public class DataType : NrdcType
     {
         public int ID { get; set; }
         public string Name { get; set; }
+    }
+
+    public class Interval : NrdcType
+    {
+        public uint Size { get; set; }
+	    public short Scales { get; set;}
+
+        /*
+            Scales:
+			0 - Year,
+			1 - Quarter,
+			2 - Month,
+			3 - DayOfYear,
+			4 - Week,
+			5 - Day,
+			6 - Hour,
+			7 - Minute,
+			8 - Seconds,
+			9 - Milliseconds,
+			10 - Microseconds,
+			11 - Nanoseconds
+        */
+    }
+
+    public class DataStream : NrdcType
+    {
+        public int ID { get; set; }
+        public Site Site { get; set; }
+        public System System { get; set; }
+        public Deployment Deployment { get; set; }
+        public Category Category { get; set; }
+        public Property Property { get; set; }
+        public Unit Units { get; set; }
+        public DataType DataType { get; set; }
+        public String MeasurementInterval { get; set; }
     }
 
     public class AggregateDataSpecification : NrdcType
@@ -87,7 +127,7 @@ namespace ChordsInterface.Nrdc
         public string EndDateTime { get; set; }
         public long Skip { get; set; }
         public long Take { get; set; }
-        public IList<DataStream> DataStreams;
+        public IList<DataStream> DataStreams { get; set; };
     }
 
     public class AggregatedDataDownload : NrdcType
