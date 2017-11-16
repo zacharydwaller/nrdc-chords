@@ -47,9 +47,9 @@ namespace ChordsInterface.Service
             var apiTask = Api.ApiInterface.GetSiteAsync(siteId);
             apiTask.Wait();
 
-            Nrdc.Site site = apiTask.Result;
+            var site = apiTask.Result;
 
-            if (site != null) return site.Alias;
+            if (site != null) return site.Name;
             else return "Site could not be found.";
         }
 

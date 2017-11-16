@@ -7,8 +7,10 @@ using System.Text;
 
 namespace ChordsInterface.Chords
 {
+    public interface ChordsType { }
+
     [DataContract]
-    public class Site
+    public class Site : ChordsType
     {
         [DataMember] public string Name { get; set; }
         [DataMember] public int ID { get; set; }
@@ -19,7 +21,7 @@ namespace ChordsInterface.Chords
     }
 
     [DataContract]
-    public class Instrument
+    public class Instrument : ChordsType
     {
         [DataMember] public bool Status { get; set; }
         [DataMember] public string Name { get; set; }
@@ -30,7 +32,7 @@ namespace ChordsInterface.Chords
     }
 
     [DataContract]
-    public class Measurement
+    public class Measurement : ChordsType
     {
         [DataMember] public uint Instrument { get; set; }
         [DataMember] public int Value { get; set; }

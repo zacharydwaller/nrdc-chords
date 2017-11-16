@@ -4,7 +4,9 @@ using System.Text;
 
 namespace ChordsInterface.Nrdc
 {
-    public class Site
+    public abstract class NrdcType { }
+
+    public class Site : NrdcType
     {
         public int ID { get; set; }
         public string UniqueIdentifier { get; set; }
@@ -25,7 +27,7 @@ namespace ChordsInterface.Nrdc
         public string GPSLandmark { get; set; }
     }
 
-    public class System
+    public class System : NrdcType
     {
         public int ID { get; set; }
         public string UniqueIdentifier { get; set; }

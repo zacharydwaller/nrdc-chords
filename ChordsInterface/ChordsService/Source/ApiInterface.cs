@@ -19,12 +19,10 @@ namespace ChordsInterface.Api
 
             Nrdc.SiteList sitelist = Json.Parse<Nrdc.SiteList>(message);
 
-            /** Convert sitelist to list of ChordsSite here**/
-
             return sitelist;
         }
 
-        public static async Task<Nrdc.Site> GetSiteAsync(int siteID)
+        public static async Task<Chords.Site> GetSiteAsync(int siteID)
         {
             var sitelist = await GetSitesAsync();
 
@@ -34,7 +32,7 @@ namespace ChordsInterface.Api
                 {
                     if(site.ID == siteID)
                     {
-                        return site;
+                        return Converter.Convert(site);
                     }
                 }
             }
