@@ -14,3 +14,7 @@ Website: http://ncar.github.io/chords/
 Wiki: https://github.com/NCAR/chords/wiki
 
 Quick Start: https://github.com/NCAR/chords/wiki/Running-CHORDS
+
+### CHORDS Info
+
+Slack: https://ndrcworkspace.slack.com/threads/
