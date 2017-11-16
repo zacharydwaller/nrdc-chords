@@ -8,8 +8,8 @@
     <ProjectGuid>{8E8BF03E-59DF-4784-834F-6D9EFBD2ADB2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChordsService</RootNamespace>
-    <AssemblyName>ChordsService</AssemblyName>
+    <RootNamespace>ChordsInterface</RootNamespace>
+    <AssemblyName>ChordsInterface</AssemblyName>
     <ProjectTypeGuids>{3D9AD99F-2412-4246-B90B-4EAA41C64699};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <StartArguments>/client:"WcfTestClient.exe"</StartArguments>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Source\ApiInterface.cs" />
     <Compile Include="Source\ChordsTypes.cs" />
+    <Compile Include="Source\NrdcJson.cs" />
     <Compile Include="Source\NrdcTypes.cs" />
     <Compile Include="Source\IService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
