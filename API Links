@@ -1,0 +1,11 @@
+API Documentation:
+http://sensor.nevada.edu/Services/GIDMIS/Infrastructure/NRDC.Services.Infrastructure.InfrastructureService.svc/api
+
+Networks:
+http://sensor.nevada.edu/services/GIDMIS/networks/nrdc.services.discovery.sitenetworks.svc/networks
+
+Sites:
+http://sensor.nevada.edu/Services/GIDMIS/Infrastructure/NRDC.Services.Infrastructure.InfrastructureService.svc/NevCAN/infrastructure/sites
+
+Time Zones:
+http://sensor.nevada.edu/Services/GIDMIS/Data/NRDC.Services.Data.DataService.svc/NevCAN/timeZones
