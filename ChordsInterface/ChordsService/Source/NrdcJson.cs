@@ -31,4 +31,12 @@ namespace ChordsInterface.Nrdc
         public string Message { get; set; }
         public IList<System> Data { get; set; }
     }
+
+    //What JSON returns
+    public class DataList
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public IList<System> Data { get; set; }
+    }
 }

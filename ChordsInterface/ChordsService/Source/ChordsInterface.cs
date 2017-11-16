@@ -15,6 +15,7 @@ namespace ChordsInterface
         private static string chordsHostUrl = "http://ec2-52-8-224-195.us-west-1.compute.amazonaws.com/";
         private static string dataCenterUrl = "http://sensor.nevada.edu/Services/GIDMIS/Infrastructure/NRDC.Services.Infrastructure.InfrastructureService.svc/NevCAN";
 
+
         // In milliseconds
         public static double DefaultTimeout = 500;
 

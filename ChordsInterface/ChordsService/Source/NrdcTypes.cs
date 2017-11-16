@@ -40,4 +40,10 @@ namespace ChordsInterface.Nrdc
         public string CreationDate { get; set; }
         public string ModificationDate { get; set; }
     }
+
+    //put actual data structure
+    public class Measurements : NrdcType
+    {
+
+    }
 }
