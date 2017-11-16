@@ -11,13 +11,12 @@ namespace ChordsInterface.Api
     {
         public static async Task<Nrdc.SiteList> GetSitesAsync()
         {
-            HttpClient httpObject = new HttpClient();
             string networkAlias = ChordsInterface.DataCenterUrl;
 
-            var result = await httpObject.GetAsync(networkAlias + "/infrastructure/sites");
+            var result = await ChordsInterface.http.GetAsync(networkAlias + "/infrastructure/sites");
             string message = await result.Content.ReadAsStringAsync();
 
-            Nrdc.SiteList sitelist = Json.Parse<Nrdc.SiteList>(message);
+            var sitelist = Json.Parse<Nrdc.SiteList>(message);
 
             return sitelist;
         }
@@ -42,10 +41,9 @@ namespace ChordsInterface.Api
 
         public static async void GetDataAsync()
         {
-            HttpClient httpObject = new HttpClient();
             string networkAlias = ChordsInterface.DataCenterUrl;
 
-            var result = await httpObject.GetAsync(networkAlias + "/infrastructure/sites"); 
+            var result = await ChordsInterface.http.GetAsync(networkAlias + "/infrastructure/sites"); 
             string message = await result.Content.ReadAsStringAsync();
 
             Nrdc.SiteList sites = Json.Parse<Nrdc.SiteList>(message);
@@ -55,7 +53,7 @@ namespace ChordsInterface.Api
             foreach (Nrdc.Site varSite in sites.Data)
             {
                 Console.Out.WriteLine(varSite.ID + " " + varSite.Name + " " + varSite.Network + " " + varSite.TimeZoneName);
-                var result2 = await httpObject.GetAsync(networkAlias + "/infrastructure/site/" + varSite.ID + "/systems");
+                var result2 = await ChordsInterface.http.GetAsync(networkAlias + "/infrastructure/site/" + varSite.ID + "/systems");
                 string message2 = await result2.Content.ReadAsStringAsync();
 
                 var systemList = Json.Parse<Nrdc.SystemList>(message2);

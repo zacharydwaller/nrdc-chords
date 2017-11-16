@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace ChordsInterface
 {
@@ -13,5 +14,7 @@ namespace ChordsInterface
 
         private static string chordsHostUrl = "http://ec2-52-8-224-195.us-west-1.compute.amazonaws.com/";
         private static string dataCenterUrl = "http://sensor.nevada.edu/Services/GIDMIS/Infrastructure/NRDC.Services.Infrastructure.InfrastructureService.svc/NevCAN";
+
+        public static HttpClient http = new HttpClient();
     }
 }

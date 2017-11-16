@@ -19,9 +19,8 @@ namespace ChordsInterface.Service
 
         public string CreateMeasurement(Chords.Measurement measurement)
         {
-            HttpClient http = new HttpClient();
             string uri = CreateMeasurementUri(measurement.Instrument, measurement.Value, true);
-            var httpTask = http.GetAsync(ChordsInterface.ChordsHostUrl + uri);
+            var httpTask = ChordsInterface.http.GetAsync(ChordsInterface.ChordsHostUrl + uri);
 
             try
             {
