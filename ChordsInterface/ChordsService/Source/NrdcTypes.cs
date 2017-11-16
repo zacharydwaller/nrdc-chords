@@ -34,4 +34,17 @@ namespace ChordsInterface.Nrdc
     {
 
     }
+
+
+
+    public class CsvJobStatus : NrdcType
+    {
+        public string JobID { get; set; }
+        public string CurrentStatus { get; set; }
+        public bool IsError { get; set; }
+        public bool IsComplete { get; set; }
+        public long WrittenNumberOfMeasurements { get; set; }
+        public long TotalNumberOfMeasurements { get; set; }
+        public string DataFileUrl { get; set; }
+    }
 }

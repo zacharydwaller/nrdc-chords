@@ -39,4 +39,13 @@ namespace ChordsInterface.Nrdc
         public string Message { get; set; }
         public IList<System> Data { get; set; }
     }
+
+    public class AggregatedDataDownload : NrdcType
+    {
+        public long TotalNumberOfMeasurements { get; set; }
+        public long StartIndex { get; set; }
+        public long EndIndex { get; set; }
+
+        //public IList<AggregatedMeasurement> Measurements { get; set; }
+    }
 }
