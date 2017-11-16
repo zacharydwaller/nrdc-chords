@@ -6,9 +6,9 @@ using System.ServiceModel;
 using System.Text;
 using System.Net.Http;
 
-namespace ChordsService
+namespace WebService
 {
-    public class ChordsService : IService
+    public class WebService : IService
     {
         private const string createMeasurementPath = "measurements/url_create?";
         private const string instrumentIdPath = "instrument_id=";
@@ -19,7 +19,7 @@ namespace ChordsService
         private const string testTag = "test";
         private const string portalUrl = "http://ec2-52-8-224-195.us-west-1.compute.amazonaws.com/";
 
-        public string CreateMeasurement(Measurement measurement)
+        public string CreateMeasurement(ChordsInterface.ChordsTypes.Measurement measurement)
         {
             HttpClient http = new HttpClient();
             string uri = CreateMeasurementUri(measurement.Instrument, measurement.Value, true);

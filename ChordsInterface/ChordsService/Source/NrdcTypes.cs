@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ApiInterface
+namespace Nrdc
 {
     public class SystemList
     {
