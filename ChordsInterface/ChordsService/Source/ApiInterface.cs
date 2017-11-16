@@ -7,9 +7,8 @@ using System.Net.Http;
 using Newtonsoft.Json;
 
 
-namespace ApiInterface
+namespace ChordsInterface.Api
 { 
-    
     public class ApiInterface
     {
         HttpClient httpObject;
@@ -28,18 +27,18 @@ namespace ApiInterface
             var result = await httpObject.GetAsync(NetworkAlias + "/infrastructure/sites"); 
             string message = await result.Content.ReadAsStringAsync();
 
-            SiteList sites = JsonConvert.DeserializeObject<SiteList>(message);
+            Nrdc.SiteList sites = JsonConvert.DeserializeObject<Nrdc.SiteList>(message);
 
             Console.Out.WriteLine(sites.Success);
 
-            foreach (Site varSite in sites.Data)
+            foreach (Nrdc.Site varSite in sites.Data)
             {
                 Console.Out.WriteLine(varSite.ID + " " + varSite.Name + " " + varSite.Network + " " + varSite.TimeZoneName);
                 var result2 = await httpObject.GetAsync(NetworkAlias + "/infrastructure/site/" + varSite.ID + "/systems");
                 string message2 = await result2.Content.ReadAsStringAsync();
 
-                varSite.SystemList = JsonConvert.DeserializeObject<SystemList>(message2); 
-                foreach ( System varSystem in varSite.SystemList.Data)
+                varSite.SystemList = JsonConvert.DeserializeObject<Nrdc.SystemList>(message2); 
+                foreach (Nrdc.System varSystem in varSite.SystemList.Data)
                 {
                     Console.Out.WriteLine("\t" + varSystem.ID + " " + varSystem.InstallationLocation);
                 }

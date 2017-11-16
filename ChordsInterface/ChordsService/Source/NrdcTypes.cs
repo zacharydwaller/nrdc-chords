@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Nrdc
+namespace ChordsInterface.Nrdc
 {
     public class SystemList
     {

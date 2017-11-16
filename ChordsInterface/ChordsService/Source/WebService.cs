@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
 using System.Text;
+using System.Threading.Tasks;
 using System.Net.Http;
 
-namespace WebService
+namespace ChordsInterface.Service
 {
     public class WebService : IService
     {
@@ -24,12 +23,12 @@ namespace WebService
             HttpClient http = new HttpClient();
             string uri = CreateMeasurementUri(measurement.Instrument, measurement.Value, true);
             var httpTask = http.GetAsync(portalUrl + uri);
-            
+
             try
             {
                 httpTask.Wait();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return e.Message;
             }

@@ -5,12 +5,12 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 
-namespace WebService
+namespace ChordsInterface.Service
 {
     [ServiceContract]
     public interface IService
     {
         [OperationContract]
-        string CreateMeasurement(ChordsInterface.ChordsTypes.Measurement measurement);
+        string CreateMeasurement(ChordsTypes.Measurement measurement);
     }
 }
