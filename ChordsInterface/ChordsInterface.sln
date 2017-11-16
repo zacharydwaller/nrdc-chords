@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDataFeeder", "TestDataFeeder.csproj", "{9364BDD5-A5D1-410C-B996-EF70336EDC8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChordsInterface", "ChordsService\ChordsInterface.csproj", "{8E8BF03E-59DF-4784-834F-6D9EFBD2ADB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9364BDD5-A5D1-410C-B996-EF70336EDC8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9364BDD5-A5D1-410C-B996-EF70336EDC8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9364BDD5-A5D1-410C-B996-EF70336EDC8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9364BDD5-A5D1-410C-B996-EF70336EDC8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E8BF03E-59DF-4784-834F-6D9EFBD2ADB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E8BF03E-59DF-4784-834F-6D9EFBD2ADB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E8BF03E-59DF-4784-834F-6D9EFBD2ADB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E8BF03E-59DF-4784-834F-6D9EFBD2ADB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {FF3F0254-EC4F-4F61-86C6-C5ECA9AACF11}
+		SolutionGuid = {627B3963-1CFC-46F8-91A5-1C55D98F8C75}
 	EndGlobalSection
 EndGlobal
