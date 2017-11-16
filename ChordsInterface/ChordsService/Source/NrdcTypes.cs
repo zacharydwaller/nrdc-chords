@@ -19,7 +19,7 @@ namespace ChordsInterface.Nrdc
         public double Elevation { get; set; }
         public string TimeZoneName { get; set; }
         public string TimeZoneAbbreviation { get; set; }
-        public int TimeZoneOffse { get; set; }
+        public int TimeZoneOffset { get; set; }
         public string CreationDate { get; set; }
         public string ModificationDate { get; set; }
         public string GPSLandmark { get; set; }
