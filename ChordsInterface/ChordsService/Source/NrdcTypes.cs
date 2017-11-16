@@ -6,6 +6,13 @@ namespace ChordsInterface.Nrdc
 {
     public abstract class NrdcType { }
 
+    public class SiteList : NrdcType
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public IList<Site> Data { get; set; }
+    }
+
     public class Site : NrdcType
     {
         public int ID { get; set; }
@@ -14,6 +21,13 @@ namespace ChordsInterface.Nrdc
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public double Elevation { get; set; }
+    }
+
+    public class SystemList
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public IList<System> Data { get; set; }
     }
 
     public class System : NrdcType
@@ -66,16 +80,6 @@ namespace ChordsInterface.Nrdc
         public string Name { get; set; }
     }
 
-    public class Interval : NrdcType
-    {
-
-    }
-
-    public class DataStream : NrdcType
-    {
-
-    }
-
     public class AggregateDataSpecification : NrdcType
     {
         public Interval AggregateInterval { get; set; }
@@ -84,6 +88,14 @@ namespace ChordsInterface.Nrdc
         public long Skip { get; set; }
         public long Take { get; set; }
         public IList<DataStream> DataStreams;
+    }
+
+    public class AggregatedDataDownload : NrdcType
+    {
+        public long TotalNumberOfMeasurements { get; set; }
+        public long StartIndex { get; set; }
+        public long EndIndex { get; set; }
+        public IList<AggregateMeasurement> Measurements { get; set; }
     }
 
     public class CsvJobStatus : NrdcType
