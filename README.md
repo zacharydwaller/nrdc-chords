@@ -17,4 +17,4 @@ Quick Start: https://github.com/NCAR/chords/wiki/Running-CHORDS
 
 ### CHORDS Info
 
-Slack: https://ndrcworkspace.slack.com/messages/D7RKZ9WMU/
+Slack: https://ndrcworkspace.slack.com/threads/
