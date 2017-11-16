@@ -23,7 +23,7 @@ namespace ChordsInterface.Nrdc
         public double Elevation { get; set; }
     }
 
-    public class SystemList
+    public class SystemList : NrdcType
     {
         public bool Success { get; set; }
         public string Message { get; set; }
@@ -127,7 +127,7 @@ namespace ChordsInterface.Nrdc
         public string EndDateTime { get; set; }
         public long Skip { get; set; }
         public long Take { get; set; }
-        public IList<DataStream> DataStreams { get; set; };
+        public IList<DataStream> DataStreams { get; set; }
     }
 
     public class AggregatedDataDownload : NrdcType
