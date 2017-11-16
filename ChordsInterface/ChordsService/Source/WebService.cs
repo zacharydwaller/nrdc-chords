@@ -18,7 +18,7 @@ namespace ChordsInterface.Service
         private const string testTag = "test";
         private const string portalUrl = "http://ec2-52-8-224-195.us-west-1.compute.amazonaws.com/";
 
-        public string CreateMeasurement(ChordsInterface.ChordsTypes.Measurement measurement)
+        public string CreateMeasurement(Chords.Measurement measurement)
         {
             HttpClient http = new HttpClient();
             string uri = CreateMeasurementUri(measurement.Instrument, measurement.Value, true);
