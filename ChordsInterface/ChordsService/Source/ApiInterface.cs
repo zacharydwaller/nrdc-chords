@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
-using Newtonsoft.Json;
-
 
 namespace ChordsInterface.Api
 { 
@@ -23,11 +21,10 @@ namespace ChordsInterface.Api
 
         public async void GetDataAsync()
         {
-            int sitecounter = 0;
             var result = await httpObject.GetAsync(NetworkAlias + "/infrastructure/sites"); 
             string message = await result.Content.ReadAsStringAsync();
 
-            Nrdc.SiteList sites = JsonConvert.DeserializeObject<Nrdc.SiteList>(message);
+            Nrdc.SiteList sites = Json.Parse<Nrdc.SiteList>(message);
 
             Console.Out.WriteLine(sites.Success);
 
@@ -37,8 +34,8 @@ namespace ChordsInterface.Api
                 var result2 = await httpObject.GetAsync(NetworkAlias + "/infrastructure/site/" + varSite.ID + "/systems");
                 string message2 = await result2.Content.ReadAsStringAsync();
 
-                varSite.SystemList = JsonConvert.DeserializeObject<Nrdc.SystemList>(message2); 
-                foreach (Nrdc.System varSystem in varSite.SystemList.Data)
+                var systemList = Json.Parse<Nrdc.SystemList>(message2);
+                foreach (Nrdc.System varSystem in systemList.Data)
                 {
                     Console.Out.WriteLine("\t" + varSystem.ID + " " + varSystem.InstallationLocation);
                 }
