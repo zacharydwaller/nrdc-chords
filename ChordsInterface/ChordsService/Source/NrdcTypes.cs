@@ -6,20 +6,20 @@ namespace ChordsInterface.Nrdc
 {
     public class Site
     {
-        public int ID;
+        public int ID { get; set; }
         public string UniqueIdentifier { get; set; }
-        public int Network;
-        public int LandOwner;
-        public int PermitHolder;
+        public int Network { get; set; }
+        public int LandOwner { get; set; }
+        public int PermitHolder { get; set; }
         public string Name { get; set; }
         public string Alias { get; set; }
         public string Notes { get; set; }
-        public double Latitude;
-        public double Longitude;
-        public double Elevation;
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public double Elevation { get; set; }
         public string TimeZoneName { get; set; }
         public string TimeZoneAbbreviation { get; set; }
-        public int TimeZoneOffset;
+        public int TimeZoneOffse { get; set; }
         public string CreationDate { get; set; }
         public string ModificationDate { get; set; }
         public string GPSLandmark { get; set; }
@@ -27,10 +27,10 @@ namespace ChordsInterface.Nrdc
 
     public class System
     {
-        public int ID;
+        public int ID { get; set; }
         public string UniqueIdentifier { get; set; }
-        public int Manager;
-        public int Site;
+        public int Manager { get; set; }
+        public int Site { get; set; }
         public string Name { get; set; }
         public string Details { get; set; }
         public string Power { get; set; }
