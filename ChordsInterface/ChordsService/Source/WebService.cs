@@ -20,7 +20,7 @@ namespace ChordsInterface.Service
         public string CreateMeasurement(Chords.Measurement measurement)
         {
             string uri = CreateMeasurementUri(measurement.Instrument, measurement.Value, true);
-            var httpTask = ChordsInterface.http.GetAsync(ChordsInterface.ChordsHostUrl + uri);
+            var httpTask = ChordsInterface.Http.GetAsync(ChordsInterface.ChordsHostUrl + uri);
 
             try
             {
@@ -31,22 +31,21 @@ namespace ChordsInterface.Service
                 return e.Message;
             }
 
-            var httpResponse = httpTask.Result;
+            if (httpTask.Result.IsSuccessStatusCode)
+            {
+                var contentString = httpTask.Result.Content.ReadAsStringAsync().Result;
 
-            var readTask = httpResponse.Content.ReadAsStringAsync();
-            readTask.Wait();
-
-            var contentString = readTask.Result;
-
-            return contentString;
+                return contentString;
+            }
+            else
+            {
+                return httpTask.Result.ReasonPhrase;
+            }
         }
 
         public string PullSite(int siteId)
         {
-            var apiTask = Api.ApiInterface.GetSiteAsync(siteId);
-            apiTask.Wait();
-
-            var site = apiTask.Result;
+            var site = Api.ApiInterface.GetSiteAsync(siteId).Result;
 
             if (site != null) return site.Name;
             else return "Site could not be found.";
