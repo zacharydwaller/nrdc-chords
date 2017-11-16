@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Source\ApiInterface.cs" />
+    <Compile Include="Source\ChordsInterface.cs" />
     <Compile Include="Source\ChordsTypes.cs" />
     <Compile Include="Source\NrdcJson.cs" />
     <Compile Include="Source\NrdcTypes.cs" />

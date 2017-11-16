@@ -12,5 +12,8 @@ namespace ChordsInterface.Service
     {
         [OperationContract]
         string CreateMeasurement(Chords.Measurement measurement);
+
+        [OperationContract]
+        string PullSite(int siteID);
     }
 }

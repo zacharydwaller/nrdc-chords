@@ -16,13 +16,12 @@ namespace ChordsInterface.Service
         private const string keyPath = "key=";
         private const string keyValue = "key";
         private const string testTag = "test";
-        private const string portalUrl = "http://ec2-52-8-224-195.us-west-1.compute.amazonaws.com/";
 
         public string CreateMeasurement(Chords.Measurement measurement)
         {
             HttpClient http = new HttpClient();
             string uri = CreateMeasurementUri(measurement.Instrument, measurement.Value, true);
-            var httpTask = http.GetAsync(portalUrl + uri);
+            var httpTask = http.GetAsync(ChordsInterface.ChordsHostUrl + uri);
 
             try
             {
@@ -41,6 +40,17 @@ namespace ChordsInterface.Service
             var contentString = readTask.Result;
 
             return contentString;
+        }
+
+        public string PullSite(int siteId)
+        {
+            var apiTask = Api.ApiInterface.GetSiteAsync(siteId);
+            apiTask.Wait();
+
+            Nrdc.Site site = apiTask.Result;
+
+            if (site != null) return site.Alias;
+            else return "Site could not be found.";
         }
 
         private string CreateMeasurementUri(uint instrumentId, int dataValue, bool isTestData = true)
