@@ -45,7 +45,6 @@ namespace ChordsInterface.Nrdc
         public long TotalNumberOfMeasurements { get; set; }
         public long StartIndex { get; set; }
         public long EndIndex { get; set; }
-
-        //public IList<AggregatedMeasurement> Measurements { get; set; }
+        public IList<AggregateMeasurement> Measurements { get; set; }
     }
 }

@@ -30,12 +30,61 @@ namespace ChordsInterface.Nrdc
     }
 
     //put actual data structure
-    public class Measurements : NrdcType
+    public class AggregateMeasurement : NrdcType
+    {
+        public int Stream { get; set; }
+        public string TimeStamp { get; set; }
+        public Decimal value { get; set; }
+        public long NumberOfConstituentValues { get; set; }
+        public short AggregateType { get; set; }
+    }
+
+    public class Deployment : NrdcType
+    {
+        
+        public int ID { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class Property : NrdcType
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class Unit : NrdcType
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+
+        public string Abbreviation { get; set; }
+    }
+
+    public class Datatype : NrdcType
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class Interval : NrdcType
     {
 
     }
 
+    public class DataStream : NrdcType
+    {
 
+    }
+
+    public class AggregateDataSpecification : NrdcType
+    {
+        public Interval AggregateInterval { get; set; }
+        public string TimeZoneID { get; set; }
+        public string EndDateTime { get; set; }
+        public long Skip { get; set; }
+        public long Take { get; set; }
+        public IList<DataStream> DataStreams;
+    }
 
     public class CsvJobStatus : NrdcType
     {
@@ -47,4 +96,5 @@ namespace ChordsInterface.Nrdc
         public long TotalNumberOfMeasurements { get; set; }
         public string DataFileUrl { get; set; }
     }
+
 }
