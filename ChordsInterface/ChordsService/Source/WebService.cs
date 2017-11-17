@@ -17,29 +17,36 @@ namespace ChordsInterface.Service
         private const string keyValue = "key";
         private const string testTag = "test";
 
+        private const string CreateMeasurementSuccess = "Measurement created.";
+
         public string PullMeasurements(int siteID, int streamIndex)
         {
-            var response = Api.ApiInterface.GetMeasurements(siteID, streamIndex);
+            var apiResponse = Api.ApiInterface.GetMeasurements(siteID, streamIndex);
 
-            if (response.Success)
+            if (apiResponse.Success)
             {
-                var dataDownload = response.Data;
+                var dataDownload = apiResponse.Data;
 
                 foreach(var nMeas in dataDownload.Measurements)
                 {
                     var cMeas = Api.Converter.Convert(nMeas);
 
                     // TODO: Get the real instrument ID
-                    cMeas.InstrumentID = 0;
+                    cMeas.InstrumentID = 1;
 
-                    CreateMeasurement(cMeas);
+                    string chordsResponse = CreateMeasurement(cMeas);
+
+                    if(chordsResponse != CreateMeasurementSuccess)
+                    {
+                        return chordsResponse;
+                    }
                 }
                 
                 return "Number of Measurements Created: " + dataDownload.TotalNumberOfMeasurements.ToString();
             }
             else
             {
-                return response.Message;
+                return apiResponse.Message;
             }
         }
 
@@ -54,7 +61,7 @@ namespace ChordsInterface.Service
             }
             catch (Exception e)
             {
-                return e.Message;
+                return e.InnerException.Message;
             }
 
             if (httpTask.Result.IsSuccessStatusCode)
@@ -84,6 +91,8 @@ namespace ChordsInterface.Service
 
             if(measurement.TimeStamp != null)
             {
+                //DateTime measTime = DateTime.Parse(measurement.TimeStamp);
+                //timestamp = measTime.ToString("o");
                 timestamp = measurement.TimeStamp;
             }
             else
