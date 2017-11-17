@@ -9,18 +9,6 @@ namespace ChordsInterface.Api
 { 
     public static class ApiInterface
     {
-        public static Nrdc.SiteList GetSites()
-        {
-            string uri = ChordsInterface.InfrastructureServiceUrl + "infrastructure/sites";
-
-            var result = ChordsInterface.Http.GetAsync(uri).Result;
-            string message = result.Content.ReadAsStringAsync().Result;
-
-            var sitelist = Json.Parse<Nrdc.SiteList>(message);
-
-            return sitelist;
-        }
-
         public static Nrdc.DataStreamList GetDataStreams(int siteID)
         {
             string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/site/" + siteID.ToString();
@@ -69,7 +57,19 @@ namespace ChordsInterface.Api
             return dataDownloadResponse;
         }
 
-        public static Chords.Site GetSiteAsync(int siteID)
+        public static Nrdc.SiteList GetSites()
+        {
+            string uri = ChordsInterface.InfrastructureServiceUrl + "infrastructure/sites";
+
+            var result = ChordsInterface.Http.GetAsync(uri).Result;
+            string message = result.Content.ReadAsStringAsync().Result;
+
+            var sitelist = Json.Parse<Nrdc.SiteList>(message);
+
+            return sitelist;
+        }
+
+        public static Nrdc.Site GetSite(int siteID)
         {
             var sitelist = GetSites();
 
@@ -79,7 +79,7 @@ namespace ChordsInterface.Api
                 {
                     if(site.ID == siteID)
                     {
-                        return Converter.Convert(site);
+                        return site;
                     }
                 }
             }
