@@ -40,14 +40,14 @@ namespace ChordsInterface.Nrdc
     {
         public int Stream { get; set; }
         public string TimeStamp { get; set; }
-        public Decimal value { get; set; }
+        public Decimal Value { get; set; }
     }
 
     public class AggregateMeasurement : NrdcType
     {
         public int Stream { get; set; }
         public string TimeStamp { get; set; }
-        public Decimal value { get; set; }
+        public Decimal Value { get; set; }
         public long NumberOfConstituentValues { get; set; }
         public short AggregateType { get; set; }
     }
@@ -107,6 +107,13 @@ namespace ChordsInterface.Nrdc
         */
     }
 
+    public class DataStreamList : NrdcType
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public IList<DataStream> Data { get; set; }
+    }
+
     public class DataStream : NrdcType
     {
         public int ID { get; set; }
@@ -120,14 +127,53 @@ namespace ChordsInterface.Nrdc
         public String MeasurementInterval { get; set; }
     }
 
+    public class DataStreamRequest : NrdcType
+    {
+        // Data stream you want
+        public int DataStreamID { get; set; }
+        // Units you want the data stream to be in
+        public int UnitsID { get; set; }
+    }
+
+    public class DataSpecification : NrdcType
+    {
+        public string TimeZoneID { get; set; }
+        public string StartDateTime { get; set; }
+        public string EndDateTime { get; set; }
+        public long Skip { get; set; }
+        public long Take { get; set; }
+        public IList<DataStreamRequest> DataStreams { get; set; }
+
+        public DataSpecification()
+        {
+            DataStreams = new List<DataStreamRequest>();
+        }
+    }
+
     public class AggregateDataSpecification : NrdcType
     {
         public Interval AggregateInterval { get; set; }
         public string TimeZoneID { get; set; }
+        public string StartDateTime { get; set; }
         public string EndDateTime { get; set; }
         public long Skip { get; set; }
         public long Take { get; set; }
-        public IList<DataStream> DataStreams { get; set; }
+        public IList<DataStreamRequest> DataStreams { get; set; }
+    }
+
+    public class DataDownloadResponse : NrdcType
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public DataDownload Data { get; set; }
+    }
+
+    public class DataDownload : NrdcType
+    {
+        public long TotalNumberOfMeasurements { get; set; }
+        public long StartIndex { get; set; }
+        public long EndIndex { get; set; }
+        public IList<Measurement> Measurements { get; set; }
     }
 
     public class AggregatedDataDownload : NrdcType

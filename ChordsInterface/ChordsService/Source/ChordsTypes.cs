@@ -34,7 +34,8 @@ namespace ChordsInterface.Chords
     [DataContract]
     public class Measurement : ChordsType
     {
-        [DataMember] public uint Instrument { get; set; }
-        [DataMember] public int Value { get; set; }
+        [DataMember] public uint InstrumentID { get; set; }
+        [DataMember] public string TimeStamp { get; set; }
+        [DataMember] public decimal Value { get; set; }
     }
 }

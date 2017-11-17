@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace ChordsInterface.Service
 {
@@ -17,9 +18,35 @@ namespace ChordsInterface.Service
         private const string keyValue = "key";
         private const string testTag = "test";
 
+        public string PullMeasurements(int siteID, int streamIndex)
+        {
+            var response = Api.ApiInterface.GetMeasurements(siteID, streamIndex);
+
+            if (response.Success)
+            {
+                var dataDownload = response.Data;
+
+                foreach(var nMeas in dataDownload.Measurements)
+                {
+                    var cMeas = Api.Converter.Convert(nMeas);
+
+                    // TODO: Get the real instrument ID
+                    cMeas.InstrumentID = 0;
+
+                    CreateMeasurement(cMeas);
+                }
+                
+                return "Number of Measurements Created: " + dataDownload.TotalNumberOfMeasurements.ToString();
+            }
+            else
+            {
+                return response.Message;
+            }
+        }
+
         public string CreateMeasurement(Chords.Measurement measurement)
         {
-            string uri = CreateMeasurementUri(measurement.Instrument, measurement.Value, true);
+            string uri = CreateMeasurementUri(measurement, true);
             var httpTask = ChordsInterface.Http.GetAsync(ChordsInterface.ChordsHostUrl + uri);
 
             try
@@ -43,26 +70,27 @@ namespace ChordsInterface.Service
             }
         }
 
-        public string PullSite(int siteId)
-        {
-            var site = Api.ApiInterface.GetSiteAsync(siteId).Result;
-
-            if (site != null) return site.Name;
-            else return "Site could not be found.";
-        }
-
-        private string CreateMeasurementUri(uint instrumentId, int dataValue, bool isTestData = true)
+        private string CreateMeasurementUri(Chords.Measurement measurement, bool isTestData = true)
         {
             string uri =
                 createMeasurementPath +
-                instrumentIdPath + instrumentId.ToString() +
-                "&" + dataPath + dataValue.ToString() +
+                instrumentIdPath + measurement.InstrumentID.ToString() +
+                "&" + dataPath + measurement.Value.ToString() +
                 "&" + keyPath + keyValue;
 
             // Insert timestamp
             // Get measurement timestamp, using current local time for now
             // The ToString() arg formats the date as ISO-8601
-            String timestamp = DateTime.Now.ToString("o");
+            String timestamp;
+
+            if(measurement.TimeStamp != null)
+            {
+                timestamp = measurement.TimeStamp;
+            }
+            else
+            {
+                timestamp = DateTime.Now.ToString("o");
+            }
 
             uri += "&" + timestampPath + timestamp;
 

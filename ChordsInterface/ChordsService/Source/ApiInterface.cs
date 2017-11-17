@@ -9,23 +9,69 @@ namespace ChordsInterface.Api
 { 
     public static class ApiInterface
     {
-        private static string sitesUrn = "infrastructure/sites";
-
-        public static async Task<Nrdc.SiteList> GetSitesAsync()
+        public static Nrdc.SiteList GetSites()
         {
-            string uri = ChordsInterface.DataCenterUrl + sitesUrn;
+            string uri = ChordsInterface.InfrastructureServiceUrl + "infrastructure/sites";
 
-            var result = await ChordsInterface.Http.GetAsync(uri);
-            string message = await result.Content.ReadAsStringAsync();
+            var result = ChordsInterface.Http.GetAsync(uri).Result;
+            string message = result.Content.ReadAsStringAsync().Result;
 
             var sitelist = Json.Parse<Nrdc.SiteList>(message);
 
             return sitelist;
         }
 
-        public static async Task<Chords.Site> GetSiteAsync(int siteID)
+        public static Nrdc.DataStreamList GetDataStreams(int siteID)
         {
-            var sitelist = await GetSitesAsync();
+            string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/site/" + siteID.ToString();
+
+            var result = ChordsInterface.Http.GetAsync(uri).Result;
+            string message = result.Content.ReadAsStringAsync().Result;
+
+            var streamlist = Json.Parse<Nrdc.DataStreamList>(message);
+
+            return streamlist;
+        }
+
+        public static Nrdc.DataStream GetDataStream(int siteID, int streamIndex)
+        {
+            var streamlist = GetDataStreams(siteID);
+
+            return streamlist.Data[streamIndex];
+        }
+
+        public static Nrdc.DataDownloadResponse GetMeasurements(int siteID, int streamIndex)
+        {
+            var stream = GetDataStream(siteID, streamIndex);
+
+            // Make better constructors for these data structures
+            var streamRequest = new Nrdc.DataStreamRequest();
+            streamRequest.DataStreamID = stream.ID;
+            streamRequest.UnitsID = stream.Units.ID;
+
+            var dataSpecification = new Nrdc.DataSpecification();
+            dataSpecification.TimeZoneID = ChordsInterface.DefaultTimeZoneID;
+            dataSpecification.StartDateTime = DateTime.UtcNow.AddHours(-1).ToString("s");
+            dataSpecification.EndDateTime = DateTime.UtcNow.ToString("s");
+            dataSpecification.Skip = 0;
+            dataSpecification.Take = ChordsInterface.MaxMeasurements;
+            dataSpecification.DataStreams.Add(streamRequest);
+
+            var jsonContent = Json.Serialize(dataSpecification);
+            var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/download";
+
+            var response = ChordsInterface.Http.PostAsync(uri, stringContent).Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            var dataDownloadResponse = Json.Parse<Nrdc.DataDownloadResponse>(content);
+
+            return dataDownloadResponse;
+        }
+
+        public static Chords.Site GetSiteAsync(int siteID)
+        {
+            var sitelist = GetSites();
 
             if (sitelist.Success)
             {

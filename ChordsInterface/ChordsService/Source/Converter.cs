@@ -19,5 +19,15 @@ namespace ChordsInterface.Api
 
             return chordsSite;
         }
+
+        public static Chords.Measurement Convert(Nrdc.Measurement nrdcMeasurement)
+        {
+            var chordsMeasurement = new Chords.Measurement();
+
+            chordsMeasurement.TimeStamp = nrdcMeasurement.TimeStamp;
+            chordsMeasurement.Value = nrdcMeasurement.Value;
+
+            return chordsMeasurement;
+        }
     }
 }

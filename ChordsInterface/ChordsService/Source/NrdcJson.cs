@@ -9,9 +9,14 @@ namespace ChordsInterface.Api
 {
     public class Json
     {
-        public static T Parse<T>(string json)
+        public static T Parse<T> (string json)
         {
             return JsonConvert.DeserializeObject<T>(json);
+        }
+
+        public static string Serialize (object obj)
+        {
+            return JsonConvert.SerializeObject(obj);
         }
     }
 }
