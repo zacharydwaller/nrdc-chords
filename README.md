@@ -3,7 +3,7 @@ A Generalized Interface for CHORDS
 
 ### Our temporary CHORDS Portal
 
-http://ec2-52-8-224-195.us-west-1.compute.amazonaws.com
+http://ec2-13-57-134-131.us-west-1.compute.amazonaws.com
 
 ### CHORDS Info
 
