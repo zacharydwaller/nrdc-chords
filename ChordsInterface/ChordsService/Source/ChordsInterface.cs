@@ -22,7 +22,7 @@ namespace ChordsInterface
         private static string nevCanAlias = "NevCAN/";
 
         // In milliseconds
-        public static double DefaultTimeout = 500;
+        public static double DefaultTimeout = 5000;
 
         public static int MaxMeasurements = 1000;
 
