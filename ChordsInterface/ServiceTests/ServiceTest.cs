@@ -7,13 +7,27 @@ namespace ServiceTests
     public class ServiceTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestCreateMeasurement()
         {
-            TestService.ServiceClient stuff = new TestService.ServiceClient();
+            var service = new ServiceReference.ServiceClient();
 
-            string result = stuff.PullSite(1);
+            var meas = new ServiceReference.Measurement();
+            meas.Value = 10;
 
-            Assert.AreEqual("Sheep 1", result);
+            // Valid instrument id
+            meas.InstrumentID = 1;
+            string result = service.CreateMeasurement(meas);
+            Assert.AreEqual("Measurement created.".ToUpper(), result.ToUpper());
+
+            // Invalid instrument id
+            meas.InstrumentID = 0;
+            result = service.CreateMeasurement(meas);
+            Assert.AreNotEqual("Measurement created.".ToUpper(), result.ToUpper());
+
+            // Too high instrument id
+            meas.InstrumentID = int.MaxValue;
+            result = service.CreateMeasurement(meas);
+            Assert.AreNotEqual("Measurement created.".ToUpper(), result.ToUpper());
         }
     }
 }

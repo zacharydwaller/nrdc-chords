@@ -1,6 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords" />
+  <xs:element name="PullMeasurements">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="siteID" type="xs:int" />
+        <xs:element minOccurs="0" name="streamIndex" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PullMeasurementsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="PullMeasurementsResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="CreateMeasurement">
     <xs:complexType>
       <xs:sequence>
@@ -12,20 +27,6 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="CreateMeasurementResult" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="PullSite">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="siteID" type="xs:int" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="PullSiteResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="PullSiteResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

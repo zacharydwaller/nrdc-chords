@@ -51,7 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connected Services\TestService\Reference.cs">
+    <Compile Include="Connected Services\ServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -61,38 +61,32 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Connected Services\TestService\ChordsInterface.Chords.xsd">
+    <None Include="Connected Services\ServiceReference\ChordsInterface.Chords.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\TestService\service.wsdl" />
-    <None Include="Connected Services\TestService\service.xsd">
+    <None Include="Connected Services\ServiceReference\service.wsdl" />
+    <None Include="Connected Services\ServiceReference\service.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\TestService\service1.xsd">
+    <None Include="Connected Services\ServiceReference\service1.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChordsService\ChordsInterface.csproj">
-      <Project>{8e8bf03e-59df-4784-834f-6d9efbd2adb2}</Project>
-      <Name>ChordsInterface</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\TestService\" />
+    <WCFMetadataStorage Include="Connected Services\ServiceReference\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\TestService\configuration91.svcinfo" />
+    <None Include="Connected Services\ServiceReference\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\TestService\configuration.svcinfo" />
+    <None Include="Connected Services\ServiceReference\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\TestService\Reference.svcmap">
+    <None Include="Connected Services\ServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
