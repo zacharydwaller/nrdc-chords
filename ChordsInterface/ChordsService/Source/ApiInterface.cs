@@ -6,55 +6,116 @@ using System.Threading.Tasks;
 using System.Net.Http;
 
 namespace ChordsInterface.Api
-{ 
+{
     public static class ApiInterface
     {
-        public static Nrdc.DataStreamList GetDataStreams(int siteID)
+        // Returns Container where Object is Nrdc.DataStreamList
+        public static Container GetDataStreams(int siteID)
         {
+            // Get data streams
             string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/site/" + siteID.ToString();
-
             var result = ChordsInterface.Http.GetAsync(uri).Result;
             string message = result.Content.ReadAsStringAsync().Result;
 
             var streamlist = Json.Parse<Nrdc.DataStreamList>(message);
 
-            return streamlist;
+            // Check stream list
+            if(streamlist.Success)
+            {
+                return new Container(streamlist);
+            }
+            else
+            {
+                // Stream list retrieval failed, return with reason message
+                return new Container(null, false, streamlist.Message);
+            }
         }
 
-        public static Nrdc.DataStream GetDataStream(int siteID, int streamIndex)
+        // Returns Container where Object is Nrdc.DataStream
+        public static Container GetDataStream(int siteID, int streamIndex)
         {
-            var streamlist = GetDataStreams(siteID);
+            var container = GetDataStreams(siteID);
 
-            return streamlist.Data[streamIndex];
+            // Get container
+            if (container.Success)
+            {
+                var streamlist = container.Object as Nrdc.DataStreamList;
+
+                if (streamlist.Data.Count > streamIndex)
+                {
+                    return new Container(streamlist.Data[streamIndex]);
+                }
+                else
+                {
+                    // Stream index too high for stream count
+                    return new Container(null, false, "Stream index out of range");
+                }
+            }
+            else
+            {
+                // GetDataStreams failed, return with reason message
+                return container;
+            }
         }
 
-        public static Nrdc.DataDownloadResponse GetMeasurements(int siteID, int streamIndex)
+        // Returns Container where Object is Nrdc.DataDownloadResponse
+        public static Container GetMeasurements(int siteID, int streamIndex, int hoursBack = 24)
         {
-            var stream = GetDataStream(siteID, streamIndex);
+            var container = GetDataStream(siteID, streamIndex);
 
-            // Make better constructors for these data structures
-            var streamRequest = new Nrdc.DataStreamRequest();
-            streamRequest.DataStreamID = stream.ID;
-            streamRequest.UnitsID = stream.Units.ID;
+            if (container.Success)
+            {
+                var stream = container.Object as Nrdc.DataStream;
 
-            var dataSpecification = new Nrdc.DataSpecification();
-            dataSpecification.TimeZoneID = ChordsInterface.DefaultTimeZoneID;
-            dataSpecification.StartDateTime = DateTime.UtcNow.AddHours(-24).ToString("s");
-            dataSpecification.EndDateTime = DateTime.UtcNow.ToString("s");
-            dataSpecification.Skip = 0;
-            dataSpecification.Take = ChordsInterface.MaxMeasurements;
-            dataSpecification.DataStreams.Add(streamRequest);
+                // Create stream request HTTP message
+                // Make better constructors for these data structures
+                var streamRequest = new Nrdc.DataStreamRequest();
+                streamRequest.DataStreamID = stream.ID;
+                streamRequest.UnitsID = stream.Units.ID;
 
-            var jsonContent = Json.Serialize(dataSpecification);
-            var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                var dataSpecification = new Nrdc.DataSpecification();
+                dataSpecification.TimeZoneID = ChordsInterface.DefaultTimeZoneID;
+                dataSpecification.StartDateTime = DateTime.UtcNow.AddHours(-hoursBack).ToString("s");
+                dataSpecification.EndDateTime = DateTime.UtcNow.ToString("s");
+                dataSpecification.Skip = 0;
+                dataSpecification.Take = ChordsInterface.MaxMeasurements;
+                dataSpecification.DataStreams.Add(streamRequest);
 
-            string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/download";
+                var jsonContent = Json.Serialize(dataSpecification);
+                var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-            var response = ChordsInterface.Http.PostAsync(uri, stringContent).Result;
-            var content = response.Content.ReadAsStringAsync().Result;
-            var dataDownloadResponse = Json.Parse<Nrdc.DataDownloadResponse>(content);
+                // Create HTTP POST
+                string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/download";
+                var response = ChordsInterface.Http.PostAsync(uri, stringContent).Result;
 
-            return dataDownloadResponse;
+                // Check HTTP response
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = response.Content.ReadAsStringAsync().Result;
+                    var dataDownloadResponse = Json.Parse<Nrdc.DataDownloadResponse>(content);
+
+                    // Check data download
+                    if (dataDownloadResponse.Success)
+                    {
+                        return new Container(dataDownloadResponse);
+                    }
+                    else
+                    {
+                        // Data download failed
+                        return new Container(null, false, dataDownloadResponse.Message);
+                    }
+                }
+                else
+                {
+                    // HTTP didn't return OK
+                    return new Container(null, false, "Error From: " + response.RequestMessage + "\n" + response.ReasonPhrase);
+                }
+            }
+            else
+            {
+                // GetDataStream failed, return with reason message
+                return container;
+            }
         }
 
         public static Nrdc.SiteList GetSites()
@@ -86,6 +147,19 @@ namespace ChordsInterface.Api
 
             return null;
         }
-    } 
-    
+    }
+
+    public class Container
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public Nrdc.NrdcType Object { get; set; }
+
+        public Container(Nrdc.NrdcType obj, bool success = true, string message = default(string))
+        {
+            Object = obj;
+            Success = success;
+            Message = message;
+        }
+    }
 }

@@ -23,9 +23,10 @@ namespace ChordsInterface.Service
         {
             var apiResponse = Api.ApiInterface.GetMeasurements(siteID, streamIndex);
 
-            if (apiResponse.Success)
+            if(apiResponse.Success)
             {
-                var dataDownload = apiResponse.Data;
+                var dataDownloadResponse = apiResponse.Object as Nrdc.DataDownloadResponse;
+                var dataDownload = dataDownloadResponse.Data;
 
                 foreach(var nMeas in dataDownload.Measurements)
                 {
@@ -38,6 +39,7 @@ namespace ChordsInterface.Service
 
                     if(chordsResponse != CreateMeasurementSuccess)
                     {
+                        // Measurement creation, return message from CHORDS
                         return chordsResponse;
                     }
                 }
@@ -46,6 +48,7 @@ namespace ChordsInterface.Service
             }
             else
             {
+                // GetMeasurements failed, return reason message
                 return apiResponse.Message;
             }
         }
