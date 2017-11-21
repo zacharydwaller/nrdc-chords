@@ -30,11 +30,5 @@ namespace ChordsInterface
         {
             Timeout = TimeSpan.FromMilliseconds(DefaultTimeout)
         };
-
-        public static string GetCurrentTimestamp()
-        {
-            // The ToString() arg formats the date as ISO-8601
-            return DateTime.Now.ToString("o");
-        }
     }
 }
