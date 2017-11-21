@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ChordsService")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("NRDC-CHORDS Interface")]
+[assembly: AssemblyDescription("A generalized software interface for CHORDS.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("ChordsService")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2017")]
+[assembly: AssemblyCompany("Nevada Research Data Center")]
+[assembly: AssemblyProduct("NRDC-CHORDS Interface")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
