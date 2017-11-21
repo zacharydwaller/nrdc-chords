@@ -133,20 +133,33 @@ namespace ChordsInterface.Nrdc
         public int DataStreamID { get; set; }
         // Units you want the data stream to be in
         public int UnitsID { get; set; }
+
+        public DataStreamRequest() { }
+
+        public DataStreamRequest(DataStream stream)
+        {
+            DataStreamID = stream.ID;
+            UnitsID = stream.Units.ID;
+        }
     }
 
     public class DataSpecification : NrdcType
     {
-        public string TimeZoneID { get; set; }
+        public string TimeZoneID { get; set; } = ChordsInterface.DefaultTimeZoneID;
         public string StartDateTime { get; set; }
         public string EndDateTime { get; set; }
-        public long Skip { get; set; }
-        public long Take { get; set; }
-        public IList<DataStreamRequest> DataStreams { get; set; }
+        public long Skip { get; set; } = 0;
+        public long Take { get; set; } = ChordsInterface.MaxMeasurements;
+        public IList<DataStreamRequest> DataStreams { get; set; } = new List<DataStreamRequest>();
 
-        public DataSpecification()
+        public DataSpecification() { }
+
+        public DataSpecification(DataStream dataStream, string startTime, string endTime)
         {
-            DataStreams = new List<DataStreamRequest>();
+            var streamRequest = new DataStreamRequest(dataStream);
+            DataStreams.Add(streamRequest);
+            StartDateTime = startTime;
+            EndDateTime = endTime;
         }
     }
 

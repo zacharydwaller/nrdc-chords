@@ -81,18 +81,9 @@ namespace ChordsInterface.Api
                 var stream = container.Object as Nrdc.DataStream;
 
                 // Create stream request HTTP message
-                // Make better constructors for these data structures
-                var streamRequest = new Nrdc.DataStreamRequest();
-                streamRequest.DataStreamID = stream.ID;
-                streamRequest.UnitsID = stream.Units.ID;
-
-                var dataSpecification = new Nrdc.DataSpecification();
-                dataSpecification.TimeZoneID = ChordsInterface.DefaultTimeZoneID;
-                dataSpecification.StartDateTime = DateTime.UtcNow.AddHours(-hoursBack).ToString("s");
-                dataSpecification.EndDateTime = DateTime.UtcNow.ToString("s");
-                dataSpecification.Skip = 0;
-                dataSpecification.Take = ChordsInterface.MaxMeasurements;
-                dataSpecification.DataStreams.Add(streamRequest);
+                string startTime = DateTime.UtcNow.AddHours(-hoursBack).ToString("s");
+                string endTime = DateTime.UtcNow.ToString("s");
+                var dataSpecification = new Nrdc.DataSpecification(stream, startTime, endTime);
 
                 var jsonContent = Json.Serialize(dataSpecification);
                 var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
