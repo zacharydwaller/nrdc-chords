@@ -5,13 +5,13 @@ using System.Text;
 namespace ChordsInterface.Nrdc
 {
     public abstract class NrdcType { }
-
+    
     public class SiteList : NrdcType
     {
         public bool Success { get; set; }
         public string Message { get; set; }
         public IList<Site> Data { get; set; }
-    }
+    } 
 
     public class Site : NrdcType
     {
