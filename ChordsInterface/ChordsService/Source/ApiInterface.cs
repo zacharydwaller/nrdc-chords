@@ -132,34 +132,35 @@ namespace ChordsInterface.Api
             }
         }
 
-        public static Nrdc.SiteList GetSites()
+        public static Container GetSites()
         {
             string uri = ChordsInterface.InfrastructureServiceUrl + "infrastructure/sites";
 
             var result = ChordsInterface.Http.GetAsync(uri).Result;
             string message = result.Content.ReadAsStringAsync().Result;
 
-            var sitelist = Json.Parse<Nrdc.SiteList>(message);
+            var sitelist = Json.Parse<Infrastructure.SiteList>(message);
 
-            return sitelist;
+            return new Container(sitelist);
         }
 
-        public static Nrdc.Site GetSite(int siteID)
+        public static Container GetSite(int siteID)
         {
-            var sitelist = GetSites();
+            var siteListContainer = GetSites();
 
-            if (sitelist.Success)
+            if (siteListContainer.Success)
             {
+                var sitelist = siteListContainer.Object as Infrastructure.SiteList;
                 foreach (var site in sitelist.Data)
                 {
                     if(site.ID == siteID)
                     {
-                        return site;
+                        return new Container(site);
                     }
                 }
             }
 
-            return null;
+            return siteListContainer;
         }
     }
 
