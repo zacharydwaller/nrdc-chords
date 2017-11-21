@@ -39,7 +39,7 @@ namespace ChordsInterface.Api
 
             var dataSpecification = new Nrdc.DataSpecification();
             dataSpecification.TimeZoneID = ChordsInterface.DefaultTimeZoneID;
-            dataSpecification.StartDateTime = DateTime.UtcNow.AddHours(-1).ToString("s");
+            dataSpecification.StartDateTime = DateTime.UtcNow.AddHours(-24).ToString("s");
             dataSpecification.EndDateTime = DateTime.UtcNow.ToString("s");
             dataSpecification.Skip = 0;
             dataSpecification.Take = ChordsInterface.MaxMeasurements;
