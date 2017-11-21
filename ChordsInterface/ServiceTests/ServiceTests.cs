@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ChordsInterface;
+using ChordsInterface.Chords;
 
 namespace ServiceTests
 {
@@ -11,7 +13,7 @@ namespace ServiceTests
         {
             var service = new ServiceReference.ServiceClient();
 
-            var meas = new ServiceReference.Measurement();
+            var meas = new Measurement();
             meas.Value = 10;
 
             // Valid instrument id

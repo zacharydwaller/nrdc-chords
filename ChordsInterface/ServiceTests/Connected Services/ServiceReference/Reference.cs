@@ -9,102 +9,23 @@
 //------------------------------------------------------------------------------
 
 namespace ServiceTests.ServiceReference {
-    using System.Runtime.Serialization;
-    using System;
     
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Measurement", Namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords")]
-    [System.SerializableAttribute()]
-    public partial class Measurement : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private uint InstrumentIDField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string TimeStampField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private decimal ValueField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public uint InstrumentID {
-            get {
-                return this.InstrumentIDField;
-            }
-            set {
-                if ((this.InstrumentIDField.Equals(value) != true)) {
-                    this.InstrumentIDField = value;
-                    this.RaisePropertyChanged("InstrumentID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string TimeStamp {
-            get {
-                return this.TimeStampField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.TimeStampField, value) != true)) {
-                    this.TimeStampField = value;
-                    this.RaisePropertyChanged("TimeStamp");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public decimal Value {
-            get {
-                return this.ValueField;
-            }
-            set {
-                if ((this.ValueField.Equals(value) != true)) {
-                    this.ValueField = value;
-                    this.RaisePropertyChanged("Value");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.IService")]
     public interface IService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/PullMeasurements", ReplyAction="http://tempuri.org/IService/PullMeasurementsResponse")]
-        string PullMeasurements(int siteID, int streamIndex);
+        string PullMeasurements(int siteID, int streamIndex, int hoursBack);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/PullMeasurements", ReplyAction="http://tempuri.org/IService/PullMeasurementsResponse")]
-        System.Threading.Tasks.Task<string> PullMeasurementsAsync(int siteID, int streamIndex);
+        System.Threading.Tasks.Task<string> PullMeasurementsAsync(int siteID, int streamIndex, int hoursBack);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/CreateMeasurement", ReplyAction="http://tempuri.org/IService/CreateMeasurementResponse")]
-        string CreateMeasurement(ServiceTests.ServiceReference.Measurement measurement);
+        string CreateMeasurement(ChordsInterface.Chords.Measurement measurement);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/CreateMeasurement", ReplyAction="http://tempuri.org/IService/CreateMeasurementResponse")]
-        System.Threading.Tasks.Task<string> CreateMeasurementAsync(ServiceTests.ServiceReference.Measurement measurement);
+        System.Threading.Tasks.Task<string> CreateMeasurementAsync(ChordsInterface.Chords.Measurement measurement);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -134,19 +55,19 @@ namespace ServiceTests.ServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public string PullMeasurements(int siteID, int streamIndex) {
-            return base.Channel.PullMeasurements(siteID, streamIndex);
+        public string PullMeasurements(int siteID, int streamIndex, int hoursBack) {
+            return base.Channel.PullMeasurements(siteID, streamIndex, hoursBack);
         }
         
-        public System.Threading.Tasks.Task<string> PullMeasurementsAsync(int siteID, int streamIndex) {
-            return base.Channel.PullMeasurementsAsync(siteID, streamIndex);
+        public System.Threading.Tasks.Task<string> PullMeasurementsAsync(int siteID, int streamIndex, int hoursBack) {
+            return base.Channel.PullMeasurementsAsync(siteID, streamIndex, hoursBack);
         }
         
-        public string CreateMeasurement(ServiceTests.ServiceReference.Measurement measurement) {
+        public string CreateMeasurement(ChordsInterface.Chords.Measurement measurement) {
             return base.Channel.CreateMeasurement(measurement);
         }
         
-        public System.Threading.Tasks.Task<string> CreateMeasurementAsync(ServiceTests.ServiceReference.Measurement measurement) {
+        public System.Threading.Tasks.Task<string> CreateMeasurementAsync(ChordsInterface.Chords.Measurement measurement) {
             return base.Channel.CreateMeasurementAsync(measurement);
         }
     }
