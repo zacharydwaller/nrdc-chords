@@ -44,9 +44,9 @@ namespace ChordsClient
                 hoursStr = Console.ReadLine();
             } while (int.TryParse(hoursStr, out hours) == false);
 
-            Console.WriteLine("Invoking service...");
+            Console.WriteLine("Streaming data...");
 
-            string result = client.PullMeasurements(siteID, streamIndex);
+            string result = client.PullMeasurements(siteID, streamIndex, hours);
 
             Console.WriteLine(result);
 

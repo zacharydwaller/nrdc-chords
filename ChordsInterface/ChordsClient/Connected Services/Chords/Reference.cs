@@ -95,10 +95,10 @@ namespace ChordsClient.Chords {
     public interface IService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/PullMeasurements", ReplyAction="http://tempuri.org/IService/PullMeasurementsResponse")]
-        string PullMeasurements(int siteID, int streamIndex);
+        string PullMeasurements(int siteID, int streamIndex, int hoursBack);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/PullMeasurements", ReplyAction="http://tempuri.org/IService/PullMeasurementsResponse")]
-        System.Threading.Tasks.Task<string> PullMeasurementsAsync(int siteID, int streamIndex);
+        System.Threading.Tasks.Task<string> PullMeasurementsAsync(int siteID, int streamIndex, int hoursBack);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/CreateMeasurement", ReplyAction="http://tempuri.org/IService/CreateMeasurementResponse")]
         string CreateMeasurement(ChordsClient.Chords.Measurement measurement);
@@ -134,12 +134,12 @@ namespace ChordsClient.Chords {
                 base(binding, remoteAddress) {
         }
         
-        public string PullMeasurements(int siteID, int streamIndex) {
-            return base.Channel.PullMeasurements(siteID, streamIndex);
+        public string PullMeasurements(int siteID, int streamIndex, int hoursBack) {
+            return base.Channel.PullMeasurements(siteID, streamIndex, hoursBack);
         }
         
-        public System.Threading.Tasks.Task<string> PullMeasurementsAsync(int siteID, int streamIndex) {
-            return base.Channel.PullMeasurementsAsync(siteID, streamIndex);
+        public System.Threading.Tasks.Task<string> PullMeasurementsAsync(int siteID, int streamIndex, int hoursBack) {
+            return base.Channel.PullMeasurementsAsync(siteID, streamIndex, hoursBack);
         }
         
         public string CreateMeasurement(ChordsClient.Chords.Measurement measurement) {
