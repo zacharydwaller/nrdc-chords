@@ -12,6 +12,11 @@ namespace ChordsInterface.Api
         // Returns Container where Object is Nrdc.DataStreamList
         public static Container GetDataStreams(int siteID)
         {
+            if(siteID < 1)
+            {
+                return new Container(null, false, "Site ID out of range");
+            }
+
             // Get data streams
             string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/site/" + siteID.ToString();
             var result = ChordsInterface.Http.GetAsync(uri).Result;
@@ -22,7 +27,15 @@ namespace ChordsInterface.Api
             // Check stream list
             if(streamlist.Success)
             {
-                return new Container(streamlist);
+                if (streamlist.Data.Count > 0)
+                {
+                    return new Container(streamlist);
+                }
+                else
+                {
+                    // No streams found
+                    return new Container(null, false, "No data streams found with SiteId: " + siteID.ToString());
+                }
             }
             else
             {
@@ -41,7 +54,7 @@ namespace ChordsInterface.Api
             {
                 var streamlist = container.Object as Nrdc.DataStreamList;
 
-                if (streamlist.Data.Count > streamIndex)
+                if (streamIndex >= 0 && streamIndex < streamlist.Data.Count)
                 {
                     return new Container(streamlist.Data[streamIndex]);
                 }
@@ -91,13 +104,22 @@ namespace ChordsInterface.Api
                 // Check HTTP response
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content.ReadAsStringAsync().Result;
+                    string content = response.Content.ReadAsStringAsync().Result;
+
                     var dataDownloadResponse = Json.Parse<Nrdc.DataDownloadResponse>(content);
 
-                    // Check data download
+                    // Check data download response
                     if (dataDownloadResponse.Success)
                     {
-                        return new Container(dataDownloadResponse);
+                        // Check data download
+                        if (dataDownloadResponse.Data.TotalNumberOfMeasurements > 0)
+                        {
+                            return new Container(dataDownloadResponse);
+                        }
+                        else
+                        {
+                            return new Container(null, false, "No measurements found");
+                        }
                     }
                     else
                     {
