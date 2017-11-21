@@ -19,9 +19,9 @@ namespace ChordsInterface.Service
 
         private const string CreateMeasurementSuccess = "Measurement created.";
 
-        public string PullMeasurements(int siteID, int streamIndex)
+        public string PullMeasurements(int siteID, int streamIndex, int hoursBack)
         {
-            var apiResponse = Api.ApiInterface.GetMeasurements(siteID, streamIndex);
+            var apiResponse = Api.ApiInterface.GetMeasurements(siteID, streamIndex, hoursBack);
 
             if(apiResponse.Success)
             {
