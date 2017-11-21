@@ -81,7 +81,7 @@ namespace ChordsInterface.Api
                 var stream = container.Object as Nrdc.DataStream;
 
                 // Create stream request HTTP message
-                string startTime = DateTime.UtcNow.AddHours(-48 - hoursBack).ToString("s");
+                string startTime = DateTime.UtcNow.AddHours(-72-hoursBack).ToString("s");
                 string endTime = DateTime.UtcNow.ToString("s");
 
                 var dataSpecification = new Nrdc.DataSpecification(stream, startTime, endTime);

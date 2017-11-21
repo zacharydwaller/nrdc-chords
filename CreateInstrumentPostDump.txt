@@ -1,0 +1,102 @@
+0000   50 4f 53 54 20 2f 69 6e 73 74 72 75 6d 65 6e 74  POST /instrument
+0010   73 20 48 54 54 50 2f 31 2e 31 0d 0a 48 6f 73 74  s HTTP/1.1..Host
+0020   3a 20 65 63 32 2d 31 33 2d 35 37 2d 31 33 34 2d  : ec2-13-57-134-
+0030   31 33 31 2e 75 73 2d 77 65 73 74 2d 31 2e 63 6f  131.us-west-1.co
+0040   6d 70 75 74 65 2e 61 6d 61 7a 6f 6e 61 77 73 2e  mpute.amazonaws.
+0050   63 6f 6d 0d 0a 43 6f 6e 6e 65 63 74 69 6f 6e 3a  com..Connection:
+0060   20 6b 65 65 70 2d 61 6c 69 76 65 0d 0a 43 6f 6e   keep-alive..Con
+0070   74 65 6e 74 2d 4c 65 6e 67 74 68 3a 20 34 33 37  tent-Length: 437
+0080   0d 0a 43 61 63 68 65 2d 43 6f 6e 74 72 6f 6c 3a  ..Cache-Control:
+0090   20 6d 61 78 2d 61 67 65 3d 30 0d 0a 4f 72 69 67   max-age=0..Orig
+00a0   69 6e 3a 20 68 74 74 70 3a 2f 2f 65 63 32 2d 31  in: http://ec2-1
+00b0   33 2d 35 37 2d 31 33 34 2d 31 33 31 2e 75 73 2d  3-57-134-131.us-
+00c0   77 65 73 74 2d 31 2e 63 6f 6d 70 75 74 65 2e 61  west-1.compute.a
+00d0   6d 61 7a 6f 6e 61 77 73 2e 63 6f 6d 0d 0a 55 70  mazonaws.com..Up
+00e0   67 72 61 64 65 2d 49 6e 73 65 63 75 72 65 2d 52  grade-Insecure-R
+00f0   65 71 75 65 73 74 73 3a 20 31 0d 0a 43 6f 6e 74  equests: 1..Cont
+0100   65 6e 74 2d 54 79 70 65 3a 20 61 70 70 6c 69 63  ent-Type: applic
+0110   61 74 69 6f 6e 2f 78 2d 77 77 77 2d 66 6f 72 6d  ation/x-www-form
+0120   2d 75 72 6c 65 6e 63 6f 64 65 64 0d 0a 55 73 65  -urlencoded..Use
+0130   72 2d 41 67 65 6e 74 3a 20 4d 6f 7a 69 6c 6c 61  r-Agent: Mozilla
+0140   2f 35 2e 30 20 28 57 69 6e 64 6f 77 73 20 4e 54  /5.0 (Windows NT
+0150   20 36 2e 31 3b 20 57 69 6e 36 34 3b 20 78 36 34   6.1; Win64; x64
+0160   29 20 41 70 70 6c 65 57 65 62 4b 69 74 2f 35 33  ) AppleWebKit/53
+0170   37 2e 33 36 20 28 4b 48 54 4d 4c 2c 20 6c 69 6b  7.36 (KHTML, lik
+0180   65 20 47 65 63 6b 6f 29 20 43 68 72 6f 6d 65 2f  e Gecko) Chrome/
+0190   36 32 2e 30 2e 33 32 30 32 2e 39 34 20 53 61 66  62.0.3202.94 Saf
+01a0   61 72 69 2f 35 33 37 2e 33 36 0d 0a 41 63 63 65  ari/537.36..Acce
+01b0   70 74 3a 20 74 65 78 74 2f 68 74 6d 6c 2c 61 70  pt: text/html,ap
+01c0   70 6c 69 63 61 74 69 6f 6e 2f 78 68 74 6d 6c 2b  plication/xhtml+
+01d0   78 6d 6c 2c 61 70 70 6c 69 63 61 74 69 6f 6e 2f  xml,application/
+01e0   78 6d 6c 3b 71 3d 30 2e 39 2c 69 6d 61 67 65 2f  xml;q=0.9,image/
+01f0   77 65 62 70 2c 69 6d 61 67 65 2f 61 70 6e 67 2c  webp,image/apng,
+0200   2a 2f 2a 3b 71 3d 30 2e 38 0d 0a 52 65 66 65 72  */*;q=0.8..Refer
+0210   65 72 3a 20 68 74 74 70 3a 2f 2f 65 63 32 2d 31  er: http://ec2-1
+0220   33 2d 35 37 2d 31 33 34 2d 31 33 31 2e 75 73 2d  3-57-134-131.us-
+0230   77 65 73 74 2d 31 2e 63 6f 6d 70 75 74 65 2e 61  west-1.compute.a
+0240   6d 61 7a 6f 6e 61 77 73 2e 63 6f 6d 2f 69 6e 73  mazonaws.com/ins
+0250   74 72 75 6d 65 6e 74 73 2f 6e 65 77 0d 0a 41 63  truments/new..Ac
+0260   63 65 70 74 2d 45 6e 63 6f 64 69 6e 67 3a 20 67  cept-Encoding: g
+0270   7a 69 70 2c 20 64 65 66 6c 61 74 65 0d 0a 41 63  zip, deflate..Ac
+0280   63 65 70 74 2d 4c 61 6e 67 75 61 67 65 3a 20 65  cept-Language: e
+0290   6e 2d 55 53 2c 65 6e 3b 71 3d 30 2e 39 0d 0a 43  n-US,en;q=0.9..C
+02a0   6f 6f 6b 69 65 3a 20 5f 63 68 6f 72 64 73 5f 70  ookie: _chords_p
+02b0   6f 72 74 61 6c 5f 73 65 73 73 69 6f 6e 3d 53 55  ortal_session=SU
+02c0   35 4d 65 55 78 7a 54 55 4a 55 4d 7a 42 79 53 56  5MeUxzTUJUMzBySV
+02d0   70 56 4d 33 52 59 62 47 35 4a 61 32 35 45 53 55  pVM3RYbG5Ja25ESU
+02e0   35 31 59 6c 4e 6b 55 53 73 76 4e 69 74 72 4e 6d  51YlNkUSsvNitrNm
+02f0   31 74 51 31 4e 54 63 45 74 50 63 45 6f 7a 55 57  1tQ1NTcEtPcEozUW
+0300   64 61 4e 6d 46 51 63 7a 42 6f 64 56 5a 4f 62 6a  daNmFQczBodVZObj
+0310   52 47 4e 79 39 33 52 48 4a 42 4e 45 78 79 61 47  RGNy93RHJBNExyaG
+0320   4e 32 64 58 70 35 55 55 52 68 65 6e 70 47 4d 43  N2dXp5UURhenpGMC
+0330   39 5a 53 30 55 31 62 31 68 6e 5a 6d 31 57 5a 6b  9ZS0U1b1hnZm1WZk
+0340   38 78 61 48 63 34 54 48 70 33 4d 7a 63 77 55 6e  8xaHc4THp3MzcwUn
+0350   5a 32 4b 33 56 4b 53 54 52 49 62 6d 31 6a 4e 44  Z2K3VKSTRIbm1jND
+0360   5a 4e 62 6c 5a 78 63 32 74 45 52 53 74 68 52 6a  ZNblZxc2tERSthRj
+0370   6c 4c 5a 31 63 76 62 7a 52 44 59 57 39 6d 61 6b  lLZ1cvbzRDYW9mak
+0380   39 79 56 31 70 61 52 7a 5a 50 54 6d 4a 34 4e 31  9yV1paRzZPTmJ4N1
+0390   56 58 54 56 42 34 53 54 6c 70 4b 31 4a 76 4e 30  VXTVB4STlpK1JvN0
+03a0   55 72 61 6d 35 33 55 6b 68 6b 59 30 56 42 55 47  Uram53UkhkY0VBUG
+03b0   52 44 54 46 4d 34 64 48 68 4d 61 6d 4a 6e 62 31  RDTFM4dHhMamJnb1
+03c0   5a 4f 55 6b 68 43 65 6c 42 71 4e 6e 4a 30 56 58  ZOUkhCelBqNnJ0VX
+03d0   41 7a 62 6d 46 4c 55 58 4a 53 5a 6b 74 31 55 57  AzbmFLUXJSZkt1UW
+03e0   70 42 61 31 4e 6e 62 6b 39 4b 4d 32 56 74 4d 57  pBa1Nnbk9KM2VtMW
+03f0   74 79 4d 33 67 31 55 54 30 74 4c 57 78 58 54 55  tyM3g1UT0tLWxXTU
+0400   31 51 65 57 70 7a 64 48 4e 6f 57 56 42 78 5a 46  1QeWpzdHNoWVBxZF
+0410   56 69 54 32 59 72 63 47 63 39 50 51 25 33 44 25  ViT2YrcGc9PQ%3D%
+0420   33 44 2d 2d 39 39 34 63 31 64 39 33 31 61 33 65  3D--994c1d931a3e
+0430   62 61 66 36 61 63 62 35 31 64 64 38 62 61 66 61  baf6acb51dd8bafa
+0440   63 34 32 65 39 65 64 37 65 34 31 34 0d 0a 0d 0a  c42e9ed7e414....
+
+0000   74 8e f8 cf 7f 14 b8 ca 3a a5 45 c9 08 00 45 00  t.......:.E...E.
+0010   01 dd 17 ce 40 00 80 06 00 00 86 c5 28 9d 0d 39  ....@.......(..9
+0020   86 83 ff fa 00 50 b3 a3 d1 9a 93 2b 77 f0 50 18  .....P.....+w.P.
+0030   01 00 44 ee 00 00 75 74 66 38 3d 25 45 32 25 39  ..D...utf8=%E2%9
+0040   43 25 39 33 26 61 75 74 68 65 6e 74 69 63 69 74  C%93&authenticit
+0050   79 5f 74 6f 6b 65 6e 3d 32 46 73 73 4e 62 57 6e  y_token=2FssNbWn
+0060   52 35 72 50 34 31 34 41 74 53 6a 77 42 4e 4a 50  R5rP414AtSjwBNJP
+0070   37 73 59 73 25 32 42 33 56 4c 62 6d 4b 45 50 79  7sYs%2B3VLbmKEPy
+0080   42 71 35 6c 66 31 53 79 61 41 53 35 67 59 48 46  Bq5lf1SyaAS5gYHF
+0090   4a 48 52 38 7a 51 33 67 77 65 45 43 39 41 35 54  JHR8zQ3gweEC9A5T
+00a0   4a 6c 56 73 44 59 62 35 77 4d 59 59 45 6d 4f 67  JlVsDYb5wMYYEmOg
+00b0   25 33 44 25 33 44 26 69 6e 73 74 72 75 6d 65 6e  %3D%3D&instrumen
+00c0   74 25 35 42 6e 61 6d 65 25 35 44 3d 49 6e 73 74  t%5Bname%5D=Inst
+00d0   72 75 6d 65 6e 74 26 69 6e 73 74 72 75 6d 65 6e  rument&instrumen
+00e0   74 25 35 42 74 6f 70 69 63 5f 63 61 74 65 67 6f  t%5Btopic_catego
+00f0   72 79 5f 69 64 25 35 44 3d 31 26 69 6e 73 74 72  ry_id%5D=1&instr
+0100   75 6d 65 6e 74 25 35 42 64 65 73 63 72 69 70 74  ument%5Bdescript
+0110   69 6f 6e 25 35 44 3d 44 65 73 63 72 69 70 74 69  ion%5D=Descripti
+0120   6f 6e 26 69 6e 73 74 72 75 6d 65 6e 74 25 35 42  on&instrument%5B
+0130   73 69 74 65 5f 69 64 25 35 44 3d 31 26 69 6e 73  site_id%5D=1&ins
+0140   74 72 75 6d 65 6e 74 25 35 42 64 69 73 70 6c 61  trument%5Bdispla
+0150   79 5f 70 6f 69 6e 74 73 25 35 44 3d 31 32 30 26  y_points%5D=120&
+0160   69 6e 73 74 72 75 6d 65 6e 74 25 35 42 70 6c 6f  instrument%5Bplo
+0170   74 5f 6f 66 66 73 65 74 5f 76 61 6c 75 65 25 35  t_offset_value%5
+0180   44 3d 31 26 69 6e 73 74 72 75 6d 65 6e 74 25 35  D=1&instrument%5
+0190   42 70 6c 6f 74 5f 6f 66 66 73 65 74 5f 75 6e 69  Bplot_offset_uni
+01a0   74 73 25 35 44 3d 77 65 65 6b 73 26 69 6e 73 74  ts%5D=weeks&inst
+01b0   72 75 6d 65 6e 74 25 35 42 73 61 6d 70 6c 65 5f  rument%5Bsample_
+01c0   72 61 74 65 5f 73 65 63 6f 6e 64 73 25 35 44 3d  rate_seconds%5D=
+01d0   36 30 26 63 6f 6d 6d 69 74 3d 43 72 65 61 74 65  60&commit=Create
+01e0   2b 49 6e 73 74 72 75 6d 65 6e 74                 +Instrument
+

@@ -9,86 +9,7 @@
 //------------------------------------------------------------------------------
 
 namespace ChordsClient.Chords {
-    using System.Runtime.Serialization;
-    using System;
     
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Measurement", Namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords")]
-    [System.SerializableAttribute()]
-    public partial class Measurement : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private uint InstrumentIDField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string TimeStampField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private decimal ValueField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public uint InstrumentID {
-            get {
-                return this.InstrumentIDField;
-            }
-            set {
-                if ((this.InstrumentIDField.Equals(value) != true)) {
-                    this.InstrumentIDField = value;
-                    this.RaisePropertyChanged("InstrumentID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string TimeStamp {
-            get {
-                return this.TimeStampField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.TimeStampField, value) != true)) {
-                    this.TimeStampField = value;
-                    this.RaisePropertyChanged("TimeStamp");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public decimal Value {
-            get {
-                return this.ValueField;
-            }
-            set {
-                if ((this.ValueField.Equals(value) != true)) {
-                    this.ValueField = value;
-                    this.RaisePropertyChanged("Value");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="Chords.IService")]
@@ -101,10 +22,10 @@ namespace ChordsClient.Chords {
         System.Threading.Tasks.Task<string> PullMeasurementsAsync(int siteID, int streamIndex, int hoursBack);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/CreateMeasurement", ReplyAction="http://tempuri.org/IService/CreateMeasurementResponse")]
-        string CreateMeasurement(ChordsClient.Chords.Measurement measurement);
+        string CreateMeasurement(ChordsInterface.Chords.Measurement measurement);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/CreateMeasurement", ReplyAction="http://tempuri.org/IService/CreateMeasurementResponse")]
-        System.Threading.Tasks.Task<string> CreateMeasurementAsync(ChordsClient.Chords.Measurement measurement);
+        System.Threading.Tasks.Task<string> CreateMeasurementAsync(ChordsInterface.Chords.Measurement measurement);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -142,11 +63,11 @@ namespace ChordsClient.Chords {
             return base.Channel.PullMeasurementsAsync(siteID, streamIndex, hoursBack);
         }
         
-        public string CreateMeasurement(ChordsClient.Chords.Measurement measurement) {
+        public string CreateMeasurement(ChordsInterface.Chords.Measurement measurement) {
             return base.Channel.CreateMeasurement(measurement);
         }
         
-        public System.Threading.Tasks.Task<string> CreateMeasurementAsync(ChordsClient.Chords.Measurement measurement) {
+        public System.Threading.Tasks.Task<string> CreateMeasurementAsync(ChordsInterface.Chords.Measurement measurement) {
             return base.Channel.CreateMeasurementAsync(measurement);
         }
     }

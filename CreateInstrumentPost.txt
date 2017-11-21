@@ -1,0 +1,31 @@
+POST /instruments HTTP/1.1
+Host: ec2-13-57-134-131.us-west-1.compute.amazonaws.com
+Connection: keep-alive
+Content-Length: 437\r\n
+Cache-Control: max-age=0\r\n
+Origin: http://ec2-13-57-134-131.us-west-1.compute.amazonaws.com\r\n
+Upgrade-Insecure-Requests: 1\r\n
+Content-Type: application/x-www-form-urlencoded\r\n
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36\r\n
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\n
+Referer: http://ec2-13-57-134-131.us-west-1.compute.amazonaws.com/instruments/new\r\n
+Accept-Encoding: gzip, deflate\r\n
+Accept-Language: en-US,en;q=0.9\r\n
+[truncated]Cookie: _chords_portal_session=SU5MeUxzTUJUMzBySVpVM3RYbG5Ja25ESU51YlNkUSsvNitrNm1tQ1NTcEtPcEozUWdaNmFQczBodVZObjRGNy93RHJBNExyaGN2dXp5UURhenpGMC9ZS0U1b1hnZm1WZk8xaHc4THp3MzcwUnZ2K3VKSTRIbm1jNDZNblZxc2tERSthRjlLZ1cvbzRDYW9mak9y
+\r\n
+
+[Full request URI: http://ec2-13-57-134-131.us-west-1.compute.amazonaws.com/instruments]
+[HTTP request 1/2]
+HTML Form URL Encoded: application/x-www-form-urlencoded
+
+Form item: "utf8" = true
+Form item: "authenticity_token" = "2FssNbWnR5rP414AtSjwBNJP7sYs+3VLbmKEPyBq5lf1SyaAS5gYHFJHR8zQ3gweEC9A5TJlVsDYb5wMYYEmOg=="
+Form item: "instrument[name]" = "Instrument"
+Form item: "instrument[topic_category_id]" = "1"
+Form item: "instrument[description]" = "Description"
+Form item: "instrument[site_id]" = "1"
+Form item: "instrument[display_points]" = "120"
+Form item: "instrument[plot_offset_value]" = "1"
+Form item: "instrument[plot_offset_units]" = "weeks"
+Form item: "instrument[sample_rate_seconds]" = "60"
+Form item: "commit" = "Create Instrument"
