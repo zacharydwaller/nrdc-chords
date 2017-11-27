@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
+using System.Web;
 using ChordsInterface.Chords;
 
 namespace ChordsInterface.Service
@@ -19,6 +20,18 @@ namespace ChordsInterface.Service
         private const string testTag = "test";
 
         private const string CreateMeasurementSuccess = "Measurement created.";
+
+        public string GetSites()
+        {
+            var container = Api.ApiInterface.GetSites();
+            return Api.Json.Serialize(container);
+        }
+        
+        public string GetSite(int siteID)
+        {
+            var container = Api.ApiInterface.GetSite(siteID);
+            return Api.Json.Serialize(container);
+        }
 
         public string GetMeasurements(int siteID, int streamIndex, int hoursBack)
         {
