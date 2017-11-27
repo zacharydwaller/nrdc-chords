@@ -16,7 +16,9 @@ namespace ChordsInterface.Api
 
         public static string Serialize (object obj)
         {
-            return JsonConvert.SerializeObject(obj);
+            var settings = new JsonSerializerSettings();
+            settings.StringEscapeHandling = StringEscapeHandling.EscapeNonAscii;
+            return JsonConvert.SerializeObject(obj, settings);
         }
     }
 }
