@@ -11,11 +11,11 @@ namespace ChordsInterface.Api
     public static class ApiInterface
     {
         // Returns Container where Object is Nrdc.DataStreamList
-        public static Container GetDataStreams(int siteID)
+        public static NrdcContainer GetDataStreams(int siteID)
         {
             if(siteID < 1)
             {
-                return new Container(null, false, "Site ID out of range");
+                return new NrdcContainer(null, false, "Site ID out of range");
             }
 
             // Get data streams
@@ -30,23 +30,23 @@ namespace ChordsInterface.Api
             {
                 if (streamlist.Data.Count > 0)
                 {
-                    return new Container(streamlist);
+                    return new NrdcContainer(streamlist);
                 }
                 else
                 {
                     // No streams found
-                    return new Container(null, false, "No data streams found with SiteId: " + siteID.ToString());
+                    return new NrdcContainer(null, false, "No data streams found with SiteId: " + siteID.ToString());
                 }
             }
             else
             {
                 // Stream list retrieval failed, return with reason message
-                return new Container(null, false, streamlist.Message);
+                return new NrdcContainer(null, false, streamlist.Message);
             }
         }
 
         // Returns Container where Object is Nrdc.DataStream
-        public static Container GetDataStream(int siteID, int streamIndex)
+        public static NrdcContainer GetDataStream(int siteID, int streamIndex)
         {
             var container = GetDataStreams(siteID);
 
@@ -57,12 +57,12 @@ namespace ChordsInterface.Api
 
                 if (streamIndex >= 0 && streamIndex < streamlist.Data.Count)
                 {
-                    return new Container(streamlist.Data[streamIndex]);
+                    return new NrdcContainer(streamlist.Data[streamIndex]);
                 }
                 else
                 {
                     // Stream index too high for stream count
-                    return new Container(null, false, "Stream index out of range");
+                    return new NrdcContainer(null, false, "Stream index out of range");
                 }
             }
             else
@@ -73,7 +73,7 @@ namespace ChordsInterface.Api
         }
 
         // Returns Container where Object is Nrdc.DataDownloadResponse
-        public static Container GetMeasurements(int siteID, int streamIndex, int hoursBack = 24)
+        public static ChordsContainer GetMeasurements(int siteID, int streamIndex, int hoursBack = 24)
         {
             var container = GetDataStream(siteID, streamIndex);
 
@@ -107,33 +107,41 @@ namespace ChordsInterface.Api
                         // Check data download
                         if (dataDownloadResponse.Data.TotalNumberOfMeasurements > 0)
                         {
-                            return new Container(dataDownloadResponse);
+                            var chordsList = new Chords.MeasurementList();
+
+                            foreach(var nrdcMeasurement in dataDownloadResponse.Data.Measurements)
+                            {
+                                var chordsMeasurement = Converter.Convert(nrdcMeasurement);
+                                chordsList.Data.Add(chordsMeasurement);
+                            }
+
+                            return new ChordsContainer(chordsList);
                         }
                         else
                         {
-                            return new Container(null, false, "No measurements found");
+                            return new ChordsContainer(null, false, "No measurements found");
                         }
                     }
                     else
                     {
                         // Data download failed
-                        return new Container(null, false, dataDownloadResponse.Message);
+                        return new ChordsContainer(null, false, dataDownloadResponse.Message);
                     }
                 }
                 else
                 {
                     // HTTP didn't return OK
-                    return new Container(null, false, "Error From: " + response.RequestMessage + "\n" + response.ReasonPhrase);
+                    return new ChordsContainer(null, false, "Error From: " + response.RequestMessage + "\n" + response.ReasonPhrase);
                 }
             }
             else
             {
                 // GetDataStream failed, return with reason message
-                return container;
+                return new ChordsContainer(null, false, container.Message);
             }
         }
 
-        public static Container GetSites()
+        public static NrdcContainer GetSites()
         {
             string uri = ChordsInterface.InfrastructureServiceUrl + "infrastructure/sites";
 
@@ -142,10 +150,10 @@ namespace ChordsInterface.Api
 
             var sitelist = Json.Parse<Infrastructure.SiteList>(message);
 
-            return new Container(sitelist);
+            return new NrdcContainer(sitelist);
         }
 
-        public static Container GetSite(int siteID)
+        public static NrdcContainer GetSite(int siteID)
         {
             var siteListContainer = GetSites();
 
@@ -157,26 +165,12 @@ namespace ChordsInterface.Api
                     if(site.ID == siteID)
                     {
                         
-                        return new Container(site);
+                        return new NrdcContainer(site);
                     }
                 }
             }
 
             return siteListContainer;
-        }
-    }
-
-    public class Container
-    {
-        public bool Success { get; set; }
-        public string Message { get; set; }
-        public NrdcType Object { get; set; }
-
-        public Container(NrdcType obj, bool success = true, string message = default(string))
-        {
-            Object = obj;
-            Success = success;
-            Message = message;
         }
     }
 }

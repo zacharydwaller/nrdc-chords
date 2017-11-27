@@ -52,6 +52,7 @@
     <Compile Include="Source\ApiInterface.cs" />
     <Compile Include="Source\ChordsInterface.cs" />
     <Compile Include="Source\ChordsTypes.cs" />
+    <Compile Include="Source\Container.cs" />
     <Compile Include="Source\InfrastructureTypes.cs" />
     <Compile Include="Source\NrdcType.cs" />
     <Compile Include="Source\Converter.cs" />

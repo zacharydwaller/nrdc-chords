@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
+using ChordsInterface.Chords;
 
 namespace ChordsInterface.Service
 {
@@ -25,17 +26,14 @@ namespace ChordsInterface.Service
 
             if(apiResponse.Success)
             {
-                var dataDownloadResponse = apiResponse.Object as Data.DataDownloadResponse;
-                var dataDownload = dataDownloadResponse.Data;
+                var measurementList = apiResponse.Object as MeasurementList;
 
-                foreach(var nMeas in dataDownload.Measurements)
+                foreach(var meas in measurementList.Data)
                 {
-                    var cMeas = Api.Converter.Convert(nMeas);
-
                     // TODO: Get the real instrument ID
-                    cMeas.InstrumentID = 1;
+                    meas.InstrumentID = 1;
 
-                    string chordsResponse = CreateMeasurement(cMeas);
+                    string chordsResponse = CreateMeasurement(meas);
 
                     if(chordsResponse != CreateMeasurementSuccess)
                     {
@@ -43,8 +41,8 @@ namespace ChordsInterface.Service
                         return chordsResponse;
                     }
                 }
-                
-                return "Number of Measurements Created: " + dataDownload.TotalNumberOfMeasurements.ToString();
+
+                return "Number of Measurements Created: " + measurementList.Data.Count;
             }
             else
             {

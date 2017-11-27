@@ -32,6 +32,12 @@ namespace ChordsInterface.Chords
     }
 
     [DataContract]
+    public class MeasurementList : ChordsType
+    {
+        [DataMember] public List<Measurement> Data { get; set; } = new List<Measurement>();
+    }
+
+    [DataContract]
     public class Measurement : ChordsType
     {
         [DataMember] public uint InstrumentID { get; set; }
