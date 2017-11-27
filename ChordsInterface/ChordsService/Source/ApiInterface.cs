@@ -79,7 +79,7 @@ namespace ChordsInterface.Api
             }
         }
 
-        public static NrdcContainer GetSites()
+        public static ChordsContainer GetSites()
         {
             string uri = ChordsInterface.InfrastructureServiceUrl + "infrastructure/sites";
 
@@ -87,28 +87,28 @@ namespace ChordsInterface.Api
             string message = result.Content.ReadAsStringAsync().Result;
 
             var sitelist = Json.Parse<Infrastructure.SiteList>(message);
+            var chordsList = Converter.Convert(sitelist);
 
-            return new NrdcContainer(sitelist);
+            return new ChordsContainer(chordsList);
         }
 
-        public static NrdcContainer GetSite(int siteID)
+        public static ChordsContainer GetSite(int siteID)
         {
-            var siteListContainer = GetSites();
+            var container = GetSites();
 
-            if (siteListContainer.Success)
+            if (container.Success)
             {
-                var sitelist = siteListContainer.Object as Infrastructure.SiteList;
+                var sitelist = container.Object as Chords.SiteList;
                 foreach (var site in sitelist.Data)
                 {
                     if(site.ID == siteID)
                     {
-                        
-                        return new NrdcContainer(site);
+                        return new ChordsContainer(site);
                     }
                 }
             }
 
-            return siteListContainer;
+            return container;
         }
 
         // Returns Container where Object is Nrdc.DataStreamList
