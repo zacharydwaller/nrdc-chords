@@ -11,7 +11,7 @@ namespace ServiceTests
         [TestMethod]
         public void TestGetDataStreams()
         {
-            Container container;
+            NrdcContainer container;
 
             // Test valid ID
             container = ApiInterface.GetDataStreams(1);
@@ -38,7 +38,7 @@ namespace ServiceTests
         [TestMethod]
         public void TestGetDataStream()
         {
-            Container container;
+            NrdcContainer container;
 
             // Test valid site Id and stream index
             container = ApiInterface.GetDataStream(1, 1);
