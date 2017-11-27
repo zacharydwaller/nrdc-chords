@@ -20,22 +20,6 @@ namespace ChordsInterface.Data
         public string Name { get; set; }
     }
 
-    public class Measurement : NrdcType
-    {
-        public int Stream { get; set; }
-        public string TimeStamp { get; set; }
-        public Decimal Value { get; set; }
-    }
-
-    public class AggregateMeasurement : NrdcType
-    {
-        public int Stream { get; set; }
-        public string TimeStamp { get; set; }
-        public Decimal Value { get; set; }
-        public long NumberOfConstituentValues { get; set; }
-        public short AggregateType { get; set; }
-    }
-
     public class Deployment : NrdcType
     {
         public int ID { get; set; }
@@ -46,7 +30,6 @@ namespace ChordsInterface.Data
     {
         public int ID { get; set; }
         public string Name { get; set; }
-
     }
 
     public class Property : NrdcType
@@ -155,6 +138,22 @@ namespace ChordsInterface.Data
         public long Skip { get; set; }
         public long Take { get; set; }
         public IList<DataStreamRequest> DataStreams { get; set; }
+    }
+
+    public class Measurement : NrdcType
+    {
+        public int Stream { get; set; }
+        public string TimeStamp { get; set; }
+        public Decimal Value { get; set; }
+    }
+
+    public class AggregateMeasurement : NrdcType
+    {
+        public int Stream { get; set; }
+        public string TimeStamp { get; set; }
+        public Decimal Value { get; set; }
+        public long NumberOfConstituentValues { get; set; }
+        public short AggregateType { get; set; }
     }
 
     public class DataDownloadResponse : NrdcType
