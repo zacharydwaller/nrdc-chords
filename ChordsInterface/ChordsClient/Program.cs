@@ -57,7 +57,7 @@ namespace ChordsClient
 
             Console.WriteLine("Streaming data...");
 
-            string result = client.PullMeasurements(siteID, streamIndex, hours);
+            string result = client.GetMeasurements(siteID, streamIndex, hours);
 
             Console.WriteLine(result);
 
