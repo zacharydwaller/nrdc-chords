@@ -4,13 +4,6 @@ using ChordsInterface.Nrdc;
 
 namespace ChordsInterface.Data
 {
-    public class SiteList : NrdcType
-    {
-        public bool Success { get; set; }
-        public string Message { get; set; }
-        public IList<Site> Data { get; set; }
-    } 
-
     public class Site : NrdcType
     {
         public int ID { get; set; }
@@ -19,13 +12,6 @@ namespace ChordsInterface.Data
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public double Elevation { get; set; }
-    }
-
-    public class SystemList : NrdcType
-    {
-        public bool Success { get; set; }
-        public string Message { get; set; }
-        public IList<System> Data { get; set; }
     }
 
     public class System : NrdcType
@@ -62,7 +48,6 @@ namespace ChordsInterface.Data
         public string Name { get; set; }
 
     }
-
 
     public class Property : NrdcType
     {
