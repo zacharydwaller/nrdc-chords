@@ -82,7 +82,7 @@ namespace ChordsInterface.Api
                 var stream = container.Object as Data.DataStream;
 
                 // Create stream request HTTP message
-                string startTime = DateTime.UtcNow.AddHours(-72-hoursBack).ToString("s");
+                string startTime = DateTime.UtcNow.AddHours(-hoursBack).ToString("s");
                 string endTime = DateTime.UtcNow.ToString("s");
 
                 var dataSpecification = new Data.DataSpecification(stream, startTime, endTime);
