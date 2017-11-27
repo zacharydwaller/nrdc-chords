@@ -8,7 +8,7 @@ namespace ChordsInterface.Api
 {
     public static class Converter
     {
-        public static Chords.Site Convert(Nrdc.Site nrdcSite)
+        public static Chords.Site Convert(Data.Site nrdcSite)
         {
             Chords.Site chordsSite = new Chords.Site();
 
@@ -20,7 +20,7 @@ namespace ChordsInterface.Api
             return chordsSite;
         }
 
-        public static Chords.Measurement Convert(Nrdc.Measurement nrdcMeasurement)
+        public static Chords.Measurement Convert(Data.Measurement nrdcMeasurement)
         {
             var chordsMeasurement = new Chords.Measurement();
 

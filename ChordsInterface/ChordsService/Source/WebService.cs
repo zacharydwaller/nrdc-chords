@@ -25,7 +25,7 @@ namespace ChordsInterface.Service
 
             if(apiResponse.Success)
             {
-                var dataDownloadResponse = apiResponse.Object as Nrdc.DataDownloadResponse;
+                var dataDownloadResponse = apiResponse.Object as Data.DataDownloadResponse;
                 var dataDownload = dataDownloadResponse.Data;
 
                 foreach(var nMeas in dataDownload.Measurements)

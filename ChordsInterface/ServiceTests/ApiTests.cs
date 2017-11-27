@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ChordsInterface.Nrdc;
+using ChordsInterface.Data;
 using ChordsInterface.Api;
 
 namespace ServiceTests

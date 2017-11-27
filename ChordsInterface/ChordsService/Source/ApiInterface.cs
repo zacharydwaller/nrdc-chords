@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
+using ChordsInterface.Nrdc;
 
 namespace ChordsInterface.Api
 {
@@ -21,8 +22,8 @@ namespace ChordsInterface.Api
             string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/site/" + siteID.ToString();
             var result = ChordsInterface.Http.GetAsync(uri).Result;
             string message = result.Content.ReadAsStringAsync().Result;
-
-            var streamlist = Json.Parse<Nrdc.DataStreamList>(message);
+            
+            var streamlist = Json.Parse<Data.DataStreamList>(message);
 
             // Check stream list
             if(streamlist.Success)
@@ -52,7 +53,7 @@ namespace ChordsInterface.Api
             // Get container
             if (container.Success)
             {
-                var streamlist = container.Object as Nrdc.DataStreamList;
+                var streamlist = container.Object as Data.DataStreamList;
 
                 if (streamIndex >= 0 && streamIndex < streamlist.Data.Count)
                 {
@@ -78,13 +79,13 @@ namespace ChordsInterface.Api
 
             if (container.Success)
             {
-                var stream = container.Object as Nrdc.DataStream;
+                var stream = container.Object as Data.DataStream;
 
                 // Create stream request HTTP message
                 string startTime = DateTime.UtcNow.AddHours(-72-hoursBack).ToString("s");
                 string endTime = DateTime.UtcNow.ToString("s");
 
-                var dataSpecification = new Nrdc.DataSpecification(stream, startTime, endTime);
+                var dataSpecification = new Data.DataSpecification(stream, startTime, endTime);
 
                 var jsonContent = Json.Serialize(dataSpecification);
                 var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -98,7 +99,7 @@ namespace ChordsInterface.Api
                 {
                     string content = response.Content.ReadAsStringAsync().Result;
 
-                    var dataDownloadResponse = Json.Parse<Nrdc.DataDownloadResponse>(content);
+                    var dataDownloadResponse = Json.Parse<Data.DataDownloadResponse>(content);
 
                     // Check data download response
                     if (dataDownloadResponse.Success)
@@ -155,6 +156,7 @@ namespace ChordsInterface.Api
                 {
                     if(site.ID == siteID)
                     {
+                        
                         return new Container(site);
                     }
                 }
@@ -168,9 +170,9 @@ namespace ChordsInterface.Api
     {
         public bool Success { get; set; }
         public string Message { get; set; }
-        public Nrdc.NrdcType Object { get; set; }
+        public NrdcType Object { get; set; }
 
-        public Container(Nrdc.NrdcType obj, bool success = true, string message = default(string))
+        public Container(NrdcType obj, bool success = true, string message = default(string))
         {
             Object = obj;
             Success = success;

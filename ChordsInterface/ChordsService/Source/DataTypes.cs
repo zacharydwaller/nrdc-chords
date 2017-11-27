@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using ChordsInterface.Nrdc;
 
-namespace ChordsInterface.Nrdc
+namespace ChordsInterface.Data
 {
-    public abstract class NrdcType { }
-    
     public class SiteList : NrdcType
     {
         public bool Success { get; set; }
