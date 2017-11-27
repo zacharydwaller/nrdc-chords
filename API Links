@@ -1,4 +1,7 @@
-API Documentation:
+Data API:
+http://sensor.nevada.edu/Services/GIDMIS/Data/NRDC.Services.Data.DataService.svc/api
+
+Infrastructure API:
 http://sensor.nevada.edu/Services/GIDMIS/Infrastructure/NRDC.Services.Infrastructure.InfrastructureService.svc/api
 
 Networks:
