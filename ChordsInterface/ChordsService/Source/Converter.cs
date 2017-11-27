@@ -12,21 +12,23 @@ namespace ChordsInterface.Api
 
         public static Chords.Site Convert(Data.Site dataSite)
         {
-            Chords.Site chordsSite = new Chords.Site();
+            var cSite = new Chords.Site();
 
-            chordsSite.ID = dataSite.ID;
-            chordsSite.Name = dataSite.Alias;
+            cSite.Name = String.Copy(dataSite.Alias);
+            cSite.ID = dataSite.ID;
+            cSite.Latitude = dataSite.Latitude;
+            cSite.Longitude = dataSite.Longitude;
+            cSite.Elevation = dataSite.Elevation;
+            cSite.Description = String.Copy(dataSite.Name);
 
-            // etc, etc
-
-            return chordsSite;
+            return cSite;
         }
 
         public static Chords.Measurement Convert(Data.Measurement dataMeasurement)
         {
             var chordsMeasurement = new Chords.Measurement();
 
-            chordsMeasurement.TimeStamp = dataMeasurement.TimeStamp;
+            chordsMeasurement.TimeStamp = string.Copy(dataMeasurement.TimeStamp);
             chordsMeasurement.Value = dataMeasurement.Value;
 
             return chordsMeasurement;
@@ -49,7 +51,16 @@ namespace ChordsInterface.Api
 
         public static Chords.Site Convert(Infrastructure.Site infSite)
         {
+            var cSite = new Chords.Site();
 
+            cSite.Name = string.Copy(infSite.Alias);
+            cSite.ID = infSite.ID;
+            cSite.Latitude = infSite.Latitude;
+            cSite.Longitude = infSite.Longitude;
+            cSite.Elevation = infSite.Elevation;
+            cSite.Description = String.Copy(infSite.Notes);
+
+            return cSite;
         }
     }
 }
