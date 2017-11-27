@@ -10,6 +10,12 @@ namespace ChordsInterface.Chords
     public interface ChordsType { }
 
     [DataContract]
+    public class SiteList : ChordsType
+    {
+        [DataMember] public List<Site> Data { get; set; } = new List<Site>();
+    }
+
+    [DataContract]
     public class Site : ChordsType
     {
         [DataMember] public string Name { get; set; }
