@@ -10,7 +10,7 @@ namespace ChordsInterface.Api
 {
     public static class ApiInterface
     {
-        // Returns Container where Object is Nrdc.DataDownloadResponse
+        // Returns Container where Object is Chords.MeasurementList
         public static ChordsContainer GetMeasurements(int siteID, int streamIndex, int hoursBack = 24)
         {
             var container = GetDataStream(siteID, streamIndex);
@@ -79,6 +79,7 @@ namespace ChordsInterface.Api
             }
         }
 
+        // Returns Container where object is Chords.SiteList
         public static ChordsContainer GetSites()
         {
             string uri = ChordsInterface.InfrastructureServiceUrl + "infrastructure/sites";
@@ -92,6 +93,7 @@ namespace ChordsInterface.Api
             return new ChordsContainer(chordsList);
         }
 
+        // Returns Container where object is Chords.Site
         public static ChordsContainer GetSite(int siteID)
         {
             var container = GetSites();
@@ -111,7 +113,7 @@ namespace ChordsInterface.Api
             return container;
         }
 
-        // Returns Container where Object is Nrdc.DataStreamList
+        // Returns Container where Object is Data.DataStreamList
         private static NrdcContainer GetDataStreams(int siteID)
         {
             if (siteID < 1)
@@ -146,7 +148,7 @@ namespace ChordsInterface.Api
             }
         }
 
-        // Returns Container where Object is Nrdc.DataStream
+        // Returns Container where Object is Data.DataStream
         private static NrdcContainer GetDataStream(int siteID, int streamIndex)
         {
             var container = GetDataStreams(siteID);
