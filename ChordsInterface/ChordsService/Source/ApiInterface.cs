@@ -11,7 +11,7 @@ namespace ChordsInterface.Api
     public static class ApiInterface
     {
         // Returns Container where Object is Nrdc.DataStreamList
-        public static NrdcContainer GetDataStreams(int siteID)
+        private static NrdcContainer GetDataStreams(int siteID)
         {
             if(siteID < 1)
             {
@@ -46,7 +46,7 @@ namespace ChordsInterface.Api
         }
 
         // Returns Container where Object is Nrdc.DataStream
-        public static NrdcContainer GetDataStream(int siteID, int streamIndex)
+        private static NrdcContainer GetDataStream(int siteID, int streamIndex)
         {
             var container = GetDataStreams(siteID);
 
