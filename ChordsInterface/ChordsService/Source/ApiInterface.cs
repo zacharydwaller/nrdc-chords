@@ -101,12 +101,15 @@ namespace ChordsInterface.Api
             if (container.Success)
             {
                 var sitelist = container.Object as Chords.SiteList;
-                foreach (var site in sitelist.Data)
+                var site = sitelist.Data.FirstOrDefault(s => s.ID == siteID);
+
+                if (site != null)
                 {
-                    if(site.ID == siteID)
-                    {
-                        return new ChordsContainer(site);
-                    }
+                    return new ChordsContainer(site);
+                }
+                else
+                {
+                    return new ChordsContainer(null, false, "Site not found. ID: " + siteID.ToString());
                 }
             }
 
