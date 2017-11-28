@@ -116,6 +116,27 @@ namespace ChordsInterface.Api
             return container;
         }
 
+        public static ChordsContainer GetSystemList(int siteID)
+        {
+            string uri = ChordsInterface.InfrastructureServiceUrl + "infrastructure/site/" + siteID.ToString() + "/systems";
+
+            var result = ChordsInterface.Http.GetAsync(uri).Result;
+            string message = result.Content.ReadAsStringAsync().Result;
+
+            var systemList = Json.Parse<Infrastructure.SystemList>(message);
+
+            if (systemList.Success)
+            {
+                var chordsList = Converter.Convert(systemList);
+
+                return new ChordsContainer(chordsList);
+            }
+            else
+            {
+                return new ChordsContainer(null, false, "Could not get System List: Site ID: " + siteID.ToString());
+            }
+        }
+
         // Returns Container where Object is Data.DataStreamList
         private static NrdcContainer GetDataStreams(int siteID)
         {

@@ -17,6 +17,12 @@ namespace ChordsInterface.Service
         string GetSite(int siteID);
 
         [OperationContract]
+        string GetSystemList(int siteID);
+
+        [OperationContract]
+        string GetInstrumentList(int systemID);
+
+        [OperationContract]
         string GetMeasurements(int siteID, int streamIndex, int hoursBack);
 
         [OperationContract]

@@ -33,6 +33,17 @@ namespace ChordsInterface.Service
             return Api.Json.Serialize(container);
         }
 
+        public string GetSystemList(int siteID)
+        {
+            var container = Api.ApiInterface.GetSystemList(siteID);
+            return Api.Json.Serialize(container);
+        }
+
+        public string GetInstrumentList(int systemID)
+        {
+            return string.Empty;
+        }
+
         public string GetMeasurements(int siteID, int streamIndex, int hoursBack)
         {
             var apiResponse = Api.ApiInterface.GetMeasurements(siteID, streamIndex, hoursBack);

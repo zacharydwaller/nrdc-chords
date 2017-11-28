@@ -16,6 +16,24 @@ namespace ChordsInterface.Chords
     }
 
     [DataContract]
+    public class SystemList : ChordsType
+    {
+        [DataMember] public List<System> Data { get; set; } = new List<System>();
+    }
+
+    [DataContract]
+    public class InstrumentList : ChordsType
+    {
+        [DataMember] public List<Instrument> Data { get; set; } = new List<Instrument>();
+    }
+
+    [DataContract]
+    public class MeasurementList : ChordsType
+    {
+        [DataMember] public List<Measurement> Data { get; set; } = new List<Measurement>();
+    }
+
+    [DataContract]
     public class Site : ChordsType
     {
         [DataMember] public string Name { get; set; }
@@ -27,6 +45,14 @@ namespace ChordsInterface.Chords
     }
 
     [DataContract]
+    public class System : ChordsType
+    {
+        [DataMember] public string Name { get; set; }
+        [DataMember] public int ID { get; set; }
+    }
+
+    // Maps to NRDC Deployment
+    [DataContract]
     public class Instrument : ChordsType
     {
         [DataMember] public bool Status { get; set; }
@@ -37,10 +63,14 @@ namespace ChordsInterface.Chords
         [DataMember] public DateTime LastMeasurement { get; set; }
     }
 
+    // Maps to NRDC DataStream
     [DataContract]
-    public class MeasurementList : ChordsType
+    public class Variable : ChordsType
     {
-        [DataMember] public List<Measurement> Data { get; set; } = new List<Measurement>();
+        [DataMember] public int ID { get; set; }
+        [DataMember] public int InstrumentID { get; set; }
+        [DataMember] public string Name { get; set; }
+        [DataMember] public string Label { get; set; }
     }
 
     [DataContract]

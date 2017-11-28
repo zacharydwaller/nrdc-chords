@@ -65,5 +65,27 @@ namespace ChordsInterface.Api
 
             return cSite;
         }
+
+        public static Chords.SystemList Convert(Infrastructure.SystemList infList)
+        {
+            var cList = new Chords.SystemList();
+
+            foreach(var infSystem in infList.Data)
+            {
+                var cSystem = Convert(infSystem);
+                cList.Data.Add(cSystem);
+            }
+
+            return cList;
+        }
+
+        public static Chords.System Convert(Infrastructure.System infSystem)
+        {
+            return new Chords.System
+            {
+                Name = infSystem.Name,
+                ID = infSystem.ID
+            };
+        }
     }
 }

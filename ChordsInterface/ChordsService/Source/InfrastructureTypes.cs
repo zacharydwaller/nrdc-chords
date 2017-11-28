@@ -27,6 +27,7 @@ namespace ChordsInterface.Infrastructure
         public string Message { get; set; }
         public IList<Deployment> Data { get; set; }
     }
+
     public class Site : NrdcType
     {
         public int ID { get; set; }
