@@ -21,9 +21,9 @@ namespace ChordsInterface.Service
 
         private const string CreateMeasurementSuccess = "Measurement created.";
 
-        public string GetSites()
+        public string GetSiteList()
         {
-            var container = Api.ApiInterface.GetSites();
+            var container = Api.ApiInterface.GetSiteList();
             return Api.Json.Serialize(container);
         }
         

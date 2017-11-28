@@ -80,7 +80,7 @@ namespace ChordsInterface.Api
         }
 
         // Returns Container where object is Chords.SiteList
-        public static ChordsContainer GetSites()
+        public static ChordsContainer GetSiteList()
         {
             string uri = ChordsInterface.InfrastructureServiceUrl + "infrastructure/sites";
 
@@ -96,7 +96,7 @@ namespace ChordsInterface.Api
         // Returns Container where object is Chords.Site
         public static ChordsContainer GetSite(int siteID)
         {
-            var container = GetSites();
+            var container = GetSiteList();
 
             if (container.Success)
             {

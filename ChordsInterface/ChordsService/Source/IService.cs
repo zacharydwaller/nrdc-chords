@@ -11,7 +11,7 @@ namespace ChordsInterface.Service
     public interface IService
     {
         [OperationContract]
-        string GetSites();
+        string GetSiteList();
 
         [OperationContract]
         string GetSite(int siteID);
