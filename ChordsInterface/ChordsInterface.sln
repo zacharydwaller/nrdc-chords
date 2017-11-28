@@ -35,6 +35,9 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "CompanionSite", "CompanionS
 		VWDPort = "54613"
 		SlnRelativePath = "CompanionSite\"
 	EndProjectSection
+	ProjectSection(ProjectDependencies) = postProject
+		{8E8BF03E-59DF-4784-834F-6D9EFBD2ADB2} = {8E8BF03E-59DF-4784-834F-6D9EFBD2ADB2}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
