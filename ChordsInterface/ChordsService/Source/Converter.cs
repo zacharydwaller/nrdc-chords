@@ -90,7 +90,24 @@ namespace ChordsInterface.Api
 
         public static Chords.InstrumentList Convert(Infrastructure.DeploymentList infList)
         {
-            return null;
+            var cList = new Chords.InstrumentList();
+
+            foreach(var infDeployment in infList.Data)
+            {
+                var cInstrument = Convert(infDeployment);
+                cList.Data.Add(cInstrument);
+            }
+
+            return cList;
+        }
+
+        public static Chords.Instrument Convert(Infrastructure.Deployment infDeployment)
+        {
+            return new Chords.Instrument
+            {
+                Name = infDeployment.Name,
+                ID = infDeployment.ID
+            };
         }
     }
 }

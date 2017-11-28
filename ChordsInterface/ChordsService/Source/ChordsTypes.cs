@@ -56,7 +56,6 @@ namespace ChordsInterface.Chords
     [DataContract]
     public class Instrument : ChordsType
     {
-        [DataMember] public bool Status { get; set; }
         [DataMember] public string Name { get; set; }
         [DataMember] public int ID { get; set; }
         // Interval in seconds
