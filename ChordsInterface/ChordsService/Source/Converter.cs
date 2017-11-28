@@ -87,5 +87,10 @@ namespace ChordsInterface.Api
                 ID = infSystem.ID
             };
         }
+
+        public static Chords.InstrumentList Convert(Infrastructure.DeploymentList infList)
+        {
+            return null;
+        }
     }
 }

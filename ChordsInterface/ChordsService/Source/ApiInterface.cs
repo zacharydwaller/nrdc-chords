@@ -128,13 +128,36 @@ namespace ChordsInterface.Api
             if (systemList.Success)
             {
                 var chordsList = Converter.Convert(systemList);
-
                 return new ChordsContainer(chordsList);
             }
             else
             {
                 return new ChordsContainer(null, false, "Could not get System List: Site ID: " + siteID.ToString());
             }
+        }
+        
+        public static ChordsContainer GetInstrumentList(int systemID)
+        {
+            var uri = ChordsInterface.InfrastructureServiceUrl + "infrastructure/system/" + systemID.ToString() + "/deployments";
+            var message = GetHttpContent(uri);
+
+            var deploymentList = Json.Parse<Infrastructure.DeploymentList>(message);
+
+            if(deploymentList.Success)
+            {
+                var chordsList = Converter.Convert(deploymentList);
+                return new ChordsContainer(chordsList);
+            }
+            else
+            {
+                return new ChordsContainer(null, false, "Could not get Instrument List: System ID: " + systemID.ToString());
+            }
+        }
+
+        private static string GetHttpContent(string uri)
+        {   
+            var response = ChordsInterface.Http.GetAsync(uri).Result;
+            return response.Content.ReadAsStringAsync().Result;
         }
 
         // Returns Container where Object is Data.DataStreamList

@@ -1,4 +1,5 @@
-﻿using ChordsInterface.Nrdc;
+﻿using System.Runtime.Serialization;
+using ChordsInterface.Nrdc;
 
 namespace ChordsInterface.Api
 {

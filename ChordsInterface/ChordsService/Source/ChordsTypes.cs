@@ -7,7 +7,8 @@ using System.Text;
 
 namespace ChordsInterface.Chords
 {
-    public interface ChordsType { }
+    [DataContract]
+    public abstract class ChordsType { }
 
     [DataContract]
     public class SiteList : ChordsType

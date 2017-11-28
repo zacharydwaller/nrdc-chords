@@ -41,7 +41,8 @@ namespace ChordsInterface.Service
 
         public string GetInstrumentList(int systemID)
         {
-            return string.Empty;
+            var container = Api.ApiInterface.GetInstrumentList(systemID);
+            return Api.Json.Serialize(container);
         }
 
         public string GetMeasurements(int siteID, int streamIndex, int hoursBack)

@@ -70,7 +70,7 @@ namespace ChordsInterface.Infrastructure
         public int System { get; set; }
         public string Name { get; set; }
         public string Purpose { get; set; }
-        public int CenterOffset { get; set; }
+        public string CenterOffset { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public double Elevation { get; set; }
