@@ -7,9 +7,14 @@
     protected void ButtonGetSite_Click(object sender, EventArgs e)
     {
         ChordsService.ServiceClient client = new ChordsService.ServiceClient();
+        var container = client.GetSite(int.Parse(TextBoxSiteId.Text));
+        
+        if(container.Success)
+        {
+            var site = container.Object;
+            SiteAlias.Text = site.Name;
+        }
 
-        var response = client.GetSite(int.Parse(TextBoxSiteId.Text));
-        SiteAlias.Text = response;
     }
 
 </script>
