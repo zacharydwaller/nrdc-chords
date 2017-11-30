@@ -11,16 +11,16 @@ namespace ChordsInterface.Service
     public interface IService
     {
         [OperationContract]
-        string GetSiteList();
+        Api.Container<Chords.SiteList> GetSiteList();
 
         [OperationContract]
-        string GetSite(int siteID);
+        Api.Container<Chords.Site> GetSite(int siteID);
 
         [OperationContract]
-        string GetSystemList(int siteID);
+        Api.Container<Chords.SystemList> GetSystemList(int siteID);
 
         [OperationContract]
-        string GetInstrumentList(int systemID);
+        Api.Container<Chords.InstrumentList> GetInstrumentList(int systemID);
 
         [OperationContract]
         string GetMeasurements(int siteID, int streamIndex, int hoursBack);

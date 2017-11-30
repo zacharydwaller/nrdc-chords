@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Web;
-using ChordsInterface.Chords;
 
 namespace ChordsInterface.Service
 {
@@ -21,28 +20,24 @@ namespace ChordsInterface.Service
 
         private const string CreateMeasurementSuccess = "Measurement created.";
 
-        public string GetSiteList()
+        public Api.Container<Chords.SiteList> GetSiteList()
         {
-            var container = Api.ApiInterface.GetSiteList();
-            return Api.Json.Serialize(container);
+            return Api.ApiInterface.GetSiteList();
         }
         
-        public string GetSite(int siteID)
+        public Api.Container<Chords.Site> GetSite(int siteID)
         {
-            var container = Api.ApiInterface.GetSite(siteID);
-            return Api.Json.Serialize(container);
+            return Api.ApiInterface.GetSite(siteID);
         }
 
-        public string GetSystemList(int siteID)
+        public Api.Container<Chords.SystemList> GetSystemList(int siteID)
         {
-            var container = Api.ApiInterface.GetSystemList(siteID);
-            return Api.Json.Serialize(container);
+            return Api.ApiInterface.GetSystemList(siteID);
         }
 
-        public string GetInstrumentList(int systemID)
+        public Api.Container<Chords.InstrumentList> GetInstrumentList(int systemID)
         {
-            var container = Api.ApiInterface.GetInstrumentList(systemID);
-            return Api.Json.Serialize(container);
+            return Api.ApiInterface.GetInstrumentList(systemID);
         }
 
         public string GetMeasurements(int siteID, int streamIndex, int hoursBack)
@@ -51,7 +46,7 @@ namespace ChordsInterface.Service
 
             if(apiResponse.Success)
             {
-                var measurementList = apiResponse.Object as MeasurementList;
+                var measurementList = apiResponse.Object as Chords.MeasurementList;
 
                 foreach(var meas in measurementList.Data)
                 {
