@@ -4,9 +4,34 @@
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import namespace="http://tempuri.org/" />
       <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Api" />
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords" />
     </xsd:schema>
   </wsdl:types>
+  <wsdl:message name="IService_GetSiteList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSiteList" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetSiteList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSiteListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetSite_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSite" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetSite_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSiteResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetSystemList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSystemList" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetSystemList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSystemListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetInstrumentList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstrumentList" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetInstrumentList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstrumentListResponse" />
+  </wsdl:message>
   <wsdl:message name="IService_GetMeasurements_InputMessage">
     <wsdl:part name="parameters" element="tns:GetMeasurements" />
   </wsdl:message>
@@ -20,6 +45,22 @@
     <wsdl:part name="parameters" element="tns:CreateMeasurementResponse" />
   </wsdl:message>
   <wsdl:portType name="IService">
+    <wsdl:operation name="GetSiteList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetSiteList" message="tns:IService_GetSiteList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetSiteListResponse" message="tns:IService_GetSiteList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSite">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetSite" message="tns:IService_GetSite_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetSiteResponse" message="tns:IService_GetSite_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSystemList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetSystemList" message="tns:IService_GetSystemList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetSystemListResponse" message="tns:IService_GetSystemList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInstrumentList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetInstrumentList" message="tns:IService_GetInstrumentList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetInstrumentListResponse" message="tns:IService_GetInstrumentList_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetMeasurements">
       <wsdl:input wsaw:Action="http://tempuri.org/IService/GetMeasurements" message="tns:IService_GetMeasurements_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService/GetMeasurementsResponse" message="tns:IService_GetMeasurements_OutputMessage" />
@@ -31,6 +72,42 @@
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IService" type="tns:IService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetSiteList">
+      <soap:operation soapAction="http://tempuri.org/IService/GetSiteList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSite">
+      <soap:operation soapAction="http://tempuri.org/IService/GetSite" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSystemList">
+      <soap:operation soapAction="http://tempuri.org/IService/GetSystemList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInstrumentList">
+      <soap:operation soapAction="http://tempuri.org/IService/GetInstrumentList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetMeasurements">
       <soap:operation soapAction="http://tempuri.org/IService/GetMeasurements" style="document" />
       <wsdl:input>

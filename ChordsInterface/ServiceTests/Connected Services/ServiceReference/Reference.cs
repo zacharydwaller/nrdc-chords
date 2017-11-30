@@ -15,6 +15,30 @@ namespace ServiceTests.ServiceReference {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.IService")]
     public interface IService {
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetSiteList", ReplyAction="http://tempuri.org/IService/GetSiteListResponse")]
+        ChordsInterface.Api.Container<ChordsInterface.Chords.SiteList> GetSiteList();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetSiteList", ReplyAction="http://tempuri.org/IService/GetSiteListResponse")]
+        System.Threading.Tasks.Task<ChordsInterface.Api.Container<ChordsInterface.Chords.SiteList>> GetSiteListAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetSite", ReplyAction="http://tempuri.org/IService/GetSiteResponse")]
+        ChordsInterface.Api.Container<ChordsInterface.Chords.Site> GetSite(int siteID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetSite", ReplyAction="http://tempuri.org/IService/GetSiteResponse")]
+        System.Threading.Tasks.Task<ChordsInterface.Api.Container<ChordsInterface.Chords.Site>> GetSiteAsync(int siteID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetSystemList", ReplyAction="http://tempuri.org/IService/GetSystemListResponse")]
+        ChordsInterface.Api.Container<ChordsInterface.Chords.SystemList> GetSystemList(int siteID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetSystemList", ReplyAction="http://tempuri.org/IService/GetSystemListResponse")]
+        System.Threading.Tasks.Task<ChordsInterface.Api.Container<ChordsInterface.Chords.SystemList>> GetSystemListAsync(int siteID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetInstrumentList", ReplyAction="http://tempuri.org/IService/GetInstrumentListResponse")]
+        ChordsInterface.Api.Container<ChordsInterface.Chords.InstrumentList> GetInstrumentList(int systemID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetInstrumentList", ReplyAction="http://tempuri.org/IService/GetInstrumentListResponse")]
+        System.Threading.Tasks.Task<ChordsInterface.Api.Container<ChordsInterface.Chords.InstrumentList>> GetInstrumentListAsync(int systemID);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetMeasurements", ReplyAction="http://tempuri.org/IService/GetMeasurementsResponse")]
         string GetMeasurements(int siteID, int streamIndex, int hoursBack);
         
@@ -53,6 +77,38 @@ namespace ServiceTests.ServiceReference {
         
         public ServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
+        }
+        
+        public ChordsInterface.Api.Container<ChordsInterface.Chords.SiteList> GetSiteList() {
+            return base.Channel.GetSiteList();
+        }
+        
+        public System.Threading.Tasks.Task<ChordsInterface.Api.Container<ChordsInterface.Chords.SiteList>> GetSiteListAsync() {
+            return base.Channel.GetSiteListAsync();
+        }
+        
+        public ChordsInterface.Api.Container<ChordsInterface.Chords.Site> GetSite(int siteID) {
+            return base.Channel.GetSite(siteID);
+        }
+        
+        public System.Threading.Tasks.Task<ChordsInterface.Api.Container<ChordsInterface.Chords.Site>> GetSiteAsync(int siteID) {
+            return base.Channel.GetSiteAsync(siteID);
+        }
+        
+        public ChordsInterface.Api.Container<ChordsInterface.Chords.SystemList> GetSystemList(int siteID) {
+            return base.Channel.GetSystemList(siteID);
+        }
+        
+        public System.Threading.Tasks.Task<ChordsInterface.Api.Container<ChordsInterface.Chords.SystemList>> GetSystemListAsync(int siteID) {
+            return base.Channel.GetSystemListAsync(siteID);
+        }
+        
+        public ChordsInterface.Api.Container<ChordsInterface.Chords.InstrumentList> GetInstrumentList(int systemID) {
+            return base.Channel.GetInstrumentList(systemID);
+        }
+        
+        public System.Threading.Tasks.Task<ChordsInterface.Api.Container<ChordsInterface.Chords.InstrumentList>> GetInstrumentListAsync(int systemID) {
+            return base.Channel.GetInstrumentListAsync(systemID);
         }
         
         public string GetMeasurements(int siteID, int streamIndex, int hoursBack) {
