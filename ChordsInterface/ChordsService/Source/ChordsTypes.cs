@@ -19,7 +19,7 @@ namespace ChordsInterface.Chords
     [DataContract]
     public class SystemList : ChordsType
     {
-        [DataMember] public List<System> Data { get; set; } = new List<System>();
+        [DataMember] public List<NrdcSystem> Data { get; set; } = new List<NrdcSystem>();
     }
 
     [DataContract]
@@ -45,8 +45,10 @@ namespace ChordsInterface.Chords
         [DataMember] public string Description { get; set; }
     }
 
+    // Maps to NRDC System
+    // Can't just use the name "System" because it breaks WCF
     [DataContract]
-    public class System : ChordsType
+    public class NrdcSystem : ChordsType
     {
         [DataMember] public string Name { get; set; }
         [DataMember] public int ID { get; set; }

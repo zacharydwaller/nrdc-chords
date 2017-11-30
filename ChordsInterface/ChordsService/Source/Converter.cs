@@ -79,9 +79,9 @@ namespace ChordsInterface.Api
             return cList;
         }
 
-        public static Chords.System Convert(Infrastructure.System infSystem)
+        public static Chords.NrdcSystem Convert(Infrastructure.System infSystem)
         {
-            return new Chords.System
+            return new Chords.NrdcSystem
             {
                 Name = infSystem.Name,
                 ID = infSystem.ID
