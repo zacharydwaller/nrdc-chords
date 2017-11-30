@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Api" />
   <xs:import namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords" />
   <xs:element name="GetSiteList">
     <xs:complexType>
@@ -9,7 +10,7 @@
   <xs:element name="GetSiteListResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="GetSiteListResult" nillable="true" type="xs:string" />
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/ChordsInterface.Api" minOccurs="0" name="GetSiteListResult" nillable="true" type="q1:ContainerOfSiteListI_S_PJRJ2I" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -23,7 +24,7 @@
   <xs:element name="GetSiteResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="GetSiteResult" nillable="true" type="xs:string" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/ChordsInterface.Api" minOccurs="0" name="GetSiteResult" nillable="true" type="q2:ContainerOfSiteI_S_PJRJ2I" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -37,7 +38,7 @@
   <xs:element name="GetSystemListResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="GetSystemListResult" nillable="true" type="xs:string" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/ChordsInterface.Api" minOccurs="0" name="GetSystemListResult" nillable="true" type="q3:ContainerOfSystemListI_S_PJRJ2I" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -51,7 +52,7 @@
   <xs:element name="GetInstrumentListResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="GetInstrumentListResult" nillable="true" type="xs:string" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/ChordsInterface.Api" minOccurs="0" name="GetInstrumentListResult" nillable="true" type="q4:ContainerOfInstrumentListI_S_PJRJ2I" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -74,7 +75,7 @@
   <xs:element name="CreateMeasurement">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords" minOccurs="0" name="measurement" nillable="true" type="q1:Measurement" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords" minOccurs="0" name="measurement" nillable="true" type="q5:Measurement" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
