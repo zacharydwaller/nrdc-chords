@@ -61,7 +61,8 @@
       <xs:sequence>
         <xs:element minOccurs="0" name="siteID" type="xs:int" />
         <xs:element minOccurs="0" name="streamIndex" type="xs:int" />
-        <xs:element minOccurs="0" name="hoursBack" type="xs:int" />
+        <xs:element minOccurs="0" name="startTime" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="endTime" type="xs:dateTime" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
