@@ -1,36 +1,35 @@
 ﻿using System.Runtime.Serialization;
-using ChordsInterface.Nrdc;
 
 namespace ChordsInterface.Api
 {
-    public abstract class Container
+    [DataContract]
+    public class Container<T>
     {
-        public bool Success { get; set; }
-        public string Message { get; set; }
-        public object Object { get; set; }
-    }
+        [DataMember] public bool Success { get; set; }
+        [DataMember] public string Message { get; set; }
+        [DataMember] public T Object { get; set; }
 
-    public class NrdcContainer : Container
-    {
-        new public NrdcType Object { get; set; }
-
-        public NrdcContainer(NrdcType obj, bool success = true, string message = default(string))
+        public Container(T obj = default(T), bool success = true, string message = "")
         {
             Object = obj;
             Success = success;
             Message = message;
         }
-    }
 
-    public class ChordsContainer : Container
-    {
-        new public Chords.ChordsType Object { get; set; }
-
-        public ChordsContainer(Chords.ChordsType obj, bool success = true, string message = default(string))
+        public Container<T> Pass(T obj)
         {
             Object = obj;
-            Success = success;
+            Success = true;
+            Message = "";
+            return this;
+        }
+
+        public Container<T> Fail(string message)
+        {
+            Object = default(T);
+            Success = false;
             Message = message;
+            return this;
         }
     }
 }
