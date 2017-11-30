@@ -15,9 +15,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChordsClient", "ChordsClien
 		{8E8BF03E-59DF-4784-834F-6D9EFBD2ADB2} = {8E8BF03E-59DF-4784-834F-6D9EFBD2ADB2}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompanionSite", "CompanionSite\CompanionSite.csproj", "{9632A274-FF4C-4BF2-BDA2-D8BBA75EF548}"
-	ProjectSection(ProjectDependencies) = postProject
-		{8E8BF03E-59DF-4784-834F-6D9EFBD2ADB2} = {8E8BF03E-59DF-4784-834F-6D9EFBD2ADB2}
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "NrdcWebClient", "..\NrdcWebClient\", "{80C09798-35E2-4783-A4A5-E473E9614C74}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_54377"
+		Debug.AspNetCompiler.PhysicalPath = "..\NrdcWebClient\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_54377\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_54377"
+		Release.AspNetCompiler.PhysicalPath = "..\NrdcWebClient\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_54377\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "54377"
+		DefaultWebSiteLanguage = "Visual C#"
 	EndProjectSection
 EndProject
 Global
@@ -38,10 +54,10 @@ Global
 		{A4F34B3B-C7F7-4599-AC0D-140AA73E9E29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4F34B3B-C7F7-4599-AC0D-140AA73E9E29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4F34B3B-C7F7-4599-AC0D-140AA73E9E29}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9632A274-FF4C-4BF2-BDA2-D8BBA75EF548}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9632A274-FF4C-4BF2-BDA2-D8BBA75EF548}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9632A274-FF4C-4BF2-BDA2-D8BBA75EF548}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9632A274-FF4C-4BF2-BDA2-D8BBA75EF548}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80C09798-35E2-4783-A4A5-E473E9614C74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80C09798-35E2-4783-A4A5-E473E9614C74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80C09798-35E2-4783-A4A5-E473E9614C74}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{80C09798-35E2-4783-A4A5-E473E9614C74}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
