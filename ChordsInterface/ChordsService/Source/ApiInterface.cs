@@ -16,7 +16,7 @@ namespace ChordsInterface.Api
 
             if (dataStreamContainer.Success)
             {
-                var stream = dataStreamContainer.Object as Data.DataStream;
+                var stream = dataStreamContainer.Object;
 
                 // Create stream request HTTP message
                 string startTime = DateTime.UtcNow.AddHours(-hoursBack).ToString("s");
@@ -98,7 +98,7 @@ namespace ChordsInterface.Api
 
             if (siteListContainer.Success)
             {
-                var sitelist = siteListContainer.Object as Chords.SiteList;
+                var sitelist = siteListContainer.Object;
                 var site = sitelist.Data.FirstOrDefault(s => s.ID == siteID);
 
                 if (site != null)
@@ -209,7 +209,7 @@ namespace ChordsInterface.Api
             // Get container
             if (streamListContainer.Success)
             {
-                var streamlist = streamListContainer.Object as Data.DataStreamList;
+                var streamlist = streamListContainer.Object;
 
                 if (streamIndex >= 0 && streamIndex < streamlist.Data.Count)
                 {
