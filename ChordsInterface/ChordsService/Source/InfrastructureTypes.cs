@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using ChordsInterface.Nrdc;
 
 namespace ChordsInterface.Infrastructure
-{ 
-   
+{
     public class SiteList : NrdcType
     {
         public bool Success { get; set; }
@@ -28,6 +27,7 @@ namespace ChordsInterface.Infrastructure
         public string Message { get; set; }
         public IList<Deployment> Data { get; set; }
     }
+
     public class Site : NrdcType
     {
         public int ID { get; set; }
@@ -61,16 +61,16 @@ namespace ChordsInterface.Infrastructure
         public string InstallationLocation { get; set; }
         public string CreationDate { get; set; }
         public string ModificationDate { get; set; }
-    } 
+    }
 
     public class Deployment : NrdcType
     {
         public int ID { get; set; }
-        public string UniqueIdentifier { get; set; } 
+        public string UniqueIdentifier { get; set; }
         public int System { get; set; }
         public string Name { get; set; }
-        public string Purpose { get; set; } 
-        public int CenterOffset { get; set; }
+        public string Purpose { get; set; }
+        public string CenterOffset { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public double Elevation { get; set; }

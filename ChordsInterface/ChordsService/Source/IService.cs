@@ -11,7 +11,19 @@ namespace ChordsInterface.Service
     public interface IService
     {
         [OperationContract]
-        string PullMeasurements(int siteID, int streamIndex, int hoursBack);
+        Api.Container<Chords.SiteList> GetSiteList();
+
+        [OperationContract]
+        Api.Container<Chords.Site> GetSite(int siteID);
+
+        [OperationContract]
+        Api.Container<Chords.SystemList> GetSystemList(int siteID);
+
+        [OperationContract]
+        Api.Container<Chords.InstrumentList> GetInstrumentList(int systemID);
+
+        [OperationContract]
+        string GetMeasurements(int siteID, int streamIndex, int hoursBack);
 
         [OperationContract]
         string CreateMeasurement(Chords.Measurement measurement);

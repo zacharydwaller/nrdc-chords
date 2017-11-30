@@ -8,26 +8,106 @@ namespace ChordsInterface.Api
 {
     public static class Converter
     {
-        public static Chords.Site Convert(Nrdc.Site nrdcSite)
+        /** NRDC Data Types **/
+
+        public static Chords.Site Convert(Data.Site dataSite)
         {
-            Chords.Site chordsSite = new Chords.Site();
+            var cSite = new Chords.Site
+            {
+                Name = String.Copy(dataSite.Alias),
+                ID = dataSite.ID,
+                Latitude = dataSite.Latitude,
+                Longitude = dataSite.Longitude,
+                Elevation = dataSite.Elevation,
+                Description = String.Copy(dataSite.Name)
+            };
 
-            chordsSite.ID = nrdcSite.ID;
-            chordsSite.Name = nrdcSite.Alias;
-
-            // etc, etc
-
-            return chordsSite;
+            return cSite;
         }
 
-        public static Chords.Measurement Convert(Nrdc.Measurement nrdcMeasurement)
+        public static Chords.Measurement Convert(Data.Measurement dataMeasurement)
         {
-            var chordsMeasurement = new Chords.Measurement();
-
-            chordsMeasurement.TimeStamp = nrdcMeasurement.TimeStamp;
-            chordsMeasurement.Value = nrdcMeasurement.Value;
+            var chordsMeasurement = new Chords.Measurement
+            {
+                TimeStamp = string.Copy(dataMeasurement.TimeStamp),
+                Value = dataMeasurement.Value
+            };
 
             return chordsMeasurement;
+        }
+
+        /** NRDC Infrastructure Types **/
+
+        public static Chords.SiteList Convert(Infrastructure.SiteList infList)
+        {
+            Chords.SiteList chordsList = new Chords.SiteList();
+
+            foreach (var nSite in infList.Data)
+            {
+                var cSite = Convert(nSite);
+                chordsList.Data.Add(cSite);
+            }
+
+            return chordsList;
+        }
+
+        public static Chords.Site Convert(Infrastructure.Site infSite)
+        {
+            var cSite = new Chords.Site
+            {
+                Name = infSite.Alias,
+                ID = infSite.ID,
+                Latitude = infSite.Latitude,
+                Longitude = infSite.Longitude,
+                Elevation = infSite.Elevation,
+                Description = String.Copy(infSite.Notes)
+            };
+
+            return cSite;
+        }
+
+        public static Chords.SystemList Convert(Infrastructure.SystemList infList)
+        {
+            var cList = new Chords.SystemList();
+
+            foreach(var infSystem in infList.Data)
+            {
+                var cSystem = Convert(infSystem);
+                cList.Data.Add(cSystem);
+            }
+
+            return cList;
+        }
+
+        public static Chords.NrdcSystem Convert(Infrastructure.System infSystem)
+        {
+            return new Chords.NrdcSystem
+            {
+                Name = infSystem.Name,
+                ID = infSystem.ID
+            };
+        }
+
+        public static Chords.InstrumentList Convert(Infrastructure.DeploymentList infList)
+        {
+            var cList = new Chords.InstrumentList();
+
+            foreach(var infDeployment in infList.Data)
+            {
+                var cInstrument = Convert(infDeployment);
+                cList.Data.Add(cInstrument);
+            }
+
+            return cList;
+        }
+
+        public static Chords.Instrument Convert(Infrastructure.Deployment infDeployment)
+        {
+            return new Chords.Instrument
+            {
+                Name = infDeployment.Name,
+                ID = infDeployment.ID
+            };
         }
     }
 }

@@ -9,82 +9,20 @@ namespace ChordsInterface.Api
 {
     public static class ApiInterface
     {
-        // Returns Container where Object is Nrdc.DataStreamList
-        public static Container GetDataStreams(int siteID)
+        public static Container<Chords.MeasurementList> GetMeasurements(int siteID, int streamIndex, int hoursBack = 24)
         {
-            if(siteID < 1)
+            var dataStreamContainer = GetDataStream(siteID, streamIndex);
+            var container = new Container<Chords.MeasurementList>();
+
+            if (dataStreamContainer.Success)
             {
-                return new Container(null, false, "Site ID out of range");
-            }
-
-            // Get data streams
-            string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/site/" + siteID.ToString();
-            var result = ChordsInterface.Http.GetAsync(uri).Result;
-            string message = result.Content.ReadAsStringAsync().Result;
-
-            var streamlist = Json.Parse<Nrdc.DataStreamList>(message);
-
-            // Check stream list
-            if(streamlist.Success)
-            {
-                if (streamlist.Data.Count > 0)
-                {
-                    return new Container(streamlist);
-                }
-                else
-                {
-                    // No streams found
-                    return new Container(null, false, "No data streams found with SiteId: " + siteID.ToString());
-                }
-            }
-            else
-            {
-                // Stream list retrieval failed, return with reason message
-                return new Container(null, false, streamlist.Message);
-            }
-        }
-
-        // Returns Container where Object is Nrdc.DataStream
-        public static Container GetDataStream(int siteID, int streamIndex)
-        {
-            var container = GetDataStreams(siteID);
-
-            // Get container
-            if (container.Success)
-            {
-                var streamlist = container.Object as Nrdc.DataStreamList;
-
-                if (streamIndex >= 0 && streamIndex < streamlist.Data.Count)
-                {
-                    return new Container(streamlist.Data[streamIndex]);
-                }
-                else
-                {
-                    // Stream index too high for stream count
-                    return new Container(null, false, "Stream index out of range");
-                }
-            }
-            else
-            {
-                // GetDataStreams failed, return with reason message
-                return container;
-            }
-        }
-
-        // Returns Container where Object is Nrdc.DataDownloadResponse
-        public static Container GetMeasurements(int siteID, int streamIndex, int hoursBack = 24)
-        {
-            var container = GetDataStream(siteID, streamIndex);
-
-            if (container.Success)
-            {
-                var stream = container.Object as Nrdc.DataStream;
+                var stream = dataStreamContainer.Object;
 
                 // Create stream request HTTP message
-                string startTime = DateTime.UtcNow.AddHours(-72-hoursBack).ToString("s");
+                string startTime = DateTime.UtcNow.AddHours(-hoursBack).ToString("s");
                 string endTime = DateTime.UtcNow.ToString("s");
 
-                var dataSpecification = new Nrdc.DataSpecification(stream, startTime, endTime);
+                var dataSpecification = new Data.DataSpecification(stream, startTime, endTime);
 
                 var jsonContent = Json.Serialize(dataSpecification);
                 var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -98,7 +36,7 @@ namespace ChordsInterface.Api
                 {
                     string content = response.Content.ReadAsStringAsync().Result;
 
-                    var dataDownloadResponse = Json.Parse<Nrdc.DataDownloadResponse>(content);
+                    var dataDownloadResponse = Json.Parse<Data.DataDownloadResponse>(content);
 
                     // Check data download response
                     if (dataDownloadResponse.Success)
@@ -106,33 +44,41 @@ namespace ChordsInterface.Api
                         // Check data download
                         if (dataDownloadResponse.Data.TotalNumberOfMeasurements > 0)
                         {
-                            return new Container(dataDownloadResponse);
+                            var chordsList = new Chords.MeasurementList();
+
+                            foreach(var nrdcMeasurement in dataDownloadResponse.Data.Measurements)
+                            {
+                                var chordsMeasurement = Converter.Convert(nrdcMeasurement);
+                                chordsList.Data.Add(chordsMeasurement);
+                            }
+
+                            return container.Pass(chordsList);
                         }
                         else
                         {
-                            return new Container(null, false, "No measurements found");
+                            return container.Fail("No measurements found");
                         }
                     }
                     else
                     {
                         // Data download failed
-                        return new Container(null, false, dataDownloadResponse.Message);
+                        return container.Fail(dataDownloadResponse.Message);
                     }
                 }
                 else
                 {
                     // HTTP didn't return OK
-                    return new Container(null, false, "Error From: " + response.RequestMessage + "\n" + response.ReasonPhrase);
+                    return container.Fail("Error From: " + response.RequestMessage + "\n" + response.ReasonPhrase);
                 }
             }
             else
             {
                 // GetDataStream failed, return with reason message
-                return container;
+                return container.Fail(dataStreamContainer.Message);
             }
         }
 
-        public static Container GetSites()
+        public static Container<Chords.SiteList> GetSiteList()
         {
             string uri = ChordsInterface.InfrastructureServiceUrl + "infrastructure/sites";
 
@@ -140,41 +86,146 @@ namespace ChordsInterface.Api
             string message = result.Content.ReadAsStringAsync().Result;
 
             var sitelist = Json.Parse<Infrastructure.SiteList>(message);
+            var chordsList = Converter.Convert(sitelist);
 
-            return new Container(sitelist);
+            return new Container<Chords.SiteList>(chordsList);
         }
 
-        public static Container GetSite(int siteID)
+        public static Container<Chords.Site> GetSite(int siteID)
         {
-            var siteListContainer = GetSites();
+            var siteListContainer = GetSiteList();
+            var container = new Container<Chords.Site>();
 
             if (siteListContainer.Success)
             {
-                var sitelist = siteListContainer.Object as Infrastructure.SiteList;
-                foreach (var site in sitelist.Data)
+                var sitelist = siteListContainer.Object;
+                var site = sitelist.Data.FirstOrDefault(s => s.ID == siteID);
+
+                if (site != null)
                 {
-                    if(site.ID == siteID)
-                    {
-                        return new Container(site);
-                    }
+                    return container.Pass(site);
+                }
+                else
+                {
+                    return container.Fail("Site not found. ID: " + siteID.ToString());
                 }
             }
 
-            return siteListContainer;
+            return container.Fail(siteListContainer.Message);
         }
-    }
 
-    public class Container
-    {
-        public bool Success { get; set; }
-        public string Message { get; set; }
-        public Nrdc.NrdcType Object { get; set; }
-
-        public Container(Nrdc.NrdcType obj, bool success = true, string message = default(string))
+        public static Container<Chords.SystemList> GetSystemList(int siteID)
         {
-            Object = obj;
-            Success = success;
-            Message = message;
+            string uri = ChordsInterface.InfrastructureServiceUrl + "infrastructure/site/" + siteID.ToString() + "/systems";
+
+            var result = ChordsInterface.Http.GetAsync(uri).Result;
+            string message = result.Content.ReadAsStringAsync().Result;
+
+            var systemList = Json.Parse<Infrastructure.SystemList>(message);
+
+            var container = new Container<Chords.SystemList>();
+
+            if (systemList.Success)
+            {
+                var chordsList = Converter.Convert(systemList);
+                return container.Pass(chordsList);
+            }
+            else
+            {
+                return container.Fail("Could not get System List: Site ID: " + siteID.ToString());
+            }
+        }
+        
+        public static Container<Chords.InstrumentList> GetInstrumentList(int systemID)
+        {
+            var uri = ChordsInterface.InfrastructureServiceUrl + "infrastructure/system/" + systemID.ToString() + "/deployments";
+            var message = GetHttpContent(uri);
+
+            var deploymentList = Json.Parse<Infrastructure.DeploymentList>(message);
+
+            var container = new Container<Chords.InstrumentList>();
+
+            if(deploymentList.Success)
+            {
+                var chordsList = Converter.Convert(deploymentList);
+                return container.Pass(chordsList);
+            }
+            else
+            {
+                return container.Fail("Could not get Instrument List: System ID: " + systemID.ToString());
+            }
+        }
+
+        /* Private Methods */
+
+        private static string GetHttpContent(string uri)
+        {   
+            var response = ChordsInterface.Http.GetAsync(uri).Result;
+            return response.Content.ReadAsStringAsync().Result;
+        }
+
+        private static Container<Data.DataStreamList> GetDataStreams(int siteID)
+        {
+            var container = new Container<Data.DataStreamList>();
+
+            if (siteID < 1)
+            {
+                return container.Fail("Site ID out of range");
+            }
+
+            // Get data streams
+            string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/site/" + siteID.ToString();
+            var result = ChordsInterface.Http.GetAsync(uri).Result;
+            string message = result.Content.ReadAsStringAsync().Result;
+
+            var streamlist = Json.Parse<Data.DataStreamList>(message);
+
+            // Check stream list
+            if (streamlist.Success)
+            {
+                if (streamlist.Data.Count > 0)
+                {
+                    return container.Pass(streamlist);
+                }
+                else
+                {
+                    // No streams found
+                    return container.Fail("No data streams found with SiteId: " + siteID.ToString());
+                }
+            }
+            else
+            {
+                // Stream list retrieval failed, return with reason message
+                return container.Fail(streamlist.Message);
+            }
+        }
+
+        // Returns Container where Object is Data.DataStream
+        private static Container<Data.DataStream> GetDataStream(int siteID, int streamIndex)
+        {
+            var streamListContainer = GetDataStreams(siteID);
+            var container = new Container<Data.DataStream>();
+
+            // Get container
+            if (streamListContainer.Success)
+            {
+                var streamlist = streamListContainer.Object;
+
+                if (streamIndex >= 0 && streamIndex < streamlist.Data.Count)
+                {
+                    return container.Pass(streamlist.Data[streamIndex]);
+                }
+                else
+                {
+                    // Stream index too high for stream count
+                    return container.Fail("Stream index out of range");
+                }
+            }
+            else
+            {
+                // GetDataStreams failed, return with reason message
+                return container.Fail(streamListContainer.Message);
+            }
         }
     }
 }

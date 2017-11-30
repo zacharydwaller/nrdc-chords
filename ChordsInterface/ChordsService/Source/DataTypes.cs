@@ -1,18 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using ChordsInterface.Nrdc;
 
-namespace ChordsInterface.Nrdc
+namespace ChordsInterface.Data
 {
-    public abstract class NrdcType { }
-    
-    public class SiteList : NrdcType
-    {
-        public bool Success { get; set; }
-        public string Message { get; set; }
-        public IList<Site> Data { get; set; }
-    } 
-
     public class Site : NrdcType
     {
         public int ID { get; set; }
@@ -23,33 +14,10 @@ namespace ChordsInterface.Nrdc
         public double Elevation { get; set; }
     }
 
-    public class SystemList : NrdcType
-    {
-        public bool Success { get; set; }
-        public string Message { get; set; }
-        public IList<System> Data { get; set; }
-    }
-
     public class System : NrdcType
     {
         public int ID { get; set; }
         public string Name { get; set; }
-    }
-
-    public class Measurement : NrdcType
-    {
-        public int Stream { get; set; }
-        public string TimeStamp { get; set; }
-        public Decimal Value { get; set; }
-    }
-
-    public class AggregateMeasurement : NrdcType
-    {
-        public int Stream { get; set; }
-        public string TimeStamp { get; set; }
-        public Decimal Value { get; set; }
-        public long NumberOfConstituentValues { get; set; }
-        public short AggregateType { get; set; }
     }
 
     public class Deployment : NrdcType
@@ -62,9 +30,7 @@ namespace ChordsInterface.Nrdc
     {
         public int ID { get; set; }
         public string Name { get; set; }
-
     }
-
 
     public class Property : NrdcType
     {
@@ -172,6 +138,22 @@ namespace ChordsInterface.Nrdc
         public long Skip { get; set; }
         public long Take { get; set; }
         public IList<DataStreamRequest> DataStreams { get; set; }
+    }
+
+    public class Measurement : NrdcType
+    {
+        public int Stream { get; set; }
+        public string TimeStamp { get; set; }
+        public Decimal Value { get; set; }
+    }
+
+    public class AggregateMeasurement : NrdcType
+    {
+        public int Stream { get; set; }
+        public string TimeStamp { get; set; }
+        public Decimal Value { get; set; }
+        public long NumberOfConstituentValues { get; set; }
+        public short AggregateType { get; set; }
     }
 
     public class DataDownloadResponse : NrdcType

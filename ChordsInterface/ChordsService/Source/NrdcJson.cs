@@ -11,12 +11,23 @@ namespace ChordsInterface.Api
     {
         public static T Parse<T> (string json)
         {
-            return JsonConvert.DeserializeObject<T>(json);
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
+            return JsonConvert.DeserializeObject<T>(json, settings);
         }
 
         public static string Serialize (object obj)
         {
-            return JsonConvert.SerializeObject(obj);
+            var settings = new JsonSerializerSettings()
+            {
+                StringEscapeHandling = StringEscapeHandling.EscapeNonAscii
+            };
+
+            return JsonConvert.SerializeObject(obj, settings);
         }
     }
 }

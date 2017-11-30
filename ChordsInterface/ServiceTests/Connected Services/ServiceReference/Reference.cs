@@ -15,11 +15,35 @@ namespace ServiceTests.ServiceReference {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.IService")]
     public interface IService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/PullMeasurements", ReplyAction="http://tempuri.org/IService/PullMeasurementsResponse")]
-        string PullMeasurements(int siteID, int streamIndex, int hoursBack);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetSiteList", ReplyAction="http://tempuri.org/IService/GetSiteListResponse")]
+        ChordsInterface.Api.Container<ChordsInterface.Chords.SiteList> GetSiteList();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/PullMeasurements", ReplyAction="http://tempuri.org/IService/PullMeasurementsResponse")]
-        System.Threading.Tasks.Task<string> PullMeasurementsAsync(int siteID, int streamIndex, int hoursBack);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetSiteList", ReplyAction="http://tempuri.org/IService/GetSiteListResponse")]
+        System.Threading.Tasks.Task<ChordsInterface.Api.Container<ChordsInterface.Chords.SiteList>> GetSiteListAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetSite", ReplyAction="http://tempuri.org/IService/GetSiteResponse")]
+        ChordsInterface.Api.Container<ChordsInterface.Chords.Site> GetSite(int siteID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetSite", ReplyAction="http://tempuri.org/IService/GetSiteResponse")]
+        System.Threading.Tasks.Task<ChordsInterface.Api.Container<ChordsInterface.Chords.Site>> GetSiteAsync(int siteID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetSystemList", ReplyAction="http://tempuri.org/IService/GetSystemListResponse")]
+        ChordsInterface.Api.Container<ChordsInterface.Chords.SystemList> GetSystemList(int siteID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetSystemList", ReplyAction="http://tempuri.org/IService/GetSystemListResponse")]
+        System.Threading.Tasks.Task<ChordsInterface.Api.Container<ChordsInterface.Chords.SystemList>> GetSystemListAsync(int siteID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetInstrumentList", ReplyAction="http://tempuri.org/IService/GetInstrumentListResponse")]
+        ChordsInterface.Api.Container<ChordsInterface.Chords.InstrumentList> GetInstrumentList(int systemID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetInstrumentList", ReplyAction="http://tempuri.org/IService/GetInstrumentListResponse")]
+        System.Threading.Tasks.Task<ChordsInterface.Api.Container<ChordsInterface.Chords.InstrumentList>> GetInstrumentListAsync(int systemID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetMeasurements", ReplyAction="http://tempuri.org/IService/GetMeasurementsResponse")]
+        string GetMeasurements(int siteID, int streamIndex, int hoursBack);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetMeasurements", ReplyAction="http://tempuri.org/IService/GetMeasurementsResponse")]
+        System.Threading.Tasks.Task<string> GetMeasurementsAsync(int siteID, int streamIndex, int hoursBack);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/CreateMeasurement", ReplyAction="http://tempuri.org/IService/CreateMeasurementResponse")]
         string CreateMeasurement(ChordsInterface.Chords.Measurement measurement);
@@ -55,12 +79,44 @@ namespace ServiceTests.ServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public string PullMeasurements(int siteID, int streamIndex, int hoursBack) {
-            return base.Channel.PullMeasurements(siteID, streamIndex, hoursBack);
+        public ChordsInterface.Api.Container<ChordsInterface.Chords.SiteList> GetSiteList() {
+            return base.Channel.GetSiteList();
         }
         
-        public System.Threading.Tasks.Task<string> PullMeasurementsAsync(int siteID, int streamIndex, int hoursBack) {
-            return base.Channel.PullMeasurementsAsync(siteID, streamIndex, hoursBack);
+        public System.Threading.Tasks.Task<ChordsInterface.Api.Container<ChordsInterface.Chords.SiteList>> GetSiteListAsync() {
+            return base.Channel.GetSiteListAsync();
+        }
+        
+        public ChordsInterface.Api.Container<ChordsInterface.Chords.Site> GetSite(int siteID) {
+            return base.Channel.GetSite(siteID);
+        }
+        
+        public System.Threading.Tasks.Task<ChordsInterface.Api.Container<ChordsInterface.Chords.Site>> GetSiteAsync(int siteID) {
+            return base.Channel.GetSiteAsync(siteID);
+        }
+        
+        public ChordsInterface.Api.Container<ChordsInterface.Chords.SystemList> GetSystemList(int siteID) {
+            return base.Channel.GetSystemList(siteID);
+        }
+        
+        public System.Threading.Tasks.Task<ChordsInterface.Api.Container<ChordsInterface.Chords.SystemList>> GetSystemListAsync(int siteID) {
+            return base.Channel.GetSystemListAsync(siteID);
+        }
+        
+        public ChordsInterface.Api.Container<ChordsInterface.Chords.InstrumentList> GetInstrumentList(int systemID) {
+            return base.Channel.GetInstrumentList(systemID);
+        }
+        
+        public System.Threading.Tasks.Task<ChordsInterface.Api.Container<ChordsInterface.Chords.InstrumentList>> GetInstrumentListAsync(int systemID) {
+            return base.Channel.GetInstrumentListAsync(systemID);
+        }
+        
+        public string GetMeasurements(int siteID, int streamIndex, int hoursBack) {
+            return base.Channel.GetMeasurements(siteID, streamIndex, hoursBack);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetMeasurementsAsync(int siteID, int streamIndex, int hoursBack) {
+            return base.Channel.GetMeasurementsAsync(siteID, streamIndex, hoursBack);
         }
         
         public string CreateMeasurement(ChordsInterface.Chords.Measurement measurement) {

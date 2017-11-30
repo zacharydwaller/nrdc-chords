@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
+using System.Web;
 
 namespace ChordsInterface.Service
 {
@@ -19,23 +20,40 @@ namespace ChordsInterface.Service
 
         private const string CreateMeasurementSuccess = "Measurement created.";
 
-        public string PullMeasurements(int siteID, int streamIndex, int hoursBack)
+        public Api.Container<Chords.SiteList> GetSiteList()
+        {
+            return Api.ApiInterface.GetSiteList();
+        }
+        
+        public Api.Container<Chords.Site> GetSite(int siteID)
+        {
+            return Api.ApiInterface.GetSite(siteID);
+        }
+
+        public Api.Container<Chords.SystemList> GetSystemList(int siteID)
+        {
+            return Api.ApiInterface.GetSystemList(siteID);
+        }
+
+        public Api.Container<Chords.InstrumentList> GetInstrumentList(int systemID)
+        {
+            return Api.ApiInterface.GetInstrumentList(systemID);
+        }
+
+        public string GetMeasurements(int siteID, int streamIndex, int hoursBack)
         {
             var apiResponse = Api.ApiInterface.GetMeasurements(siteID, streamIndex, hoursBack);
 
             if(apiResponse.Success)
             {
-                var dataDownloadResponse = apiResponse.Object as Nrdc.DataDownloadResponse;
-                var dataDownload = dataDownloadResponse.Data;
+                var measurementList = apiResponse.Object as Chords.MeasurementList;
 
-                foreach(var nMeas in dataDownload.Measurements)
+                foreach(var meas in measurementList.Data)
                 {
-                    var cMeas = Api.Converter.Convert(nMeas);
-
                     // TODO: Get the real instrument ID
-                    cMeas.InstrumentID = 1;
+                    meas.InstrumentID = 1;
 
-                    string chordsResponse = CreateMeasurement(cMeas);
+                    string chordsResponse = CreateMeasurement(meas);
 
                     if(chordsResponse != CreateMeasurementSuccess)
                     {
@@ -43,8 +61,8 @@ namespace ChordsInterface.Service
                         return chordsResponse;
                     }
                 }
-                
-                return "Number of Measurements Created: " + dataDownload.TotalNumberOfMeasurements.ToString();
+
+                return "Number of Measurements Created: " + measurementList.Data.Count;
             }
             else
             {
