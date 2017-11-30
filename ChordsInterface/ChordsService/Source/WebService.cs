@@ -40,9 +40,9 @@ namespace ChordsInterface.Service
             return Api.ApiInterface.GetInstrumentList(systemID);
         }
 
-        public string GetMeasurements(int siteID, int streamIndex, int hoursBack)
+        public string GetMeasurements(int siteID, int streamIndex, DateTime startTime, DateTime endTime)
         {
-            var apiResponse = Api.ApiInterface.GetMeasurements(siteID, streamIndex, hoursBack);
+            var apiResponse = Api.ApiInterface.GetMeasurements(siteID, streamIndex, startTime, endTime);
 
             if(apiResponse.Success)
             {
@@ -130,6 +130,7 @@ namespace ChordsInterface.Service
             }
 
             return uri;
-        }
+        } 
+
     }
 }

@@ -9,7 +9,7 @@ namespace ChordsInterface.Api
 {
     public static class ApiInterface
     {
-        public static Container<Chords.MeasurementList> GetMeasurements(int siteID, int streamIndex, int hoursBack = 24)
+        public static Container<Chords.MeasurementList> GetMeasurements(int siteID, int streamIndex, DateTime startTime, DateTime endTime)
         {
             var dataStreamContainer = GetDataStream(siteID, streamIndex);
             var container = new Container<Chords.MeasurementList>();
@@ -19,10 +19,10 @@ namespace ChordsInterface.Api
                 var stream = dataStreamContainer.Object;
 
                 // Create stream request HTTP message
-                string startTime = DateTime.UtcNow.AddHours(-hoursBack).ToString("s");
-                string endTime = DateTime.UtcNow.ToString("s");
+                string startTimeString = startTime.ToString("s");
+                string endTimeString = endTime.ToString("s");
 
-                var dataSpecification = new Data.DataSpecification(stream, startTime, endTime);
+                var dataSpecification = new Data.DataSpecification(stream, startTimeString, endTimeString);
 
                 var jsonContent = Json.Serialize(dataSpecification);
                 var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
