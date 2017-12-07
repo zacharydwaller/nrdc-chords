@@ -12,7 +12,7 @@ footer {
     text-align: center;
 }
 
-.column {
+.tab {
     background-color: AliceBlue;
     float: left;
     width: 33.33%;
@@ -23,7 +23,7 @@ footer {
     color: blue;
 }
 
-.container-tab {
+.tab-content {
     padding: 20px;
     color: white;
 }

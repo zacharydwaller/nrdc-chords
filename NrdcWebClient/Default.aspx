@@ -46,16 +46,16 @@
 
     <!-- Column Grid -->
     <div class="row">
-        <div id="NetCol" class="column" onclick="openTab('NetCol', 'NetTab');">Select a Sensor Network</div>
-        <div id="StreamCol" class="column" onclick="openTab('StreamCol', 'StreamTab');">Select a Data Stream</div>
-        <div id="VisCol" class="column" onclick="openTab('VisCol', 'VisTab');">Visualize</div>
+        <div id="NetTab" class="tab" onclick="openTab('NetTab', 'NetContent');">Select a Sensor Network</div>
+        <div id="StreamTab" class="tab" onclick="openTab('StreamTab', 'StreamContent');">Select a Data Stream</div>
+        <div id="VisTab" class="tab" onclick="openTab('VisTab', 'VisContent');">Visualize</div>
     </div>
 
     <!-- Expanding grid -->
     <form runat="server">
 
         <!-- Select Network Tab -->
-        <div id="NetTab" class="container-tab" style="display:none;">
+        <div id="NetContent" class="tab-content" style="display:none;">
             <!-- Close Button -->
             <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
 
@@ -65,7 +65,7 @@
         </div>
 
         <!-- Select Stream Tab -->
-        <div id="StreamTab" class="container-tab" style="display:none;">
+        <div id="StreamContent" class="tab-content" style="display:none;">
             <!-- Close Button -->
             <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
 
@@ -79,7 +79,7 @@
         </div>
 
         <!-- Visualize Tab -->
-        <div id="VisTab" class="container-tab" style="display:none;">
+        <div id="VisContent" class="tab-content" style="display:none;">
             <!-- Close Button -->
             <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
 
@@ -99,7 +99,7 @@
     <script>
         function resetTabs()
         {
-            var tabs = document.getElementsByClassName("container-tab");
+            var tabs = document.getElementsByClassName("tab-content");
 
             // Close tabs
             var i;
@@ -111,7 +111,7 @@
 
         function resetCols()
         {
-            var cols = document.getElementsByClassName("column");
+            var cols = document.getElementsByClassName("tab");
             
             // Recolor cols
             var i;
