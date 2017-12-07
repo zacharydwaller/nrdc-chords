@@ -40,7 +40,12 @@ namespace ChordsInterface.Service
             return Api.ApiInterface.GetInstrumentList(systemID);
         }
 
-        public string GetMeasurements(int siteID, int streamIndex, DateTime startTime, DateTime endTime)
+        public Api.Container<Data.DataStreamList> GetDataStreams(int deploymentID)
+        {
+
+        }
+
+        public string GetMeasurements(int streamID, DateTime startTime, DateTime endTime)
         {
             var apiResponse = Api.ApiInterface.GetMeasurements(siteID, streamIndex, startTime, endTime);
 

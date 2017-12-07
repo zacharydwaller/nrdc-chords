@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using ChordsInterface.Nrdc;
 
 namespace ChordsInterface.Data
@@ -73,24 +74,26 @@ namespace ChordsInterface.Data
         */
     }
 
+    [DataContract]
     public class DataStreamList : NrdcType
     {
-        public bool Success { get; set; }
-        public string Message { get; set; }
-        public IList<DataStream> Data { get; set; }
+        [DataMember] public bool Success { get; set; }
+        [DataMember] public string Message { get; set; }
+        [DataMember] public IList<DataStream> Data { get; set; }
     }
 
+    [DataContract]
     public class DataStream : NrdcType
     {
-        public int ID { get; set; }
-        public Site Site { get; set; }
-        public System System { get; set; }
-        public Deployment Deployment { get; set; }
-        public Category Category { get; set; }
-        public Property Property { get; set; }
-        public Unit Units { get; set; }
-        public DataType DataType { get; set; }
-        public String MeasurementInterval { get; set; }
+        [DataMember] public int ID { get; set; }
+        [DataMember] public Site Site { get; set; }
+        [DataMember] public System System { get; set; }
+        [DataMember] public Deployment Deployment { get; set; }
+        [DataMember] public Category Category { get; set; }
+        [DataMember] public Property Property { get; set; }
+        [DataMember] public Unit Units { get; set; }
+        [DataMember] public DataType DataType { get; set; }
+        [DataMember] public String MeasurementInterval { get; set; }
     }
 
     public class DataStreamRequest : NrdcType
