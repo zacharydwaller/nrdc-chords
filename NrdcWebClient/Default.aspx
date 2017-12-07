@@ -17,6 +17,7 @@
 
     protected void PostMeasurements()
     {
+        /*
         int siteId = int.Parse(TextBoxSiteId.Text);
         int streamIndex = int.Parse(TextBoxStreamIndex.Text);
         DateTime startTime = StartTimeCalendar.SelectedDate;
@@ -24,6 +25,7 @@
         string response = client.GetMeasurements(siteId, streamIndex, startTime, DateTime.UtcNow);
 
         ResponseLabel.Text = response;
+        */
     }
 
     protected void Page_Load(object sender, EventArgs e)
@@ -57,9 +59,25 @@
 
     protected void PopulateSites(TreeNode node)
     {
-
+        var newNode = new TreeNode("Sheep 1");
+        newNode.PopulateOnDemand = true;
+        newNode.SelectAction = TreeNodeSelectAction.Expand;
+        node.ChildNodes.Add(newNode);
     }
 
+</script>
+
+<script>
+    function openTab(tabName)
+    {
+        var i, x;
+        x = document.getElementsByClassName("containerTab");
+        for (i = 0; i < x.length; i++)
+        {
+            x[i].style.display = "none";
+        }
+        document.getElementById(tabName).style.display = "block";
+    }
 </script>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
@@ -71,12 +89,6 @@
     <meta name="author" content="Zachary Waller, Pat J, Paul Marquis, Tom Trowbridge"/>
 
     <title>NRDC-CHORDS Web Client</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
-
-    <!-- Custom styles for this template -->
-    <link href="css/heroic-features.css" rel="stylesheet"/>
 
 </head>
 <body>
@@ -109,46 +121,50 @@
       </div>
     </nav>
 
-    
+    <!-- Column Grid -->
+    <div class="row">
+        <div class="column" onclick="openTab('b1');" style="background:green;">Select a Sensor Network</div>
+        <div class="column" onclick="openTab('b2');" style="background:blue;">Select a Data Stream</div>
+        <div class="column" onclick="openTab('b3');" style="background:red;">Visualize</div>
+    </div>
 
-    <!-- Date Picker -->
-    <form id="form1" runat="server">
-        <div>
-            <asp:TreeView ID="NetworkTree" runat="server"></asp:TreeView>
+    <!-- Expanding grid -->
+    <form runat="server">
+        <!-- Select Network Tab -->
+        <div id="b1" class="containerTab" style="display:none;background:green">
+            <!-- If you want the ability to close the container, add a close button -->
+            <span onclick="this.parentElement.style.display='none'" class="closebtn">x</span>
+            NevCAN/Solar Nexus/Walker Basin
         </div>
-        <div>
-            <p>
-                Select Site ID
-            </p>
-            <asp:TextBox ID="TextBoxSiteId" runat="server"></asp:TextBox>
+
+        <!-- Select Stream Tab -->
+        <div id="b2" class="containerTab" style="display:none;background:blue">
+            <span onclick="this.parentElement.style.display='none'" class="closebtn">x</span>
+            <asp:TreeView ID="NetworkTree" runat="server" MaxDataBindDepth="5" OnTreeNodePopulate="NetworkTree_TreeNodePopulate">
+                <Nodes>
+                    <asp:TreeNode PopulateOnDemand="True" Text="System List" Value="System List"></asp:TreeNode>
+                </Nodes>
+            </asp:TreeView>
         </div>
-        <div>
-            <p>
-                Select Stream Index
-            </p>
-            <asp:TextBox ID="TextBoxStreamIndex" runat="server"></asp:TextBox>
-        </div>
-        <div>
-            <p>
-                Select Start Date</p>
-            <p>
-                &nbsp;<asp:Calendar ID="StartTimeCalendar" runat="server"></asp:Calendar>
-            </p>
-        </div>
-        <div>
-            <asp:Button ID="PostMeasurementsButton" runat="server" Text="Post Measurements" OnClick="ButtonGetSite_Click" />
-        </div>
-        <div>
-            <asp:Label ID="ResponseLabel" runat="server" Text=""></asp:Label>
+
+        <!-- Visualize Tab -->
+        <div id="b3" class="containerTab" style="display:none;background:red">
+            <span onclick="this.parentElement.style.display='none'" class="closebtn">x</span>
+            <div>
+                <p>
+                    Select Start Date
+                </p>
+                <asp:Calendar ID="StartTimeCalendar" runat="server"></asp:Calendar>
+            </div>
+            <div>
+                <asp:Button ID="PostMeasurementsButton" runat="server" Text="Post Measurements" OnClick="ButtonGetSite_Click" />
+            </div>
         </div>
     </form>
 
     <!-- Footer -->
-    <footer class="py-5 bg-dark">
-      <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Zachary Waller, Paul Marquis, Pat J, Tom Trowbridge 2017</p>
-      </div>
-      <!-- /.container -->
+    <footer>
+        <p>Copyright &copy; Zachary Waller, Paul Marquis, Pat J, Tom Trowbridge 2017</p>
     </footer>
 </body>
 </html>
