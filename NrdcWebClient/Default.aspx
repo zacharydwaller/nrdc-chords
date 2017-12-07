@@ -3,19 +3,6 @@
 
 <!DOCTYPE html>
 
-<script>
-    function openTab(tabName)
-    {
-        var i, x;
-        x = document.getElementsByClassName("containerTab");
-        for (i = 0; i < x.length; i++)
-        {
-            x[i].style.display = "none";
-        }
-        document.getElementById(tabName).style.display = "block";
-    }
-</script>
-
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head runat="server">
 
@@ -59,33 +46,44 @@
 
     <!-- Column Grid -->
     <div class="row">
-        <div class="column" onclick="openTab('b1');" style="background:green;">Select a Sensor Network</div>
-        <div class="column" onclick="openTab('b2');" style="background:blue;">Select a Data Stream</div>
-        <div class="column" onclick="openTab('b3');" style="background:red;">Visualize</div>
+        <div id="NetCol" class="column" onclick="openTab('NetCol', 'NetTab');">Select a Sensor Network</div>
+        <div id="StreamCol" class="column" onclick="openTab('StreamCol', 'StreamTab');">Select a Data Stream</div>
+        <div id="VisCol" class="column" onclick="openTab('VisCol', 'VisTab');">Visualize</div>
     </div>
 
     <!-- Expanding grid -->
     <form runat="server">
+
         <!-- Select Network Tab -->
-        <div id="b1" class="containerTab" style="display:none;background:green">
-            <!-- If you want the ability to close the container, add a close button -->
-            <span onclick="this.parentElement.style.display='none'" class="closebtn">x</span>
+        <div id="NetTab" class="container-tab" style="display:none;">
+            <!-- Close Button -->
+            <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+
+            <!-- Network List -->
             NevCAN/Solar Nexus/Walker Basin
+
         </div>
 
         <!-- Select Stream Tab -->
-        <div id="b2" class="containerTab" style="display:none;background:blue">
-            <span onclick="this.parentElement.style.display='none'" class="closebtn">x</span>
+        <div id="StreamTab" class="container-tab" style="display:none;">
+            <!-- Close Button -->
+            <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+
+            <!-- Network Hierarchy -->
             <asp:TreeView ID="NetworkTree" runat="server" MaxDataBindDepth="5" OnTreeNodePopulate="NetworkTree_TreeNodePopulate">
                 <Nodes>
                     <asp:TreeNode PopulateOnDemand="True" Text="System List" Value="System List"></asp:TreeNode>
                 </Nodes>
             </asp:TreeView>
+
         </div>
 
         <!-- Visualize Tab -->
-        <div id="b3" class="containerTab" style="display:none;background:red">
-            <span onclick="this.parentElement.style.display='none'" class="closebtn">x</span>
+        <div id="VisTab" class="container-tab" style="display:none;">
+            <!-- Close Button -->
+            <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+
+            <!-- Start Date Calender -->
             <div>
                 <p>
                     Select Start Date
@@ -97,6 +95,49 @@
             </div>
         </div>
     </form>
+
+    <script>
+        function resetTabs()
+        {
+            var tabs = document.getElementsByClassName("container-tab");
+
+            // Close tabs
+            var i;
+            for (i = 0; i < tabs.length; i++)
+            {
+                tabs[i].style.display = "none";
+            }
+        }
+
+        function resetCols()
+        {
+            var cols = document.getElementsByClassName("column");
+            
+            // Recolor cols
+            var i;
+            for(i = 0; i < cols.length; i++)
+            {
+                cols[i].style.backgroundColor = "AliceBlue";
+                cols[i].style.color = "Blue";
+            }
+        }
+
+        function openTab(colName, tabName)
+        {
+            resetTabs();
+            resetCols();
+
+            // Color selected col
+            var selectedCol = document.getElementById(colName);
+            selectedCol.style.backgroundColor = "blue";
+            selectedCol.style.color = "white";
+
+            // Open selected tab
+            var selectedTab = document.getElementById(tabName);
+            selectedTab.style.display = "block";
+            selectedTab.style.backgroundColor = "blue";
+        }
+    </script>
 
     <!-- Footer -->
     <footer>
