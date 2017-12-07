@@ -9,9 +9,9 @@ namespace ChordsInterface.Api
 {
     public static class ApiInterface
     {
-        public static Container<Chords.MeasurementList> GetMeasurements(int siteID, int streamIndex, DateTime startTime, DateTime endTime)
+        public static Container<Chords.MeasurementList> GetMeasurements(int systemID, int streamID, DateTime startTime, DateTime endTime)
         {
-            var dataStreamContainer = GetDataStream(siteID, streamIndex);
+            var dataStreamContainer = GetDataStream(systemID, streamID);
             var container = new Container<Chords.MeasurementList>();
 
             if (dataStreamContainer.Success)
@@ -201,31 +201,26 @@ namespace ChordsInterface.Api
         }
 
         // Returns Container where Object is Data.DataStream
-        private static Container<Data.DataStream> GetDataStream(int siteID, int streamIndex)
+        private static Container<Data.DataStream> GetDataStream(int streamID, int systemID)
         {
-            var streamListContainer = GetDataStreams(siteID);
-            var container = new Container<Data.DataStream>();
+      
+            string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/system/" + systemID.ToString();
+            var result = ChordsInterface.Http.GetAsync(uri).Result;
+            string message = result.Content.ReadAsStringAsync().Result;
 
-            // Get container
-            if (streamListContainer.Success)
+            var streamlist = Json.Parse<Data.DataStreamList>(message);
+            var stream = streamlist.Data.FirstOrDefault(s => s.ID == streamID);
+            if (stream != null)
             {
-                var streamlist = streamListContainer.Object;
-
-                if (streamIndex >= 0 && streamIndex < streamlist.Data.Count)
-                {
-                    return container.Pass(streamlist.Data[streamIndex]);
-                }
-                else
-                {
-                    // Stream index too high for stream count
-                    return container.Fail("Stream index out of range");
-                }
-            }
+                return new Container<Data.DataStream>(stream);
+            } 
             else
             {
-                // GetDataStreams failed, return with reason message
-                return container.Fail(streamListContainer.Message);
+                return new Container<Data.DataStream>(null, false,"Stream could not be found");  
+
+
             }
+
         }
     }
 }
