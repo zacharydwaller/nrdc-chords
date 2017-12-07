@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" %>
+﻿<%@ Page Language="C#" Theme="NCTheme" %>
 <%@ Import Namespace="System.Threading" %>
 
 <!DOCTYPE html>
@@ -6,6 +6,7 @@
 <script runat="server">
 
     Thread th;
+    ChordsService.ServiceClient client = new ChordsService.ServiceClient();
 
     protected void ButtonGetSite_Click(object sender, EventArgs e)
     {
@@ -16,7 +17,6 @@
 
     protected void PostMeasurements()
     {
-        ChordsService.ServiceClient client = new ChordsService.ServiceClient();
         int siteId = int.Parse(TextBoxSiteId.Text);
         int streamIndex = int.Parse(TextBoxStreamIndex.Text);
         DateTime startTime = StartTimeCalendar.SelectedDate;
@@ -24,8 +24,40 @@
         string response = client.GetMeasurements(siteId, streamIndex, startTime, DateTime.UtcNow);
 
         ResponseLabel.Text = response;
+    }
 
-        client.Close();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        StartTimeCalendar.SelectedDate = DateTime.UtcNow.AddDays(-1);
+    }
+
+    protected void NetworkTree_TreeNodePopulate(object sender, TreeNodeEventArgs e)
+    {
+        if(e.Node.ChildNodes.Count == 0)
+        {
+            switch(e.Node.Depth)
+            {
+                case 0:
+                    PopulateNetworks(e.Node);
+                    break;
+                case 1:
+                    PopulateSites(e.Node);
+                    break;
+            }
+        }
+    }
+
+    protected void PopulateNetworks(TreeNode node)
+    {
+        var newNode = new TreeNode("NevCan");
+        newNode.PopulateOnDemand = true;
+        newNode.SelectAction = TreeNodeSelectAction.Expand;
+        node.ChildNodes.Add(newNode);
+    }
+
+    protected void PopulateSites(TreeNode node)
+    {
+
     }
 
 </script>
@@ -52,7 +84,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container">
-        <a class="navbar-brand" href="#">Start Bootstrap</a>
+        <a class="navbar-brand" href="#">NRDC-CHORDS Companion Site</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -77,94 +109,16 @@
       </div>
     </nav>
 
-    <!-- Page Content -->
-    <div class="container">
-
-      <!-- Jumbotron Header -->
-      <header class="jumbotron my-4">
-        <h1 class="display-3">A Warm Welcome!</h1>
-        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, ipsam, eligendi, in quo sunt possimus non incidunt odit vero aliquid similique quaerat nam nobis illo aspernatur vitae fugiat numquam repellat.</p>
-        <a href="#" class="btn btn-primary btn-lg">Call to action!</a>
-      </header>
-
-      <!-- Page Features -->
-      <div class="row text-center">
-
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card">
-            <img class="card-img-top" src="http://placehold.it/500x325" alt=""/>
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-primary">Find Out More!</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card">
-            <img class="card-img-top" src="http://placehold.it/500x325" alt=""/>
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo magni sapiente, tempore debitis beatae culpa natus architecto.</p>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-primary">Find Out More!</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card">
-            <img class="card-img-top" src="http://placehold.it/500x325" alt=""/>
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-primary">Find Out More!</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card">
-            <img class="card-img-top" src="http://placehold.it/500x325" alt=""/>
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo magni sapiente, tempore debitis beatae culpa natus architecto.</p>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-primary">Find Out More!</a>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <!-- /.row -->
-
-    </div>
-    <!-- /.container -->
-
-    <!-- Footer -->
-    <footer class="py-5 bg-dark">
-      <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
-      </div>
-      <!-- /.container -->
-    </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    
 
     <!-- Date Picker -->
     <form id="form1" runat="server">
         <div>
+            <asp:TreeView ID="NetworkTree" runat="server"></asp:TreeView>
+        </div>
+        <div>
             <p>
-                Select Site IDas
+                Select Site ID
             </p>
             <asp:TextBox ID="TextBoxSiteId" runat="server"></asp:TextBox>
         </div>
@@ -176,9 +130,10 @@
         </div>
         <div>
             <p>
-                Select Start Date
+                Select Start Date</p>
+            <p>
+                &nbsp;<asp:Calendar ID="StartTimeCalendar" runat="server"></asp:Calendar>
             </p>
-            <asp:Calendar ID="StartTimeCalendar" runat="server"></asp:Calendar>
         </div>
         <div>
             <asp:Button ID="PostMeasurementsButton" runat="server" Text="Post Measurements" OnClick="ButtonGetSite_Click" />
@@ -187,5 +142,13 @@
             <asp:Label ID="ResponseLabel" runat="server" Text=""></asp:Label>
         </div>
     </form>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Zachary Waller, Paul Marquis, Pat J, Tom Trowbridge 2017</p>
+      </div>
+      <!-- /.container -->
+    </footer>
 </body>
 </html>
