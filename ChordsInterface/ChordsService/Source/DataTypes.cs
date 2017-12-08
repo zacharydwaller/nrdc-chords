@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using ChordsInterface.Nrdc;
 
 namespace ChordsInterface.Data
 {
