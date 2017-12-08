@@ -30,6 +30,7 @@ namespace ChordsInterface.Infrastructure
 
     public class Site : NrdcType
     {
+        public string __type { get; set; }
         public int ID { get; set; }
         public string UniqueIdentifier { get; set; }
         public int Network { get; set; }

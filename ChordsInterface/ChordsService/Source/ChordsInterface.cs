@@ -17,7 +17,7 @@ namespace ChordsInterface
         public static string DefaultTimeZoneID { get { return "Pacific Standard Time";  } }
 
         private static string chordsHostUrl = "	http://ec2-13-57-134-131.us-west-1.compute.amazonaws.com/";
-        private static string infrastructureServiceUrl = "http://sensor.nevada.edu/Services/GIDMIS/Infrastructure/NRDC.Services.Infrastructure.InfrastructureService.svc/NevCAN/";
+        private static string infrastructureServiceUrl = "http://sensor.nevada.edu/Services/GIDMIS/Infrastructure/NRDC.Services.Infrastructure.InfrastructureService.svc/";
         private static string dataServiceUrl = "http://sensor.nevada.edu/Services/GIDMIS/Data/NRDC.Services.Data.DataService.svc/";
         private static string nevCanAlias = "NevCAN/";
 

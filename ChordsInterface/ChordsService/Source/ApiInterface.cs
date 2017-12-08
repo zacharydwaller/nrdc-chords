@@ -80,15 +80,20 @@ namespace ChordsInterface.Api
 
         public static Container<Chords.SiteList> GetSiteList()
         {
-            string uri = ChordsInterface.InfrastructureServiceUrl + "infrastructure/sites";
-
-            var result = ChordsInterface.Http.GetAsync(uri).Result;
-            string message = result.Content.ReadAsStringAsync().Result;
+            string uri = ChordsInterface.InfrastructureServiceUrl + ChordsInterface.NevCanAlias + "infrastructure/sites";
+            string message = GetHttpContent(uri);
 
             var sitelist = Json.Parse<Infrastructure.SiteList>(message);
-            var chordsList = Converter.Convert(sitelist);
 
-            return new Container<Chords.SiteList>(chordsList);
+            if(sitelist.Success)
+            {
+                var chordsList = Converter.Convert(sitelist);
+                return new Container<Chords.SiteList>(chordsList);
+            }
+            else
+            {
+                return new Container<Chords.SiteList>(null, false, "Could not retrieve site list: " + sitelist.Message);
+            }
         }
 
         public static Container<Chords.Site> GetSite(int siteID)
@@ -116,10 +121,8 @@ namespace ChordsInterface.Api
 
         public static Container<Chords.SystemList> GetSystemList(int siteID)
         {
-            string uri = ChordsInterface.InfrastructureServiceUrl + "infrastructure/site/" + siteID.ToString() + "/systems";
-
-            var result = ChordsInterface.Http.GetAsync(uri).Result;
-            string message = result.Content.ReadAsStringAsync().Result;
+            string uri = ChordsInterface.InfrastructureServiceUrl + ChordsInterface.NevCanAlias + "infrastructure/site/" + siteID.ToString() + "/systems";
+            string message = GetHttpContent(uri);
 
             var systemList = Json.Parse<Infrastructure.SystemList>(message);
 
@@ -132,13 +135,13 @@ namespace ChordsInterface.Api
             }
             else
             {
-                return container.Fail("Could not get System List: Site ID: " + siteID.ToString());
+                return container.Fail(message);
             }
         }
         
         public static Container<Chords.InstrumentList> GetInstrumentList(int systemID)
         {
-            var uri = ChordsInterface.InfrastructureServiceUrl + "infrastructure/system/" + systemID.ToString() + "/deployments";
+            var uri = ChordsInterface.InfrastructureServiceUrl + ChordsInterface.NevCanAlias + "infrastructure/system/" + systemID.ToString() + "/deployments";
             var message = GetHttpContent(uri);
 
             var deploymentList = Json.Parse<Infrastructure.DeploymentList>(message);

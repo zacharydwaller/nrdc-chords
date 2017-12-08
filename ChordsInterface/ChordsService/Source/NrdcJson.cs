@@ -13,8 +13,8 @@ namespace ChordsInterface.Api
         {
             var settings = new JsonSerializerSettings
             {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
+                NullValueHandling = NullValueHandling.Include,
+                MissingMemberHandling = MissingMemberHandling.Error
             };
 
             return JsonConvert.DeserializeObject<T>(json, settings);
