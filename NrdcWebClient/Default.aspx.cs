@@ -72,13 +72,17 @@ public partial class Default : System.Web.UI.Page
         foreach(var site in sitelist.Data)
         {
             string tooltip =
-                "Alias: " + site.Name + "\n" +
-                "ID: " + site.ID + "\n";
+                site.Name + "\n" +
+                "ID: " + site.ID + "\n" +
+                "Latitude: " + site.Latitude + "\n" +
+                "Longitude: " + site.Longitude + "\n" +
+                "Elevation: " + site.Elevation;
 
             var node = new TreeNode(site.Name, site.ID.ToString())
             {
                 PopulateOnDemand = true,
-                SelectAction = TreeNodeSelectAction.Expand
+                SelectAction = TreeNodeSelectAction.Expand,
+                ToolTip = tooltip
             };
 
             parent.ChildNodes.Add(node);
@@ -93,7 +97,7 @@ public partial class Default : System.Web.UI.Page
         foreach(var system in systemList.Data)
         {
             string tooltip =
-                "Alias: " + system.Name + "\n" +
+                system.Name + "\n" +
                 "ID: " + system.ID;
 
             var node = new TreeNode(system.Name, system.ID.ToString())
@@ -114,10 +118,15 @@ public partial class Default : System.Web.UI.Page
 
         foreach (var deployment in deploymentList.Data)
         {
+            string tooltip =
+                deployment.Name + "\n" +
+                "ID: " + deployment.ID;
+
             var node = new TreeNode(deployment.Name, deployment.ID.ToString())
             {
                 PopulateOnDemand = true,
-                SelectAction = TreeNodeSelectAction.Expand
+                SelectAction = TreeNodeSelectAction.Expand,
+                ToolTip = tooltip
             };
 
             parent.ChildNodes.Add(node);
