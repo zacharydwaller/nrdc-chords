@@ -60,9 +60,9 @@
                 <span onclick="closeTab()" class="closebtn">&times;</span>
 
                 <!-- Network Hierarchy -->
-                <asp:TreeView ID="NetworkTree" runat="server" MaxDataBindDepth="5" OnTreeNodePopulate="NetworkTree_TreeNodePopulate">
+                <asp:TreeView ID="NetworkTree" runat="server" MaxDataBindDepth="4" OnTreeNodePopulate="NetworkTree_TreeNodePopulate" ExpandDepth="1">
                     <Nodes>
-                        <asp:TreeNode PopulateOnDemand="True" Text="System List" Value="System List"></asp:TreeNode>
+                        <asp:TreeNode PopulateOnDemand="True" Text="Sensor Network" Value="Sensor Network"></asp:TreeNode>
                     </Nodes>
                 </asp:TreeView>
 

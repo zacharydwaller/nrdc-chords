@@ -8,8 +8,8 @@
     TodayDayStyle-BackColor="White"/>
 
 <asp:TreeView runat="server" ImageSet="Arrows">
-            <HoverNodeStyle Font-Underline="True" ForeColor="#5555DD" />
-            <NodeStyle Font-Names="Tahoma" Font-Size="10pt" ForeColor="Black" HorizontalPadding="5px" NodeSpacing="0px" VerticalPadding="0px" />
+            <HoverNodeStyle Font-Underline="True" ForeColor="LightBlue" />
+            <NodeStyle Font-Names="Arial" Font-Size="18pt" ForeColor="AliceBlue" HorizontalPadding="5px" NodeSpacing="0px" VerticalPadding="0px" />
             <ParentNodeStyle Font-Bold="False" />
             <SelectedNodeStyle Font-Underline="True" ForeColor="#5555DD" HorizontalPadding="0px" VerticalPadding="0px" />
 </asp:TreeView>

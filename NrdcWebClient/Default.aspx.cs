@@ -37,8 +37,6 @@ public partial class Default : System.Web.UI.Page
         */
     }
 
-    
-
     protected void NetworkTree_TreeNodePopulate(object sender, TreeNodeEventArgs e)
     {
         if (e.Node.ChildNodes.Count == 0)
@@ -46,28 +44,30 @@ public partial class Default : System.Web.UI.Page
             switch (e.Node.Depth)
             {
                 case 0:
-                    PopulateNetworks(e.Node);
+                    string network = "NevCAN";
+                    NetworkTree.Nodes[0].Text = network;
+                    //PopulateSites(e.Node, network);
                     break;
                 case 1:
-                    PopulateSites(e.Node);
+                    //PopulateSites(e.Node);
                     break;
             }
         }
     }
 
-    protected void PopulateNetworks(TreeNode node)
+    protected void PopulateSites(TreeNode node, string network)
     {
-        var newNode = new TreeNode("NevCan");
-        newNode.PopulateOnDemand = true;
-        newNode.SelectAction = TreeNodeSelectAction.Expand;
-        node.ChildNodes.Add(newNode);
-    }
+        var container = client.GetSiteList();
+        /*
+        var sitelist = container.Object;
 
-    protected void PopulateSites(TreeNode node)
-    {
-        var newNode = new TreeNode("Sheep 1");
-        newNode.PopulateOnDemand = true;
-        newNode.SelectAction = TreeNodeSelectAction.Expand;
-        node.ChildNodes.Add(newNode);
+        foreach(var site in sitelist.Data)
+        {
+            var newNode = new TreeNode(site.Name);
+            newNode.PopulateOnDemand = true;
+            newNode.SelectAction = TreeNodeSelectAction.Expand;
+            node.ChildNodes.Add(newNode);
+        }
+        */
     }
 }
