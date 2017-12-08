@@ -15,7 +15,7 @@ namespace ChordsInterface.Data
         public double Elevation { get; set; }
     }
 
-    public class System : NrdcType
+    public class NrdcSystem : NrdcType
     {
         public int ID { get; set; }
         public string Name { get; set; }
@@ -87,7 +87,7 @@ namespace ChordsInterface.Data
     {
         [DataMember] public int ID { get; set; }
         [DataMember] public Site Site { get; set; }
-        [DataMember] public System System { get; set; }
+        [DataMember] public NrdcSystem System { get; set; }
         [DataMember] public Deployment Deployment { get; set; }
         [DataMember] public Category Category { get; set; }
         [DataMember] public Property Property { get; set; }
