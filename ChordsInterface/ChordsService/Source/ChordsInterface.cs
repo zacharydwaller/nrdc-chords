@@ -9,6 +9,7 @@ namespace ChordsInterface
 {
     public static class ChordsInterface
     {
+        // NRDC API information.
         public static string ChordsHostUrl { get { return chordsHostUrl; } }
         public static string InfrastructureServiceUrl { get { return infrastructureServiceUrl; } }
         public static string DataServiceUrl { get { return dataServiceUrl; } }
@@ -24,8 +25,10 @@ namespace ChordsInterface
         // In milliseconds
         public static double DefaultTimeout = 5000;
 
+        // NRDC download request can only return 1000 measurements at a time.
         public static int MaxMeasurements = 1000;
 
+        // Static HttpClient instance. Use this for all HTTP calls.
         public static HttpClient Http = new HttpClient
         {
             Timeout = TimeSpan.FromMilliseconds(DefaultTimeout)

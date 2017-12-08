@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+///     Contains a set of data structures used by the NRDC Infrastructure API.
+/// </summary>
 namespace ChordsInterface.Infrastructure
 {
     public class SiteList

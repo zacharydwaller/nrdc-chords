@@ -7,6 +7,9 @@ using System.Text;
 
 namespace ChordsInterface.Service
 {
+    /// <summary>
+    ///     NRDC-CHORDS Web Service interface.
+    /// </summary>
     [ServiceContract]
     public interface IService
     {
@@ -29,7 +32,7 @@ namespace ChordsInterface.Service
         Api.Container<Data.DataStream> GetDataStream(int streamID, int deploymentID = -1);
 
         [OperationContract]
-        string GetMeasurements(Data.DataStream stream, DateTime startTime, DateTime endTime);
+        string GetMeasurements(Data.DataStream stream, DateTime startTime, DateTime endTime = default(DateTime));
 
         [OperationContract]
         string CreateMeasurement(Chords.Measurement measurement);

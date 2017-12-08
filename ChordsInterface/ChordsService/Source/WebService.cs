@@ -20,38 +20,83 @@ namespace ChordsInterface.Service
 
         private const string CreateMeasurementSuccess = "Measurement created.";
 
+        /// <summary>
+        ///     Gets a list of all sites from a specified sensor network.
+        /// </summary>
+        /// <returns></returns>
         public Api.Container<Chords.SiteList> GetSiteList()
         {
             return Api.ApiInterface.GetSiteList();
         }
         
+        /// <summary>
+        ///     Gets site metadata given its ID.
+        /// </summary>
+        /// <param name="siteID"></param>
+        /// <returns></returns>
         public Api.Container<Chords.Site> GetSite(int siteID)
         {
             return Api.ApiInterface.GetSite(siteID);
         }
 
+        /// <summary>
+        ///     Gets a list of systems from the specified site.
+        /// </summary>
+        /// <param name="siteID"></param>
+        /// <returns></returns>
         public Api.Container<Chords.SystemList> GetSystemList(int siteID)
         {
             return Api.ApiInterface.GetSystemList(siteID);
         }
 
+        /// <summary>
+        ///     Gets a list of deployments from the specified system.
+        /// </summary>
+        /// <param name="systemID"></param>
+        /// <returns></returns>
         public Api.Container<Chords.InstrumentList> GetInstrumentList(int systemID)
         {
             return Api.ApiInterface.GetInstrumentList(systemID);
         }
 
+        /// <summary>
+        ///     Gets a list of data streams from a specified deployment.
+        /// </summary>
+        /// <param name="deploymentID"></param>
+        /// <returns></returns>
         public Api.Container<Data.DataStreamList> GetDataStreamList(int deploymentID)
         {
             return Api.ApiInterface.GetDataStreams(deploymentID);
         }
 
+        /// <summary>
+        ///     Gets a datastream by ID. Optionally provide its deployment ID for faster searching.
+        ///     Will search all streams in network if stream is not found within provided deployment (slow).
+        /// </summary>
+        /// <param name="streamID"></param>
+        /// <param name="deploymentID">
+        ///     Optional. Leave empty to search in all deployments in network or specify to get a quicker search.
+        /// </param>
+        /// <returns></returns>
         public Api.Container<Data.DataStream> GetDataStream(int streamID, int deploymentID = -1)
         {
             return Api.ApiInterface.GetDataStream(streamID, deploymentID);
         }
 
-        public string GetMeasurements(Data.DataStream stream, DateTime startTime, DateTime endTime)
+        /// <summary>
+        ///     Retrieves a list of measurements from the provided stream and time range and uploads them to the CHORDS instance.
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime">Optional. If left empty will be set to current time.</param>
+        /// <returns></returns>
+        public string GetMeasurements(Data.DataStream stream, DateTime startTime, DateTime endTime = default(DateTime))
         {
+            if(endTime == default(DateTime))
+            {
+                endTime = DateTime.UtcNow;
+            }
+
             var apiResponse = Api.ApiInterface.GetMeasurements(stream, startTime, endTime);
 
             if(apiResponse.Success)
@@ -81,6 +126,11 @@ namespace ChordsInterface.Service
             }
         }
 
+        /// <summary>
+        ///     Posts a single measurement to the CHORDS instance.
+        /// </summary>
+        /// <param name="measurement"></param>
+        /// <returns></returns>
         public string CreateMeasurement(Chords.Measurement measurement)
         {
             string uri = CreateMeasurementUri(measurement, true);
@@ -107,6 +157,12 @@ namespace ChordsInterface.Service
             }
         }
 
+        /// <summary>
+        ///     Builds a CHORDS Put Data uri given the provided measurement and test data flag.
+        /// </summary>
+        /// <param name="measurement"></param>
+        /// <param name="isTestData"></param>
+        /// <returns></returns>
         private string CreateMeasurementUri(Chords.Measurement measurement, bool isTestData = true)
         {
             string uri =

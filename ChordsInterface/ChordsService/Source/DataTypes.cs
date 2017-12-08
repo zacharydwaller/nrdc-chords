@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
+/// <summary>
+///     Contains a set of data structures used by the NRDC Data API.
+/// </summary>
 namespace ChordsInterface.Data
 {
     public class Site

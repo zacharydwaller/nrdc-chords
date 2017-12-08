@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ChordsInterface.Api
 {
+    /// <summary>
+    ///     A static class that contains a set of methods that converts NRDC data structures to CHORDS data structures.
+    /// </summary>
     public static class Converter
     {
         /** NRDC Data Types **/
