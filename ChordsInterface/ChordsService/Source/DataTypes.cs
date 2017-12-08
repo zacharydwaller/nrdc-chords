@@ -5,7 +5,7 @@ using ChordsInterface.Nrdc;
 
 namespace ChordsInterface.Data
 {
-    public class Site : NrdcType
+    public class Site
     {
         public int ID { get; set; }
         public string Name { get; set; }
@@ -15,44 +15,44 @@ namespace ChordsInterface.Data
         public double Elevation { get; set; }
     }
 
-    public class NrdcSystem : NrdcType
+    public class NrdcSystem
     {
         public int ID { get; set; }
         public string Name { get; set; }
     }
 
-    public class Deployment : NrdcType
+    public class Deployment
     {
         public int ID { get; set; }
         public string Name { get; set; }
     }
 
-    public class Category : NrdcType
+    public class Category
     {
         public int ID { get; set; }
         public string Name { get; set; }
     }
 
-    public class Property : NrdcType
+    public class Property
     {
         public int ID { get; set; }
         public string Name { get; set; }
     }
 
-    public class Unit : NrdcType
+    public class Unit
     {
         public int ID { get; set; }
         public string Name { get; set; }
         public string Abbreviation { get; set; }
     }
 
-    public class DataType : NrdcType
+    public class DataType
     {
         public int ID { get; set; }
         public string Name { get; set; }
     }
 
-    public class Interval : NrdcType
+    public class Interval
     {
         public uint Size { get; set; }
 	    public short Scales { get; set;}
@@ -75,7 +75,7 @@ namespace ChordsInterface.Data
     }
 
     [DataContract]
-    public class DataStreamList : NrdcType
+    public class DataStreamList
     {
         [DataMember] public bool Success { get; set; }
         [DataMember] public string Message { get; set; }
@@ -83,7 +83,7 @@ namespace ChordsInterface.Data
     }
 
     [DataContract]
-    public class DataStream : NrdcType
+    public class DataStream
     {
         [DataMember] public int ID { get; set; }
         [DataMember] public Site Site { get; set; }
@@ -96,7 +96,7 @@ namespace ChordsInterface.Data
         [DataMember] public String MeasurementInterval { get; set; }
     }
 
-    public class DataStreamRequest : NrdcType
+    public class DataStreamRequest
     {
         // Data stream you want
         public int DataStreamID { get; set; }
@@ -112,7 +112,7 @@ namespace ChordsInterface.Data
         }
     }
 
-    public class DataSpecification : NrdcType
+    public class DataSpecification
     {
         public string TimeZoneID { get; set; } = ChordsInterface.DefaultTimeZoneID;
         public string StartDateTime { get; set; }
@@ -132,7 +132,7 @@ namespace ChordsInterface.Data
         }
     }
 
-    public class AggregateDataSpecification : NrdcType
+    public class AggregateDataSpecification
     {
         public Interval AggregateInterval { get; set; }
         public string TimeZoneID { get; set; }
@@ -143,14 +143,14 @@ namespace ChordsInterface.Data
         public IList<DataStreamRequest> DataStreams { get; set; }
     }
 
-    public class Measurement : NrdcType
+    public class Measurement
     {
         public int Stream { get; set; }
         public string TimeStamp { get; set; }
         public Decimal Value { get; set; }
     }
 
-    public class AggregateMeasurement : NrdcType
+    public class AggregateMeasurement
     {
         public int Stream { get; set; }
         public string TimeStamp { get; set; }
@@ -159,14 +159,14 @@ namespace ChordsInterface.Data
         public short AggregateType { get; set; }
     }
 
-    public class DataDownloadResponse : NrdcType
+    public class DataDownloadResponse
     {
         public bool Success { get; set; }
         public string Message { get; set; }
         public DataDownload Data { get; set; }
     }
 
-    public class DataDownload : NrdcType
+    public class DataDownload
     {
         public long TotalNumberOfMeasurements { get; set; }
         public long StartIndex { get; set; }
@@ -174,7 +174,7 @@ namespace ChordsInterface.Data
         public IList<Measurement> Measurements { get; set; }
     }
 
-    public class AggregatedDataDownload : NrdcType
+    public class AggregatedDataDownload
     {
         public long TotalNumberOfMeasurements { get; set; }
         public long StartIndex { get; set; }
@@ -182,7 +182,7 @@ namespace ChordsInterface.Data
         public IList<AggregateMeasurement> Measurements { get; set; }
     }
 
-    public class CsvJobStatus : NrdcType
+    public class CsvJobStatus
     {
         public string JobID { get; set; }
         public string CurrentStatus { get; set; }

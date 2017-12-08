@@ -7,28 +7,28 @@ using ChordsInterface.Nrdc;
 
 namespace ChordsInterface.Infrastructure
 {
-    public class SiteList : NrdcType
+    public class SiteList
     {
         public bool Success { get; set; }
         public string Message { get; set; }
         public IList<Site> Data { get; set; }
     }
 
-    public class SystemList : NrdcType
+    public class SystemList
     {
         public bool Success { get; set; }
         public string Message { get; set; }
         public IList<System> Data { get; set; }
     }
 
-    public class DeploymentList : NrdcType
+    public class DeploymentList
     {
         public bool Success { get; set; }
         public string Message { get; set; }
         public IList<Deployment> Data { get; set; }
     }
 
-    public class Site : NrdcType
+    public class Site
     {
         public string __type { get; set; }
         public int ID { get; set; }
@@ -50,7 +50,7 @@ namespace ChordsInterface.Infrastructure
         public string GPSLandmark { get; set; }
     }
 
-    public class System : NrdcType
+    public class System
     {
         public int ID { get; set; }
         public string UniqueIdentifier { get; set; }
@@ -64,7 +64,7 @@ namespace ChordsInterface.Infrastructure
         public string ModificationDate { get; set; }
     }
 
-    public class Deployment : NrdcType
+    public class Deployment
     {
         public int ID { get; set; }
         public string UniqueIdentifier { get; set; }
