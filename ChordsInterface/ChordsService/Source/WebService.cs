@@ -42,12 +42,12 @@ namespace ChordsInterface.Service
 
         public Api.Container<Data.DataStreamList> GetDataStreams(int deploymentID)
         {
-            return null;
+            return Api.ApiInterface.GetDataStreams(deploymentID);
         }
 
-        public string GetMeasurements(int systemID, int streamID, DateTime startTime, DateTime endTime)
+        public string GetMeasurements(Data.DataStream stream, DateTime startTime, DateTime endTime)
         {
-            var apiResponse = Api.ApiInterface.GetMeasurements(systemID, streamID, startTime, endTime);
+            var apiResponse = Api.ApiInterface.GetMeasurements(stream, startTime, endTime);
 
             if(apiResponse.Success)
             {

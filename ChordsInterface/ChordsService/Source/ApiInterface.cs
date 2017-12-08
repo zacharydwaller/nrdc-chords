@@ -10,72 +10,61 @@ namespace ChordsInterface.Api
 {
     public static class ApiInterface
     {
-        public static Container<Chords.MeasurementList> GetMeasurements(int deploymentID, int streamID, DateTime startTime, DateTime endTime)
+        public static Container<Chords.MeasurementList> GetMeasurements(Data.DataStream stream, DateTime startTime, DateTime endTime)
         {
-            var dataStreamContainer = GetDataStream(deploymentID, streamID);
             var container = new Container<Chords.MeasurementList>();
 
-            if (dataStreamContainer.Success)
+            // Create stream request HTTP message
+            string startTimeString = startTime.ToString("s");
+            string endTimeString = endTime.ToString("s");
+
+            var dataSpecification = new Data.DataSpecification(stream, startTimeString, endTimeString);
+
+            var jsonContent = Json.Serialize(dataSpecification);
+            var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            // Create HTTP POST
+            string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/download";
+            var response = ChordsInterface.Http.PostAsync(uri, stringContent).Result;
+
+            // Check HTTP response
+            if (response.IsSuccessStatusCode)
             {
-                var stream = dataStreamContainer.Object;
+                string content = response.Content.ReadAsStringAsync().Result;
 
-                // Create stream request HTTP message
-                string startTimeString = startTime.ToString("s");
-                string endTimeString = endTime.ToString("s");
+                var dataDownloadResponse = Json.Parse<Data.DataDownloadResponse>(content);
 
-                var dataSpecification = new Data.DataSpecification(stream, startTimeString, endTimeString);
-
-                var jsonContent = Json.Serialize(dataSpecification);
-                var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-                // Create HTTP POST
-                string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/download";
-                var response = ChordsInterface.Http.PostAsync(uri, stringContent).Result;
-
-                // Check HTTP response
-                if (response.IsSuccessStatusCode)
+                // Check data download response
+                if (dataDownloadResponse.Success)
                 {
-                    string content = response.Content.ReadAsStringAsync().Result;
-
-                    var dataDownloadResponse = Json.Parse<Data.DataDownloadResponse>(content);
-
-                    // Check data download response
-                    if (dataDownloadResponse.Success)
+                    // Check data download
+                    if (dataDownloadResponse.Data.TotalNumberOfMeasurements > 0)
                     {
-                        // Check data download
-                        if (dataDownloadResponse.Data.TotalNumberOfMeasurements > 0)
-                        {
-                            var chordsList = new Chords.MeasurementList();
+                        var chordsList = new Chords.MeasurementList();
 
-                            foreach(var nrdcMeasurement in dataDownloadResponse.Data.Measurements)
-                            {
-                                var chordsMeasurement = Converter.Convert(nrdcMeasurement);
-                                chordsList.Data.Add(chordsMeasurement);
-                            }
-
-                            return container.Pass(chordsList);
-                        }
-                        else
+                        foreach(var nrdcMeasurement in dataDownloadResponse.Data.Measurements)
                         {
-                            return container.Fail("No measurements found");
+                            var chordsMeasurement = Converter.Convert(nrdcMeasurement);
+                            chordsList.Data.Add(chordsMeasurement);
                         }
+
+                        return container.Pass(chordsList);
                     }
                     else
                     {
-                        // Data download failed
-                        return container.Fail(dataDownloadResponse.Message);
+                        return container.Fail("No measurements found");
                     }
                 }
                 else
                 {
-                    // HTTP didn't return OK
-                    return container.Fail("Error From: " + response.RequestMessage + "\n" + response.ReasonPhrase);
+                    // Data download failed
+                    return container.Fail(dataDownloadResponse.Message);
                 }
             }
             else
             {
-                // GetDataStream failed, return with reason message
-                return container.Fail(dataStreamContainer.Message);
+                // HTTP didn't return OK
+                return container.Fail("Error From: " + response.RequestMessage + "\n" + response.ReasonPhrase);
             }
         }
 
@@ -160,9 +149,9 @@ namespace ChordsInterface.Api
             }
         }
 
-        /* Private Methods */
+        
 
-        private static Container<Data.DataStreamList> GetDataStreams(int deploymentID)
+        public static Container<Data.DataStreamList> GetDataStreams(int deploymentID)
         {
             var container = new Container<Data.DataStreamList>();
 
@@ -193,7 +182,7 @@ namespace ChordsInterface.Api
         }
 
         // Returns Container where Object is Data.DataStream
-        private static Container<Data.DataStream> GetDataStream(int deploymentID, int streamID)
+        public static Container<Data.DataStream> GetDataStream(int deploymentID, int streamID)
         {
             string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/deployment/" + deploymentID.ToString();
             string message = GetHttpContent(uri);
@@ -212,6 +201,8 @@ namespace ChordsInterface.Api
                 return container.Fail("Stream could not be found.");
             }
         }
+
+        /* Private Methods */
 
         private static string GetHttpContent(string uri)
         {
