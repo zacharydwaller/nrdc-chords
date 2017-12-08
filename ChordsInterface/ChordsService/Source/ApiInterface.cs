@@ -210,28 +210,50 @@ namespace ChordsInterface.Api
 
         /// <summary>
         ///     Gets a datastream by ID. Optionally provide its deployment ID for faster searching.
+        ///     Will search all streams in network if stream is not found within provided deployment (slow).
         /// </summary>
-        /// <param name="deploymentID"></param>
         /// <param name="streamID"></param>
+        /// <param name="deploymentID">
+        ///     Optional. Leave empty to search in all deployments in network or specify to get a quicker search.
+        /// </param>
         /// <returns></returns>
-        public static Container<Data.DataStream> GetDataStream(int deploymentID, int streamID)
+        public static Container<Data.DataStream> GetDataStream(int streamID, int deploymentID = -1)
         {
-            string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/deployment/" + deploymentID.ToString();
-            string message = GetHttpContent(uri);
-
-            var streamlist = Json.Parse<Data.DataStreamList>(message);
-            var stream = streamlist.Data.FirstOrDefault(s => s.ID == streamID);
-
             var container = new Container<Data.DataStream>();
+            string[] uri = new string[2];
+            string message;
+            Data.DataStreamList streamList;
+            Data.DataStream stream;
 
-            if (stream != null)
+            uri[0] = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/deployment/" + deploymentID.ToString();
+            uri[1] = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/all";
+
+            for(int i = 0; i < 2; i++)
             {
-                return container.Pass(stream);
-            } 
-            else
-            {
-                return container.Fail("Stream could not be found.");
+                // Deployment ID not provided
+                if (i == 0 && deploymentID <= 0) continue;
+
+                // Check data stream list
+                message = GetHttpContent(uri[i]);
+                streamList = Json.Parse<Data.DataStreamList>(message);
+                stream = streamList.Data.FirstOrDefault(s => s.ID == streamID);
+
+                // Stream found
+                if (stream != null)
+                {
+                    return container.Pass(stream);
+                }
             }
+
+            // Stream not found
+            string failMessage = "Data Stream not found. Stream ID: " + streamID;
+            
+            if(deploymentID > 0)
+            {
+                failMessage = failMessage + " Deployment ID: " + deploymentID;
+            }
+
+            return container.Fail(failMessage);
         }
 
         /* Private Methods */

@@ -23,7 +23,10 @@ namespace ChordsInterface.Service
         Api.Container<Chords.InstrumentList> GetInstrumentList(int systemID);
 
         [OperationContract]
-        Api.Container<Data.DataStreamList> GetDataStreams(int deploymentID);
+        Api.Container<Data.DataStreamList> GetDataStreamList(int deploymentID);
+
+        [OperationContract]
+        Api.Container<Data.DataStream> GetDataStream(int streamID, int deploymentID = -1);
 
         [OperationContract]
         string GetMeasurements(Data.DataStream stream, DateTime startTime, DateTime endTime);
