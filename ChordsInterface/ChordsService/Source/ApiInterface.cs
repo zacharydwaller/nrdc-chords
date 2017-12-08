@@ -10,14 +10,19 @@ namespace ChordsInterface.Api
 {
     public static class ApiInterface
     {
+        /// <summary>
+        ///     Retrieves a list of measurements from the data stream. From startTime to endTime.
+        /// </summary>
+        /// <param name="stream">Data stream to retrieve measurements from. Get this from the GetDataStream function.</param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns>A list of measurements</returns>
         public static Container<Chords.MeasurementList> GetMeasurements(Data.DataStream stream, DateTime startTime, DateTime endTime)
         {
             var container = new Container<Chords.MeasurementList>();
-
             // Create stream request HTTP message
             string startTimeString = startTime.ToString("s");
             string endTimeString = endTime.ToString("s");
-
             var dataSpecification = new Data.DataSpecification(stream, startTimeString, endTimeString);
 
             var jsonContent = Json.Serialize(dataSpecification);
@@ -68,6 +73,10 @@ namespace ChordsInterface.Api
             }
         }
 
+        /// <summary>
+        ///     Returns a list of all the sites in a given sensor network.
+        /// </summary>
+        /// <returns></returns>
         public static Container<Chords.SiteList> GetSiteList()
         {
             string uri = ChordsInterface.InfrastructureServiceUrl + ChordsInterface.NevCanAlias + "infrastructure/sites";
@@ -86,6 +95,11 @@ namespace ChordsInterface.Api
             }
         }
 
+        /// <summary>
+        ///     Retrieves the site metadata for a given site ID.
+        /// </summary>
+        /// <param name="siteID"></param>
+        /// <returns></returns>
         public static Container<Chords.Site> GetSite(int siteID)
         {
             var siteListContainer = GetSiteList();
@@ -109,6 +123,11 @@ namespace ChordsInterface.Api
             return container.Fail(siteListContainer.Message);
         }
 
+        /// <summary>
+        ///     Returns a list of systems that belong to a specified site.
+        /// </summary>
+        /// <param name="siteID"></param>
+        /// <returns></returns>
         public static Container<Chords.SystemList> GetSystemList(int siteID)
         {
             string uri = ChordsInterface.InfrastructureServiceUrl + ChordsInterface.NevCanAlias + "infrastructure/site/" + siteID.ToString() + "/systems";
@@ -129,6 +148,11 @@ namespace ChordsInterface.Api
             }
         }
         
+        /// <summary>
+        ///     Returns a list of all deployments belonging to a system.
+        /// </summary>
+        /// <param name="systemID"></param>
+        /// <returns></returns>
         public static Container<Chords.InstrumentList> GetInstrumentList(int systemID)
         {
             var uri = ChordsInterface.InfrastructureServiceUrl + ChordsInterface.NevCanAlias + "infrastructure/system/" + systemID.ToString() + "/deployments";
@@ -149,8 +173,11 @@ namespace ChordsInterface.Api
             }
         }
 
-        
-
+        /// <summary>
+        ///     Returns a list of all data streams belonging to a deployment.
+        /// </summary>
+        /// <param name="deploymentID"></param>
+        /// <returns></returns>
         public static Container<Data.DataStreamList> GetDataStreams(int deploymentID)
         {
             var container = new Container<Data.DataStreamList>();
@@ -181,7 +208,12 @@ namespace ChordsInterface.Api
             }
         }
 
-        // Returns Container where Object is Data.DataStream
+        /// <summary>
+        ///     Gets a datastream by ID. Optionally provide its deployment ID for faster searching.
+        /// </summary>
+        /// <param name="deploymentID"></param>
+        /// <param name="streamID"></param>
+        /// <returns></returns>
         public static Container<Data.DataStream> GetDataStream(int deploymentID, int streamID)
         {
             string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/deployment/" + deploymentID.ToString();
@@ -204,6 +236,11 @@ namespace ChordsInterface.Api
 
         /* Private Methods */
 
+        /// <summary>
+        ///     Http.GetAsync wrapper. Makes a GET call to the uri and returns the response content as a string.
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
         private static string GetHttpContent(string uri)
         {
             var response = ChordsInterface.Http.GetAsync(uri).Result;
