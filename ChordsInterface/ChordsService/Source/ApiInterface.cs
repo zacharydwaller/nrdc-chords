@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace ChordsInterface.Api
 {
@@ -82,8 +83,8 @@ namespace ChordsInterface.Api
         {
             string uri = ChordsInterface.InfrastructureServiceUrl + ChordsInterface.NevCanAlias + "infrastructure/sites";
             string message = GetHttpContent(uri);
-
-            var sitelist = Json.Parse<Infrastructure.SiteList>(message);
+            
+            var sitelist = JsonConvert.DeserializeObject<Infrastructure.SiteList>(message);
 
             if(sitelist.Success)
             {
@@ -92,7 +93,7 @@ namespace ChordsInterface.Api
             }
             else
             {
-                return new Container<Chords.SiteList>(null, false, "Could not retrieve site list: " + sitelist.Message);
+                return new Container<Chords.SiteList>(null, false, "Could not retrieve site list. Message from NRDC: " + sitelist.Message);
             }
         }
 
@@ -135,7 +136,7 @@ namespace ChordsInterface.Api
             }
             else
             {
-                return container.Fail(message);
+                return container.Fail("Could not retrieve system list. Message from NRDC: " + systemList.Message);
             }
         }
         
@@ -155,7 +156,7 @@ namespace ChordsInterface.Api
             }
             else
             {
-                return container.Fail("Could not get Instrument List: System ID: " + systemID.ToString());
+                return container.Fail("Could not retrieve deployment list. Message from NRDC: " + deploymentList.Message);
             }
         }
 
