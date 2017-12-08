@@ -1,11 +1,8 @@
-﻿<asp:Label runat="server" ForeColor="red" Font-Size="14pt" Font-Names="Verdana" />
-<asp:button runat="server" Borderstyle="Solid" Borderwidth="2px" Bordercolor="DarkGray" Backcolor="LightGray"/>
-
-<asp:Calendar runat="server"
+﻿<asp:Calendar runat="server"
     BorderWidth=2 CellSpacing=8
     BackColor="LightGray" BorderColor="DarkGray"
     SelectedDayStyle-BackColor="DarkBlue" SelectedDayStyle-ForeColor="White"
-    TodayDayStyle-BackColor="White"/>
+    TodayDayStyle-BackColor="White" />
 
 <asp:TreeView runat="server" ImageSet="Arrows">
             <HoverNodeStyle Font-Underline="True" ForeColor="LightBlue" />

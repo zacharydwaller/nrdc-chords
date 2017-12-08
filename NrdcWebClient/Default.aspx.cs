@@ -42,7 +42,6 @@ public partial class Default : System.Web.UI.Page
     protected void NetworkTree_TreeNodePopulate(object sender, TreeNodeEventArgs e)
     {
         string network = "NevCAN";
-
         if (e.Node.ChildNodes.Count == 0)
         {
             switch (e.Node.Depth)

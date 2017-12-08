@@ -1,5 +1,4 @@
 ﻿<%@ Page Language="C#" Theme="NCTheme" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="Default" %>
-<%@ Import Namespace="System.Threading" %>
 
 <!DOCTYPE html>
 
@@ -19,10 +18,8 @@
     <!-- Navigation -->
     <nav>
         <ul>
-            <li><a href="default.asp">Home</a></li>
-            <li><a href="news.asp">News</a></li>
-            <li><a href="contact.asp">Contact</a></li>
-            <li><a href="about.asp">About</a></li>
+            <li><a href="Default.aspx">Home</a></li>
+            <li><a href="About.aspx">About</a></li>
         </ul>
     </nav>
 
@@ -47,17 +44,16 @@
 
             <!-- Select Network Tab -->
             <div id="NetContent" class="tab-content" style="display:none;">
-                <!-- Close Button -->
-                <span onclick="closeTab()" class="closebtn">&times;</span>
 
                 <!-- Network List -->
-                NevCAN/Solar Nexus/Walker Basin
+                <asp:Button ID="NevCanButton" runat="server" CssClass="network-button" Text="NevCAN" />
+                <asp:Button ID="WalkerBasinButton" runat="server" CssClass="network-button" Text="Walker Basin Hydroclimate" />
+                <asp:Button ID="SolarNexusButton" runat="server" CssClass="network-button" Text="Solar Energy Nexus" />
+
             </div>
 
             <!-- Select Stream Tab -->
             <div id="StreamContent" class="tab-content" style="display:none;">
-                <!-- Close Button -->
-                <span onclick="closeTab()" class="closebtn">&times;</span>
 
                 <!-- Network Hierarchy -->
                 <asp:TreeView ID="NetworkTree" runat="server" MaxDataBindDepth="4" OnTreeNodePopulate="NetworkTree_TreeNodePopulate" ExpandDepth="1">
@@ -70,8 +66,6 @@
 
             <!-- Visualize Tab -->
             <div id="VisContent" class="tab-content" style="display:none;">
-                <!-- Close Button -->
-                <span onclick="closeTab()" class="closebtn">&times;</span>
 
                 <!-- Start Date Calender -->
                 <div>
