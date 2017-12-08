@@ -9,9 +9,9 @@ namespace ChordsInterface.Api
 {
     public static class ApiInterface
     {
-        public static Container<Chords.MeasurementList> GetMeasurements(int systemID, int streamID, DateTime startTime, DateTime endTime)
+        public static Container<Chords.MeasurementList> GetMeasurements(int deploymentID, int streamID, DateTime startTime, DateTime endTime)
         {
-            var dataStreamContainer = GetDataStream(systemID, streamID);
+            var dataStreamContainer = GetDataStream(deploymentID, streamID);
             var container = new Container<Chords.MeasurementList>();
 
             if (dataStreamContainer.Success)
@@ -161,25 +161,13 @@ namespace ChordsInterface.Api
 
         /* Private Methods */
 
-        private static string GetHttpContent(string uri)
-        {   
-            var response = ChordsInterface.Http.GetAsync(uri).Result;
-            return response.Content.ReadAsStringAsync().Result;
-        }
-
-        private static Container<Data.DataStreamList> GetDataStreams(int siteID)
+        private static Container<Data.DataStreamList> GetDataStreams(int deploymentID)
         {
             var container = new Container<Data.DataStreamList>();
 
-            if (siteID < 1)
-            {
-                return container.Fail("Site ID out of range");
-            }
-
             // Get data streams
-            string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/site/" + siteID.ToString();
-            var result = ChordsInterface.Http.GetAsync(uri).Result;
-            string message = result.Content.ReadAsStringAsync().Result;
+            string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/deployment/" + deploymentID.ToString();
+            string message = GetHttpContent(uri);
 
             var streamlist = Json.Parse<Data.DataStreamList>(message);
 
@@ -204,26 +192,30 @@ namespace ChordsInterface.Api
         }
 
         // Returns Container where Object is Data.DataStream
-        private static Container<Data.DataStream> GetDataStream(int streamID, int systemID)
+        private static Container<Data.DataStream> GetDataStream(int deploymentID, int streamID)
         {
-      
-            string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/system/" + systemID.ToString();
-            var result = ChordsInterface.Http.GetAsync(uri).Result;
-            string message = result.Content.ReadAsStringAsync().Result;
+            string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/deployment/" + deploymentID.ToString();
+            string message = GetHttpContent(uri);
 
             var streamlist = Json.Parse<Data.DataStreamList>(message);
             var stream = streamlist.Data.FirstOrDefault(s => s.ID == streamID);
+
+            var container = new Container<Data.DataStream>();
+
             if (stream != null)
             {
-                return new Container<Data.DataStream>(stream);
+                return container.Pass(stream);
             } 
             else
             {
-                return new Container<Data.DataStream>(null, false,"Stream could not be found");  
-
-
+                return container.Fail("Stream could not be found.");
             }
+        }
 
+        private static string GetHttpContent(string uri)
+        {
+            var response = ChordsInterface.Http.GetAsync(uri).Result;
+            return response.Content.ReadAsStringAsync().Result;
         }
     }
 }

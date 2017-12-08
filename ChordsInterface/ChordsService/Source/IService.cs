@@ -26,7 +26,7 @@ namespace ChordsInterface.Service
         Api.Container<Data.DataStreamList> GetDataStreams(int deploymentID);
 
         [OperationContract]
-        string GetMeasurements(int systemID, int streamID, DateTime startTime, DateTime endTime);
+        string GetMeasurements(int deploymentID, int streamID, DateTime startTime, DateTime endTime);
 
         [OperationContract]
         string CreateMeasurement(Chords.Measurement measurement);
