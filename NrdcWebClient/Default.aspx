@@ -17,125 +17,125 @@
 <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container">
-        <a class="navbar-brand" href="#">NRDC-CHORDS Companion Site</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Services</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+    <nav>
+        <ul>
+            <li><a href="default.asp">Home</a></li>
+            <li><a href="news.asp">News</a></li>
+            <li><a href="contact.asp">Contact</a></li>
+            <li><a href="about.asp">About</a></li>
+        </ul>
     </nav>
 
-    <!-- Column Grid -->
-    <div class="row">
-        <div id="NetTab" class="tab" onclick="openTab('NetTab', 'NetContent');">Select a Sensor Network</div>
-        <div id="StreamTab" class="tab" onclick="openTab('StreamTab', 'StreamContent');">Select a Data Stream</div>
-        <div id="VisTab" class="tab" onclick="openTab('VisTab', 'VisContent');">Visualize</div>
+    <!-- Tab Grid -->
+    <div class="tab-container">
+        <div class="tab-row">
+            <div id="NetTab" class="tab" onclick="openTab('NetTab', 'NetContent');">
+                Select a Sensor Network
+            </div>
+
+            <div id="StreamTab" class="tab" onclick="openTab('StreamTab', 'StreamContent');">
+                Select a Data Stream
+            </div>
+
+            <div id="VisTab" class="tab" onclick="openTab('VisTab', 'VisContent');">
+                Visualize
+            </div>
+        </div>
+
+        <!-- Expanding grid -->
+        <form runat="server">
+
+            <!-- Select Network Tab -->
+            <div id="NetContent" class="tab-content" style="display:none;">
+                <!-- Close Button -->
+                <span onclick="closeTab()" class="closebtn">&times;</span>
+
+                <!-- Network List -->
+                NevCAN/Solar Nexus/Walker Basin
+            </div>
+
+            <!-- Select Stream Tab -->
+            <div id="StreamContent" class="tab-content" style="display:none;">
+                <!-- Close Button -->
+                <span onclick="closeTab()" class="closebtn">&times;</span>
+
+                <!-- Network Hierarchy -->
+                <asp:TreeView ID="NetworkTree" runat="server" MaxDataBindDepth="5" OnTreeNodePopulate="NetworkTree_TreeNodePopulate">
+                    <Nodes>
+                        <asp:TreeNode PopulateOnDemand="True" Text="System List" Value="System List"></asp:TreeNode>
+                    </Nodes>
+                </asp:TreeView>
+
+            </div>
+
+            <!-- Visualize Tab -->
+            <div id="VisContent" class="tab-content" style="display:none;">
+                <!-- Close Button -->
+                <span onclick="closeTab()" class="closebtn">&times;</span>
+
+                <!-- Start Date Calender -->
+                <div>
+                    <p>
+                        Select Start Date
+                    </p>
+                    <asp:Calendar ID="StartTimeCalendar" runat="server"></asp:Calendar>
+                </div>
+                <div>
+                    <asp:Button ID="PostMeasurementsButton" runat="server" Text="Post Measurements" OnClick="ButtonGetSite_Click" />
+                </div>
+            </div>
+        </form>
     </div>
 
-    <!-- Expanding grid -->
-    <form runat="server">
-
-        <!-- Select Network Tab -->
-        <div id="NetContent" class="tab-content" style="display:none;">
-            <!-- Close Button -->
-            <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
-
-            <!-- Network List -->
-            NevCAN/Solar Nexus/Walker Basin
-
-        </div>
-
-        <!-- Select Stream Tab -->
-        <div id="StreamContent" class="tab-content" style="display:none;">
-            <!-- Close Button -->
-            <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
-
-            <!-- Network Hierarchy -->
-            <asp:TreeView ID="NetworkTree" runat="server" MaxDataBindDepth="5" OnTreeNodePopulate="NetworkTree_TreeNodePopulate">
-                <Nodes>
-                    <asp:TreeNode PopulateOnDemand="True" Text="System List" Value="System List"></asp:TreeNode>
-                </Nodes>
-            </asp:TreeView>
-
-        </div>
-
-        <!-- Visualize Tab -->
-        <div id="VisContent" class="tab-content" style="display:none;">
-            <!-- Close Button -->
-            <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
-
-            <!-- Start Date Calender -->
-            <div>
-                <p>
-                    Select Start Date
-                </p>
-                <asp:Calendar ID="StartTimeCalendar" runat="server"></asp:Calendar>
-            </div>
-            <div>
-                <asp:Button ID="PostMeasurementsButton" runat="server" Text="Post Measurements" OnClick="ButtonGetSite_Click" />
-            </div>
-        </div>
-    </form>
-
     <script>
-        function resetTabs()
+
+        var nevadaBlue = "rgb(0,46,98)";
+        var aliceBlueTransp = "rgba(240,248,255,0.75)";
+        var nevadaBlueTransp = "rgba(0,46,98,0.75)";
+
+        function resetTabContents()
         {
-            var tabs = document.getElementsByClassName("tab-content");
+            var contents = document.getElementsByClassName("tab-content");
 
             // Close tabs
             var i;
-            for (i = 0; i < tabs.length; i++)
+            for (i = 0; i < contents.length; i++)
             {
-                tabs[i].style.display = "none";
+                contents[i].style.display = "none";
             }
         }
 
-        function resetCols()
+        function resetTabs()
         {
-            var cols = document.getElementsByClassName("tab");
-            
-            // Recolor cols
+            var tabs = document.getElementsByClassName("tab");
             var i;
-            for(i = 0; i < cols.length; i++)
+
+            for(i = 0; i < tabs.length; i++)
             {
-                cols[i].style.backgroundColor = "AliceBlue";
-                cols[i].style.color = "Blue";
+                tabs[i].style.color = nevadaBlue;
+                tabs[i].style.backgroundColor = aliceBlueTransp;
             }
         }
 
-        function openTab(colName, tabName)
+        function closeTab()
         {
             resetTabs();
-            resetCols();
+            resetTabContents();
+        }
 
-            // Color selected col
-            var selectedCol = document.getElementById(colName);
-            selectedCol.style.backgroundColor = "blue";
-            selectedCol.style.color = "white";
+        function openTab(tabName, tabContentName)
+        {
+            resetTabs();
+            resetTabContents();
 
-            // Open selected tab
-            var selectedTab = document.getElementById(tabName);
-            selectedTab.style.display = "block";
-            selectedTab.style.backgroundColor = "blue";
+            // Color selected tab
+            var tab = document.getElementById(tabName);
+            tab.style.color = "white";
+            tab.style.backgroundColor = nevadaBlueTransp;
+
+            // Open tab content
+            var tabContent = document.getElementById(tabContentName);
+            tabContent.style.display = "block";
         }
     </script>
 
