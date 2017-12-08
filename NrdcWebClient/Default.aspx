@@ -62,7 +62,7 @@
                 <!-- Network Hierarchy -->
                 <asp:TreeView ID="NetworkTree" runat="server" MaxDataBindDepth="4" OnTreeNodePopulate="NetworkTree_TreeNodePopulate" ExpandDepth="1">
                     <Nodes>
-                        <asp:TreeNode PopulateOnDemand="True" Text="Sensor Network" Value="Sensor Network"></asp:TreeNode>
+                        <asp:TreeNode PopulateOnDemand="True" Text="Sensor Network" Value="Sensor Network" SelectAction="Expand"></asp:TreeNode>
                     </Nodes>
                 </asp:TreeView>
 

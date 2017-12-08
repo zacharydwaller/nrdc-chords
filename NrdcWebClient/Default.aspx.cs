@@ -12,6 +12,8 @@ public partial class Default : System.Web.UI.Page
     Thread th;
     ChordsService.ServiceClient client = new ChordsService.ServiceClient();
 
+    ChordsService.DataStream selectedStream;
+
     protected void Page_Load(object sender, EventArgs e)
     {
         StartTimeCalendar.SelectedDate = DateTime.UtcNow.AddDays(-1);
@@ -39,35 +41,105 @@ public partial class Default : System.Web.UI.Page
 
     protected void NetworkTree_TreeNodePopulate(object sender, TreeNodeEventArgs e)
     {
+        string network = "NevCAN";
+
         if (e.Node.ChildNodes.Count == 0)
         {
             switch (e.Node.Depth)
             {
                 case 0:
-                    string network = "NevCAN";
                     NetworkTree.Nodes[0].Text = network;
-                    //PopulateSites(e.Node, network);
+                    PopulateSites(e.Node);
                     break;
                 case 1:
-                    //PopulateSites(e.Node);
+                    PopulateSystems(e.Node);
+                    break;
+                case 2:
+                    PopulateDeployments(e.Node);
+                    break;
+                case 3:
+                    PopulateStreams(e.Node);
                     break;
             }
         }
     }
 
-    protected void PopulateSites(TreeNode node, string network)
+    protected void PopulateSites(TreeNode parent)
     {
         var container = client.GetSiteList();
-        /*
         var sitelist = container.Object;
 
         foreach(var site in sitelist.Data)
         {
-            var newNode = new TreeNode(site.Name);
-            newNode.PopulateOnDemand = true;
-            newNode.SelectAction = TreeNodeSelectAction.Expand;
-            node.ChildNodes.Add(newNode);
+            string tooltip =
+                "Alias: " + site.Name + "\n" +
+                "ID: " + site.ID + "\n";
+
+            var node = new TreeNode(site.Name, site.ID.ToString())
+            {
+                PopulateOnDemand = true,
+                SelectAction = TreeNodeSelectAction.Expand
+            };
+
+            parent.ChildNodes.Add(node);
         }
-        */
+    }
+
+    protected void PopulateSystems(TreeNode parent)
+    {
+        var container = client.GetSystemList(int.Parse(parent.Value));
+        var systemList = container.Object;
+
+        foreach(var system in systemList.Data)
+        {
+            string tooltip =
+                "Alias: " + system.Name + "\n" +
+                "ID: " + system.ID;
+
+            var node = new TreeNode(system.Name, system.ID.ToString())
+            {
+                PopulateOnDemand = true,
+                SelectAction = TreeNodeSelectAction.Expand,
+                ToolTip = tooltip
+            };
+
+            parent.ChildNodes.Add(node);
+        }
+    }
+
+    protected void PopulateDeployments(TreeNode parent)
+    {
+        var container = client.GetInstrumentList(int.Parse(parent.Value));
+        var deploymentList = container.Object;
+
+        foreach (var deployment in deploymentList.Data)
+        {
+            var node = new TreeNode(deployment.Name, deployment.ID.ToString())
+            {
+                PopulateOnDemand = true,
+                SelectAction = TreeNodeSelectAction.Expand
+            };
+
+            parent.ChildNodes.Add(node);
+        }
+    }
+
+    protected void PopulateStreams(TreeNode parent)
+    {
+        var container = client.GetDataStreams(int.Parse(parent.Value));
+        var deploymentList = container.Object;
+
+        foreach (var stream in deploymentList.Data)
+        {
+            string nodeText = "Data Stream. Type: " + stream.DataType.Name + ". Interval: " + stream.MeasurementInterval;
+            var node = new TreeNode(nodeText, stream.ID.ToString())
+            {
+                PopulateOnDemand = true,
+                SelectAction = TreeNodeSelectAction.Select,
+                Expanded = true
+            };
+
+            parent.ChildNodes.Add(node);
+        }
     }
 }

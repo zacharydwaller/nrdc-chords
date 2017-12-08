@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Api" />
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Data" />
   <xs:import namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords" />
   <xs:element name="GetSiteList">
     <xs:complexType>
@@ -73,8 +74,7 @@
   <xs:element name="GetMeasurements">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="deploymentID" type="xs:int" />
-        <xs:element minOccurs="0" name="streamID" type="xs:int" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/ChordsInterface.Data" minOccurs="0" name="stream" nillable="true" type="q6:DataStream" />
         <xs:element minOccurs="0" name="startTime" type="xs:dateTime" />
         <xs:element minOccurs="0" name="endTime" type="xs:dateTime" />
       </xs:sequence>
@@ -90,7 +90,7 @@
   <xs:element name="CreateMeasurement">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords" minOccurs="0" name="measurement" nillable="true" type="q6:Measurement" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords" minOccurs="0" name="measurement" nillable="true" type="q7:Measurement" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
