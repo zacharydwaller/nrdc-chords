@@ -11,6 +11,34 @@ namespace ChordsInterface.Api
     public static class ApiInterface
     {
         /// <summary>
+        ///     Gets all of the sensor networks in NRDC. Populates the Data and Infrastructure Url dictionaries.
+        /// </summary>
+        /// <returns></returns>
+        public static Container<Infrastructure.NetworkList> GetNetworkList()
+        {
+            var container = new Container<Infrastructure.NetworkList>();
+            string uri = ChordsInterface.NetworkDiscoveryUrl;
+            string message = GetHttpContent(uri);
+
+            var networkList = Json.Parse<Infrastructure.NetworkList>(message);
+
+            if(networkList.Success)
+            {
+                foreach(var network in networkList.Data)
+                {
+                    ChordsInterface.DataUrlDict.Add(network.Alias, network.DataUrl);
+                    ChordsInterface.InfrastructureUrlDict.Add(network.Alias, network.InfrastructureUrl);
+                }
+
+                return container.Pass(networkList);
+            }
+            else
+            {
+                return container.Fail("Unable to retrieve network list. Message from API: " + networkList.Message);
+            }
+        }
+
+        /// <summary>
         ///     Returns a list of all the sites in a given sensor network.
         /// </summary>
         /// <returns></returns>

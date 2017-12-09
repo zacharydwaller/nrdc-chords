@@ -9,6 +9,13 @@ using System.Threading.Tasks;
 /// </summary>
 namespace ChordsInterface.Infrastructure
 {
+    public class NetworkList
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public IList<Network> Data { get; set; }
+    }
+
     public class SiteList
     {
         public bool Success { get; set; }
@@ -28,6 +35,16 @@ namespace ChordsInterface.Infrastructure
         public bool Success { get; set; }
         public string Message { get; set; }
         public IList<Deployment> Data { get; set; }
+    }
+
+    public class Network
+    {
+        public string Name { get; set; }
+        public string Alias { get; set; }
+        public string InfrastructureUrl { get; set; }
+        public string DataUrl { get; set; }
+        public string ImageRetrievalUrl { get; set; }
+        public string WebCamInteractionUrl { get; set; }
     }
 
     public class Site

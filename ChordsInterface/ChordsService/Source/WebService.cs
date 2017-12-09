@@ -20,6 +20,11 @@ namespace ChordsInterface.Service
 
         private const string CreateMeasurementSuccess = "Measurement created.";
 
+        public Api.Container<Infrastructure.NetworkList> GetNetworkList()
+        {
+            return Api.ApiInterface.GetNetworkList();
+        }
+
         /// <summary>
         ///     Gets a list of all sites from a specified sensor network.
         /// </summary>

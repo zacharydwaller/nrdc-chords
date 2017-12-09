@@ -14,6 +14,9 @@ namespace ChordsInterface.Service
     public interface IService
     {
         [OperationContract]
+        Api.Container<Infrastructure.NetworkList> GetNetworkList();
+
+        [OperationContract]
         Api.Container<Chords.SiteList> GetSiteList();
 
         [OperationContract]
