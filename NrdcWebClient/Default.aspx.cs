@@ -255,16 +255,30 @@ public partial class Default : System.Web.UI.Page
     protected void PopulateStreams(TreeNode parent)
     {
         var container = client.GetDataStreamList(networkAlias, int.Parse(parent.Value));
-        var deploymentList = container.Object;
 
-        foreach (var stream in deploymentList.Data)
+        if(container.Success)
         {
-            // TODO: Create tooltip
+            var deploymentList = container.Object;
 
-            string nodeText = "Data Stream. Type: " + stream.DataType.Name + ". Interval: " + stream.MeasurementInterval;
-            var node = new TreeNode(nodeText, stream.ID.ToString())
+            foreach (var stream in deploymentList.Data)
             {
-                SelectAction = TreeNodeSelectAction.Select,
+                // TODO: Create tooltip
+
+                string nodeText = "Data Stream. Type: " + stream.DataType.Name + ". Interval: " + stream.MeasurementInterval;
+                var node = new TreeNode(nodeText, stream.ID.ToString())
+                {
+                    SelectAction = TreeNodeSelectAction.Select,
+                    Expanded = true
+                };
+
+                parent.ChildNodes.Add(node);
+            }
+        }
+        else
+        {
+            var node = new TreeNode(container.Message, "-1")
+            {
+                SelectAction = TreeNodeSelectAction.None,
                 Expanded = true
             };
 
