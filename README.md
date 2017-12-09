@@ -29,5 +29,4 @@ NevCAN: NevCAN/
 
 Walker Basin Hydroclimate: WalkerBasinHydro/
 
-Solar Energy Nexus: SolarNexus
-
+Solar Energy Nexus: SolarNexus/
