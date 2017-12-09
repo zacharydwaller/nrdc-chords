@@ -78,7 +78,9 @@
                 <!-- Network Hierarchy -->
                 <asp:UpdatePanel runat="server">
                     <ContentTemplate>
-                        <asp:TreeView ID="NetworkTree" runat="server" MaxDataBindDepth="4" OnTreeNodePopulate="NetworkTree_TreeNodePopulate" ExpandDepth="1">
+                        <asp:TreeView ID="NetworkTree" runat="server"
+                            MaxDataBindDepth="4" ExpandDepth="1"
+                            OnTreeNodePopulate="NetworkTree_TreeNodePopulate" OnSelectedNodeChanged="NetworkTree_SelectedNodeChanged">
                             <Nodes>
                                 <asp:TreeNode PopulateOnDemand="True" Text="Sensor Network" Value="Sensor Network" SelectAction="Expand"></asp:TreeNode>
                             </Nodes>

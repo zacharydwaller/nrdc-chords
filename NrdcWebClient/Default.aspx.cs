@@ -13,7 +13,9 @@ public partial class Default : System.Web.UI.Page
     ChordsService.ServiceClient client = new ChordsService.ServiceClient();
 
     string networkAlias = "NevCAN";
-    ChordsService.DataStream selectedStream;
+
+    int selectedDeploymentID;
+    int selectedStreamID;
 
     System.Drawing.Color nevadaBlue = System.Drawing.Color.FromArgb(0, 46, 98);
 
@@ -148,6 +150,21 @@ public partial class Default : System.Web.UI.Page
                     break;
             }
         }
+    }
+
+    /// <summary>
+    ///     Is called when the user selects a data stream in the network tree
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void NetworkTree_SelectedNodeChanged(object sender, EventArgs e)
+    {
+        TreeNode node = NetworkTree.SelectedNode;
+
+        // node Value is the streamID
+        selectedStreamID = int.Parse(node.Value);
+        // node parent is its deployment - need deploymentID for fast GetDataStream search
+        selectedDeploymentID = int.Parse(node.Parent.Value);
     }
 
     /// <summary>
