@@ -14,11 +14,21 @@ public partial class Default : System.Web.UI.Page
 
     ChordsService.DataStream selectedStream;
 
+    /// <summary>
+    ///     This method is executed as soon as the page loads.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void Page_Load(object sender, EventArgs e)
     {
         StartTimeCalendar.SelectedDate = DateTime.UtcNow.AddDays(-1);
     }
 
+    /// <summary>
+    ///     Is executed with the GetSite button is clicked.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void ButtonGetSite_Click(object sender, EventArgs e)
     {
         th = new Thread(PostMeasurements);
@@ -26,6 +36,9 @@ public partial class Default : System.Web.UI.Page
         th.Join();
     }
 
+    /// <summary>
+    ///     Posts measurements from the currently selected data stream from the start time until the current time.
+    /// </summary>
     protected void PostMeasurements()
     {
         /*
