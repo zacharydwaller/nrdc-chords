@@ -22,11 +22,12 @@ namespace ChordsInterface.Api
 
             var networkList = Json.Parse<Infrastructure.NetworkList>(message);
 
-            if(networkList.Success)
+            if (networkList.Success)
             {
                 // Populate dictionaries with network Urls
-                // Add or update each entry in dictionary
-                foreach(var network in networkList.Data)
+                ChordsInterface.DataUrlDict.Clear();
+                ChordsInterface.InfrastructureUrlDict.Clear();
+                foreach (var network in networkList.Data)
                 {
                     ChordsInterface.DataUrlDict[network.Alias] = network.DataUrl;
                     ChordsInterface.InfrastructureUrlDict[network.Alias] = network.InfrastructureUrl;
@@ -43,24 +44,25 @@ namespace ChordsInterface.Api
         /// <summary>
         ///     Returns a list of all the sites in a given sensor network.
         /// </summary>
+        /// <param name="networkAlias"></param>
         /// <returns></returns>
         public static Container<Chords.SiteList> GetSiteList(string networkAlias)
         {
             var container = new Container<Chords.SiteList>();
-            string infrastructureUrl = GetInfrastructureUrl(networkAlias);
+            var urlContainer = GetInfrastructureUrl(networkAlias);
 
             // Couldn't find infrastructure Url
-            if(infrastructureUrl == string.Empty)
+            if (!urlContainer.Success)
             {
-                return container.Fail("Unable to find Infrastructure Url for network alias: " + networkAlias);
+                return container.Fail(urlContainer.Message);
             }
 
-            string uri = infrastructureUrl + "infrastructure/sites";
+            string uri = urlContainer.Object + "infrastructure/sites";
             string message = GetHttpContent(uri);
-            
-            var sitelist = JsonConvert.DeserializeObject<Infrastructure.SiteList>(message);
 
-            if(sitelist.Success)
+            var sitelist = Json.Parse<Infrastructure.SiteList>(message);
+
+            if (sitelist.Success)
             {
                 var chordsList = Converter.Convert(sitelist);
                 return new Container<Chords.SiteList>(chordsList);
@@ -74,11 +76,12 @@ namespace ChordsInterface.Api
         /// <summary>
         ///     Retrieves the site metadata for a given site ID.
         /// </summary>
+        /// <param name="sensorNetwork"></param>
         /// <param name="siteID"></param>
         /// <returns></returns>
-        public static Container<Chords.Site> GetSite(int siteID)
+        public static Container<Chords.Site> GetSite(string sensorNetwork, int siteID)
         {
-            var siteListContainer = GetSiteList("NevCAN");
+            var siteListContainer = GetSiteList(sensorNetwork);
             var container = new Container<Chords.Site>();
 
             if (siteListContainer.Success)
@@ -104,14 +107,21 @@ namespace ChordsInterface.Api
         /// </summary>
         /// <param name="siteID"></param>
         /// <returns></returns>
-        public static Container<Chords.SystemList> GetSystemList(int siteID)
+        public static Container<Chords.SystemList> GetSystemList(string networkAlias, int siteID)
         {
-            string uri = ChordsInterface.InfrastructureServiceUrl + ChordsInterface.NevCanAlias + "infrastructure/site/" + siteID.ToString() + "/systems";
+            var container = new Container<Chords.SystemList>();
+            var urlContainer = GetInfrastructureUrl(networkAlias);
+
+            // Couldn't find infrastructure Url
+            if (!urlContainer.Success)
+            {
+                return container.Fail(urlContainer.Message);
+            }
+
+            string uri = urlContainer.Object + "infrastructure/site/" + siteID.ToString() + "/systems";
             string message = GetHttpContent(uri);
 
             var systemList = Json.Parse<Infrastructure.SystemList>(message);
-
-            var container = new Container<Chords.SystemList>();
 
             if (systemList.Success)
             {
@@ -123,22 +133,29 @@ namespace ChordsInterface.Api
                 return container.Fail("Could not retrieve system list. Message from NRDC: " + systemList.Message);
             }
         }
-        
+
         /// <summary>
         ///     Returns a list of all deployments belonging to a system.
         /// </summary>
         /// <param name="systemID"></param>
         /// <returns></returns>
-        public static Container<Chords.InstrumentList> GetInstrumentList(int systemID)
+        public static Container<Chords.InstrumentList> GetInstrumentList(string networkAlias, int systemID)
         {
-            var uri = ChordsInterface.InfrastructureServiceUrl + ChordsInterface.NevCanAlias + "infrastructure/system/" + systemID.ToString() + "/deployments";
+            var container = new Container<Chords.InstrumentList>();
+            var urlContainer = GetInfrastructureUrl(networkAlias);
+
+            // Couldn't find infrastructure Url
+            if(!urlContainer.Success)
+            {
+                return container.Fail(urlContainer.Message);
+            }
+
+            var uri = urlContainer.Object + "infrastructure/system/" + systemID.ToString() + "/deployments";
             var message = GetHttpContent(uri);
 
             var deploymentList = Json.Parse<Infrastructure.DeploymentList>(message);
 
-            var container = new Container<Chords.InstrumentList>();
-
-            if(deploymentList.Success)
+            if (deploymentList.Success)
             {
                 var chordsList = Converter.Convert(deploymentList);
                 return container.Pass(chordsList);
@@ -154,12 +171,19 @@ namespace ChordsInterface.Api
         /// </summary>
         /// <param name="deploymentID"></param>
         /// <returns></returns>
-        public static Container<Data.DataStreamList> GetDataStreams(int deploymentID)
+        public static Container<Data.DataStreamList> GetDataStreams(string networkAlias, int deploymentID)
         {
             var container = new Container<Data.DataStreamList>();
+            var urlContainer = GetDataUrl(networkAlias);
+
+            // Couldn't find data services Url
+            if(!urlContainer.Success)
+            {
+                return container.Fail(urlContainer.Message);
+            }
 
             // Get data streams
-            string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/deployment/" + deploymentID.ToString();
+            string uri = urlContainer.Object + "data/streams/deployment/" + deploymentID.ToString();
             string message = GetHttpContent(uri);
 
             var streamlist = Json.Parse<Data.DataStreamList>(message);
@@ -193,18 +217,27 @@ namespace ChordsInterface.Api
         ///     Optional. Leave empty to search in all deployments in network or specify to get a quicker search.
         /// </param>
         /// <returns></returns>
-        public static Container<Data.DataStream> GetDataStream(int streamID, int deploymentID = -1)
+        public static Container<Data.DataStream> GetDataStream(string networkAlias, int streamID, int deploymentID = -1)
         {
             var container = new Container<Data.DataStream>();
+            var urlContainer = GetDataUrl(networkAlias);
+
+            // Couldn't find data services Url
+            if(!urlContainer.Success)
+            {
+                return container.Fail(urlContainer.Message); 
+            }
+
             string[] uri = new string[2];
             string message;
             Data.DataStreamList streamList;
             Data.DataStream stream;
 
-            uri[0] = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/deployment/" + deploymentID.ToString();
-            uri[1] = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/streams/all";
+            uri[0] = urlContainer.Object + "data/streams/deployment/" + deploymentID.ToString();
+            uri[1] = urlContainer.Object + "data/streams/all";
 
-            for(int i = 0; i < 2; i++)
+            // Check via deployment ID first, then via all streams
+            for (int i = 0; i < 2; i++)
             {
                 // Deployment ID not provided
                 if (i == 0 && deploymentID <= 0) continue;
@@ -223,8 +256,9 @@ namespace ChordsInterface.Api
 
             // Stream not found
             string failMessage = "Data Stream not found. Stream ID: " + streamID;
-            
-            if(deploymentID > 0)
+
+            // Add deployment ID to fail message if it was provided
+            if (deploymentID > 0)
             {
                 failMessage = failMessage + " Deployment ID: " + deploymentID;
             }
@@ -313,9 +347,10 @@ namespace ChordsInterface.Api
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <returns></returns>
-        private static string GetInfrastructureUrl(string networkAlias)
+        private static Api.Container<string> GetInfrastructureUrl(string networkAlias)
         {
             string infrastructureUrl;
+            var container = new Api.Container<string>();
 
             // Check for url in dictionary
             if (!ChordsInterface.InfrastructureUrlDict.TryGetValue(networkAlias, out infrastructureUrl))
@@ -328,21 +363,16 @@ namespace ChordsInterface.Api
                     // Try the dictionary again
                     if (ChordsInterface.InfrastructureUrlDict.TryGetValue(networkAlias, out infrastructureUrl))
                     {
-                        return infrastructureUrl;
-                    }
-                    else
-                    {
-                        return string.Empty;
+                        return container.Pass(infrastructureUrl);
                     }
                 }
-                else
-                {
-                    // Still couldn't find url, return empty string
-                    return string.Empty;
-                }
+
+                // Still couldn't find url, return empty string
+                return container.Fail("Couldn't find Infrastructure Services Url for Sensor Network: " + networkAlias);
             }
 
-            return infrastructureUrl;
+            // Url was in dictionary
+            return container.Pass(infrastructureUrl);
         }
 
         /// <summary>
@@ -350,8 +380,9 @@ namespace ChordsInterface.Api
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <returns></returns>
-        private static string GetDataUrl(string networkAlias)
+        private static Api.Container<string> GetDataUrl(string networkAlias)
         {
+            var container = new Api.Container<string>();
             string dataUrl;
 
             // Check for url in dictionary
@@ -362,16 +393,19 @@ namespace ChordsInterface.Api
 
                 if (networkList.Success)
                 {
-                    return ChordsInterface.DataUrlDict[networkAlias];
+                    // Try the dictionary again
+                    if (ChordsInterface.DataUrlDict.TryGetValue(networkAlias, out dataUrl))
+                    {
+                        return container.Pass(dataUrl);
+                    }
                 }
-                else
-                {
-                    // Still couldn't find url, return empty string
-                    return string.Empty;
-                }
+
+                // Still couldn't find url, return empty string
+                return container.Fail("Couldn't find Data Services Url for Sensor Network: " + networkAlias);
             }
 
-            return dataUrl;
+            // Url was in dictionary
+            return container.Pass(dataUrl);
         }
     }
 }

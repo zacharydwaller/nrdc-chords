@@ -20,6 +20,10 @@ namespace ChordsInterface.Service
 
         private const string CreateMeasurementSuccess = "Measurement created.";
 
+        /// <summary>
+        ///     Gets a list of all the sensor networks in the NRDC.
+        /// </summary>
+        /// <returns></returns>
         public Api.Container<Infrastructure.NetworkList> GetNetworkList()
         {
             return Api.ApiInterface.GetNetworkList();
@@ -39,9 +43,9 @@ namespace ChordsInterface.Service
         /// </summary>
         /// <param name="siteID"></param>
         /// <returns></returns>
-        public Api.Container<Chords.Site> GetSite(int siteID)
+        public Api.Container<Chords.Site> GetSite(string networkAlias, int siteID)
         {
-            return Api.ApiInterface.GetSite(siteID);
+            return Api.ApiInterface.GetSite(networkAlias, siteID);
         }
 
         /// <summary>
@@ -49,9 +53,9 @@ namespace ChordsInterface.Service
         /// </summary>
         /// <param name="siteID"></param>
         /// <returns></returns>
-        public Api.Container<Chords.SystemList> GetSystemList(int siteID)
+        public Api.Container<Chords.SystemList> GetSystemList(string networkAlias, int siteID)
         {
-            return Api.ApiInterface.GetSystemList(siteID);
+            return Api.ApiInterface.GetSystemList(networkAlias, siteID);
         }
 
         /// <summary>
@@ -59,9 +63,9 @@ namespace ChordsInterface.Service
         /// </summary>
         /// <param name="systemID"></param>
         /// <returns></returns>
-        public Api.Container<Chords.InstrumentList> GetInstrumentList(int systemID)
+        public Api.Container<Chords.InstrumentList> GetInstrumentList(string networkAlias, int systemID)
         {
-            return Api.ApiInterface.GetInstrumentList(systemID);
+            return Api.ApiInterface.GetInstrumentList(networkAlias, systemID);
         }
 
         /// <summary>
@@ -69,9 +73,9 @@ namespace ChordsInterface.Service
         /// </summary>
         /// <param name="deploymentID"></param>
         /// <returns></returns>
-        public Api.Container<Data.DataStreamList> GetDataStreamList(int deploymentID)
+        public Api.Container<Data.DataStreamList> GetDataStreamList(string networkAlias, int deploymentID)
         {
-            return Api.ApiInterface.GetDataStreams(deploymentID);
+            return Api.ApiInterface.GetDataStreams(networkAlias, deploymentID);
         }
 
         /// <summary>
@@ -83,9 +87,9 @@ namespace ChordsInterface.Service
         ///     Optional. Leave empty to search in all deployments in network or specify to get a quicker search.
         /// </param>
         /// <returns></returns>
-        public Api.Container<Data.DataStream> GetDataStream(int streamID, int deploymentID = -1)
+        public Api.Container<Data.DataStream> GetDataStream(string networkAlias, int streamID, int deploymentID = -1)
         {
-            return Api.ApiInterface.GetDataStream(streamID, deploymentID);
+            return Api.ApiInterface.GetDataStream(networkAlias, streamID, deploymentID);
         }
 
         /// <summary>
