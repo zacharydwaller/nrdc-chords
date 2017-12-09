@@ -15,11 +15,11 @@ namespace ChordsInterface
 
         // Dictionary of sensor network infrastructure urls
         // Key: Network Alias; Value: Infrastructure Url
-        public static Dictionary<string, string> InfrastructureUrlDict { get; private set; } = new Dictionary<string, string>();
+        public static Dictionary<string, string> InfrastructureUrlDict { get; private set; } = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 
         // Dictionary of sensor network data urls
         // Key: Network Alias; Value: Data Url
-        public static Dictionary<string, string> DataUrlDict { get; private set; } = new Dictionary<string, string>();
+        public static Dictionary<string, string> DataUrlDict { get; private set; } = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 
         public static string InfrastructureServiceUrl { get { return infrastructureServiceUrl; } }
         public static string DataServiceUrl { get { return dataServiceUrl; } }

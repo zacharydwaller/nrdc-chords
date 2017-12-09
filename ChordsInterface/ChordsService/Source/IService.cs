@@ -17,7 +17,7 @@ namespace ChordsInterface.Service
         Api.Container<Infrastructure.NetworkList> GetNetworkList();
 
         [OperationContract]
-        Api.Container<Chords.SiteList> GetSiteList();
+        Api.Container<Chords.SiteList> GetSiteList(string networkAlias);
 
         [OperationContract]
         Api.Container<Chords.Site> GetSite(int siteID);

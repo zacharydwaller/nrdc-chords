@@ -29,9 +29,9 @@ namespace ChordsInterface.Service
         ///     Gets a list of all sites from a specified sensor network.
         /// </summary>
         /// <returns></returns>
-        public Api.Container<Chords.SiteList> GetSiteList()
+        public Api.Container<Chords.SiteList> GetSiteList(string networkAlias)
         {
-            return Api.ApiInterface.GetSiteList();
+            return Api.ApiInterface.GetSiteList(networkAlias);
         }
         
         /// <summary>

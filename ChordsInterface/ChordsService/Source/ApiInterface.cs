@@ -24,10 +24,12 @@ namespace ChordsInterface.Api
 
             if(networkList.Success)
             {
+                // Populate dictionaries with network Urls
+                // Add or update each entry in dictionary
                 foreach(var network in networkList.Data)
                 {
-                    ChordsInterface.DataUrlDict.Add(network.Alias, network.DataUrl);
-                    ChordsInterface.InfrastructureUrlDict.Add(network.Alias, network.InfrastructureUrl);
+                    ChordsInterface.DataUrlDict[network.Alias] = network.DataUrl;
+                    ChordsInterface.InfrastructureUrlDict[network.Alias] = network.InfrastructureUrl;
                 }
 
                 return container.Pass(networkList);
@@ -42,9 +44,18 @@ namespace ChordsInterface.Api
         ///     Returns a list of all the sites in a given sensor network.
         /// </summary>
         /// <returns></returns>
-        public static Container<Chords.SiteList> GetSiteList()
+        public static Container<Chords.SiteList> GetSiteList(string networkAlias)
         {
-            string uri = ChordsInterface.InfrastructureServiceUrl + ChordsInterface.NevCanAlias + "infrastructure/sites";
+            var container = new Container<Chords.SiteList>();
+            string infrastructureUrl = GetInfrastructureUrl(networkAlias);
+
+            // Couldn't find infrastructure Url
+            if(infrastructureUrl == string.Empty)
+            {
+                return container.Fail("Unable to find Infrastructure Url for network alias: " + networkAlias);
+            }
+
+            string uri = infrastructureUrl + "infrastructure/sites";
             string message = GetHttpContent(uri);
             
             var sitelist = JsonConvert.DeserializeObject<Infrastructure.SiteList>(message);
@@ -67,7 +78,7 @@ namespace ChordsInterface.Api
         /// <returns></returns>
         public static Container<Chords.Site> GetSite(int siteID)
         {
-            var siteListContainer = GetSiteList();
+            var siteListContainer = GetSiteList("NevCAN");
             var container = new Container<Chords.Site>();
 
             if (siteListContainer.Success)
@@ -295,6 +306,72 @@ namespace ChordsInterface.Api
         {
             var response = ChordsInterface.Http.GetAsync(uri).Result;
             return response.Content.ReadAsStringAsync().Result;
+        }
+
+        /// <summary>
+        ///     Returns the Infrastructure Url for the specified sensor network. Returns empty string if no Url was found.
+        /// </summary>
+        /// <param name="networkAlias"></param>
+        /// <returns></returns>
+        private static string GetInfrastructureUrl(string networkAlias)
+        {
+            string infrastructureUrl;
+
+            // Check for url in dictionary
+            if (!ChordsInterface.InfrastructureUrlDict.TryGetValue(networkAlias, out infrastructureUrl))
+            {
+                // Couldn't find in dictionary, call GetNetworks to populate dictionaries and try again
+                var networkList = GetNetworkList();
+
+                if (networkList.Success)
+                {
+                    // Try the dictionary again
+                    if (ChordsInterface.InfrastructureUrlDict.TryGetValue(networkAlias, out infrastructureUrl))
+                    {
+                        return infrastructureUrl;
+                    }
+                    else
+                    {
+                        return string.Empty;
+                    }
+                }
+                else
+                {
+                    // Still couldn't find url, return empty string
+                    return string.Empty;
+                }
+            }
+
+            return infrastructureUrl;
+        }
+
+        /// <summary>
+        ///     Returns the Data Url for the specified sensor network. Returns empty string if no Url was found.
+        /// </summary>
+        /// <param name="networkAlias"></param>
+        /// <returns></returns>
+        private static string GetDataUrl(string networkAlias)
+        {
+            string dataUrl;
+
+            // Check for url in dictionary
+            if (!ChordsInterface.DataUrlDict.TryGetValue(networkAlias, out dataUrl))
+            {
+                // Couldn't find in dictionary, call GetNetworks to populate dictionaries and try again
+                var networkList = GetNetworkList();
+
+                if (networkList.Success)
+                {
+                    return ChordsInterface.DataUrlDict[networkAlias];
+                }
+                else
+                {
+                    // Still couldn't find url, return empty string
+                    return string.Empty;
+                }
+            }
+
+            return dataUrl;
         }
     }
 }
