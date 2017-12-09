@@ -12,15 +12,17 @@ public partial class Default : System.Web.UI.Page
     Thread th;
     ChordsService.ServiceClient client = new ChordsService.ServiceClient();
 
+    string chordsViewPage = "http://ec2-13-57-134-131.us-west-1.compute.amazonaws.com/instruments/1";
+
     string networkAlias = "NevCAN";
 
     int selectedDeploymentID;
     int selectedStreamID;
 
-    System.Drawing.Color nevadaBlue = System.Drawing.Color.FromArgb(0, 46, 98);
+    static string nevadaBlue = "rgba(0,46,98,0.75)";
 
-    System.Drawing.Color defaultButtonColor = System.Drawing.Color.FromArgb(190, System.Drawing.Color.AliceBlue);
-    System.Drawing.Color selectedButtonColor = System.Drawing.Color.DarkSlateBlue;
+    static string defaultButtonColor = "rgba(240,248,255,0.75)";
+    string selectedButtonColor = "rgba(0,46,98,1.0)";
 
     /// <summary>
     ///     This method is executed as soon as the page loads.
@@ -29,7 +31,7 @@ public partial class Default : System.Web.UI.Page
     /// <param name="e"></param>
     protected void Page_Load(object sender, EventArgs e)
     {
-        StartTimeCalendar.SelectedDate = DateTime.UtcNow.AddDays(-1);
+        //StartTimeCalendar.SelectedDate = DateTime.UtcNow.AddDays(-1);
         NetworkTree.Nodes[0].Text = networkAlias;
     }
 
@@ -73,11 +75,19 @@ public partial class Default : System.Web.UI.Page
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    protected void ButtonGetSite_Click(object sender, EventArgs e)
+    protected void StreamButton_Click(object sender, EventArgs e)
     {
         th = new Thread(PostMeasurements);
         th.Start();
         th.Join();
+    }
+
+    protected void ChordsButton_Click(object sender, EventArgs e)
+    {
+        string scriptCall = string.Format("window.open('{0}');", chordsViewPage);
+
+        Page.ClientScript.RegisterStartupScript(
+            this.GetType(), "OpenWindow", scriptCall, true);
     }
 
     /* Other Methods */
@@ -105,7 +115,8 @@ public partial class Default : System.Web.UI.Page
     protected void NetworkButtonClick(Button button)
     {
         UncolorNetworkButtons();
-        button.BackColor = selectedButtonColor;
+        button.Style["color"] = "White";
+        button.Style["background-color"] = selectedButtonColor;
 
         TreeNode root = NetworkTree.Nodes[0];
         root.Text = networkAlias;
@@ -118,9 +129,12 @@ public partial class Default : System.Web.UI.Page
     /// </summary>
     protected void UncolorNetworkButtons()
     {
-        NevCanButton.BackColor = defaultButtonColor;
-        WalkerBasinButton.BackColor = defaultButtonColor;
-        SolarNexusButton.BackColor = defaultButtonColor;
+        NevCanButton.Style["color"] = nevadaBlue;
+        NevCanButton.Style["background-color"] = defaultButtonColor;
+        WalkerBasinButton.Style["color"] = nevadaBlue;
+        WalkerBasinButton.Style["background-color"] = defaultButtonColor;
+        SolarNexusButton.Style["color"] = nevadaBlue;
+        SolarNexusButton.Style["background-color"] = defaultButtonColor;
     }
 
     /* Network Tree Methods */

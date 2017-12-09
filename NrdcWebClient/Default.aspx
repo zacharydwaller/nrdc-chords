@@ -47,14 +47,14 @@
             <!-- Select Network Tab -->
             <div id="NetContent" class="tab-content" style="display:none;">
 
-                <!-- Network List -->
+                <!-- Network Buttons -->
                 <asp:UpdatePanel runat="server">
                     <ContentTemplate>
                         <asp:Button ID="NevCanButton" runat="server" CssClass="network-button" Text="NevCAN"
                             OnClick="NevCanButton_Click" UseSubmitBehavior="False" />
                     </ContentTemplate>
                 </asp:UpdatePanel>
-                    
+
                 <asp:UpdatePanel runat="server">
                     <ContentTemplate>
                         <asp:Button ID="WalkerBasinButton" runat="server" CssClass="network-button" Text="Walker Basin Hydroclimate"
@@ -93,15 +93,29 @@
             <!-- Visualize Tab -->
             <div id="VisContent" class="tab-content" style="display:none;">
 
-                <!-- Start Date Calender -->
-                <div>
-                    <p>
-                        Select Start Date
-                    </p>
-                    <asp:Calendar ID="StartTimeCalendar" runat="server"></asp:Calendar>
-                </div>
-                <div>
-                    <asp:Button ID="PostMeasurementsButton" runat="server" Text="Post Measurements" OnClick="ButtonGetSite_Click" />
+                <div class="column-row">
+                    <!-- Start Date Calender -->
+                    <div class="column width-33">
+                        <p style="font-size: 18pt; font-weight: 700">
+                            Select Start Date
+                        </p>
+                        <asp:UpdatePanel runat="server">
+                            <ContentTemplate>
+                                <asp:Calendar ID="StartTimeCalendar" runat="server" CssClass="calendar"></asp:Calendar>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                    </div>
+                    <div class="column width-66">
+                        <!-- Stream Button -->
+                        <asp:UpdatePanel runat="server">
+                            <ContentTemplate>
+                                <asp:Button ID="StreamButton" runat="server" CssClass="network-button" Text="Start Streaming" OnClick="StreamButton_Click" />
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+
+                        <!-- Go To CHORDS Button -->
+                        <asp:Button ID="ChordsButton" runat="server" CssClass="network-button" Text="Go To CHORDS" OnClick="ChordsButton_Click" />
+                    </div>
                 </div>
             </div>
         </form>
