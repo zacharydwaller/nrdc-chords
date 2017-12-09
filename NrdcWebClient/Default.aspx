@@ -106,10 +106,17 @@
                         </asp:UpdatePanel>
                     </div>
                     <div class="column width-66">
+                        <p>
+                            <asp:UpdatePanel runat="server">
+                                <ContentTemplate>
+                                    <asp:Label ID="NodeLabel" runat="server" Text="No Data Stream Selected" Font-Size="18pt" Font-Bold="true" />
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+                        </p>
                         <!-- Stream Button -->
                         <asp:UpdatePanel runat="server">
-                            <ContentTemplate>
-                                <asp:Button ID="StreamButton" runat="server" CssClass="network-button" Text="Start Streaming" OnClick="StreamButton_Click" />
+                                <ContentTemplate>
+                                    <asp:Button ID="StreamButton" runat="server" CssClass="network-button" Text="Start Streaming" OnClick="StreamButton_Click" />
                             </ContentTemplate>
                         </asp:UpdatePanel>
 

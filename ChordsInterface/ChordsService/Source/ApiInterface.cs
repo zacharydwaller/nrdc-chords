@@ -289,7 +289,15 @@ namespace ChordsInterface.Api
             var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
             // Create HTTP POST
-            string uri = GetDataUrl(networkAlias) + "data/download";
+            var urlContainer = GetDataUrl(networkAlias);
+
+            if(!urlContainer.Success)
+            {
+                return container.Fail(urlContainer.Message);
+            }
+
+            string uri = GetDataUrl(networkAlias).Object + "data/download";
+
             var response = ChordsInterface.Http.PostAsync(uri, stringContent).Result;
 
             // Check HTTP response

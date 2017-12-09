@@ -16,8 +16,8 @@ public partial class Default : System.Web.UI.Page
 
     string networkAlias = "NevCAN";
 
-    int selectedDeploymentID;
-    int selectedStreamID;
+    string deploymentID;
+    string streamID;
 
     static string nevadaBlue = "rgba(0,46,98,0.75)";
 
@@ -32,6 +32,7 @@ public partial class Default : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         //StartTimeCalendar.SelectedDate = DateTime.UtcNow.AddDays(-1);
+        ViewState["networkAlias"] = networkAlias;
         NetworkTree.Nodes[0].Text = networkAlias;
     }
 
@@ -44,7 +45,7 @@ public partial class Default : System.Web.UI.Page
     /// <param name="e"></param>
     protected void NevCanButton_Click(object sender, EventArgs e)
     {
-        networkAlias = "NevCAN";
+        ViewState["networkAlias"] = networkAlias = "NevCAN";
         NetworkButtonClick(sender as Button);
     }
 
@@ -55,7 +56,7 @@ public partial class Default : System.Web.UI.Page
     /// <param name="e"></param>
     protected void WalkerBasinButton_Click(object sender, EventArgs e)
     {
-        networkAlias = "WalkerBasinHydro";
+        ViewState["networkAlias"] = networkAlias = "WalkerBasinHydro";
         NetworkButtonClick(sender as Button);
     }
 
@@ -66,7 +67,7 @@ public partial class Default : System.Web.UI.Page
     /// <param name="e"></param>
     protected void SolarNexusButton_Click(object sender, EventArgs e)
     {
-        networkAlias = "SolarNexus";
+        ViewState["networkAlias"] = networkAlias = "SolarNexus";
         NetworkButtonClick(sender as Button);
     }
 
@@ -77,9 +78,12 @@ public partial class Default : System.Web.UI.Page
     /// <param name="e"></param>
     protected void StreamButton_Click(object sender, EventArgs e)
     {
+        /*
         th = new Thread(PostMeasurements);
         th.Start();
         th.Join();
+        */
+        PostMeasurements();
     }
 
     protected void ChordsButton_Click(object sender, EventArgs e)
@@ -97,15 +101,27 @@ public partial class Default : System.Web.UI.Page
     /// </summary>
     protected void PostMeasurements()
     {
-        /*
-        int siteId = int.Parse(TextBoxSiteId.Text);
-        int streamIndex = int.Parse(TextBoxStreamIndex.Text);
-        DateTime startTime = StartTimeCalendar.SelectedDate;
+        networkAlias = ViewState["networkAlias"] as string;
+        streamID = ViewState["streamID"] as string;
+        deploymentID = ViewState["deploymentID"] as string;
 
-        string response = client.GetMeasurements(siteId, streamIndex, startTime, DateTime.UtcNow);
+        var container = client.GetDataStream(networkAlias, int.Parse(streamID), int.Parse(deploymentID));
 
-        ResponseLabel.Text = response;
-        */
+        if(container.Success)
+        {
+            DateTime startTime = StartTimeCalendar.SelectedDate;
+
+            var response = client.GetMeasurements(networkAlias, container.Object, startTime, DateTime.UtcNow);
+
+            if(!response.Success)
+            {
+                NodeLabel.Text = response.Message;
+            }
+        }
+        else
+        {
+            NodeLabel.Text = container.Message + " ";
+        }
     }
 
     /// <summary>
@@ -176,9 +192,11 @@ public partial class Default : System.Web.UI.Page
         TreeNode node = NetworkTree.SelectedNode;
 
         // node Value is the streamID
-        selectedStreamID = int.Parse(node.Value);
+        ViewState["streamID"] = streamID = node.Value;
         // node parent is its deployment - need deploymentID for fast GetDataStream search
-        selectedDeploymentID = int.Parse(node.Parent.Value);
+        ViewState["deploymentID"] = streamID = node.Parent.Value;
+
+        NodeLabel.Text = "Selected Data Stream ID: " + streamID.ToString();
     }
 
     /// <summary>
@@ -288,7 +306,6 @@ public partial class Default : System.Web.UI.Page
                 var node = new TreeNode(nodeText, stream.ID.ToString())
                 {
                     SelectAction = TreeNodeSelectAction.Select,
-                    Expanded = true,
                     ToolTip = tooltip
                 };
 
