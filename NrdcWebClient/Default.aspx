@@ -42,13 +42,33 @@
         <!-- Expanding grid -->
         <form runat="server">
 
+            <asp:ScriptManager runat="server" ID="ScriptMgr"></asp:ScriptManager>
+
             <!-- Select Network Tab -->
             <div id="NetContent" class="tab-content" style="display:none;">
 
                 <!-- Network List -->
-                <asp:Button ID="NevCanButton" runat="server" CssClass="network-button" Text="NevCAN" />
-                <asp:Button ID="WalkerBasinButton" runat="server" CssClass="network-button" Text="Walker Basin Hydroclimate" />
-                <asp:Button ID="SolarNexusButton" runat="server" CssClass="network-button" Text="Solar Energy Nexus" />
+                <asp:UpdatePanel runat="server">
+                    <ContentTemplate>
+                        <asp:Button ID="NevCanButton" runat="server" CssClass="network-button" Text="NevCAN"
+                            OnClick="NevCanButton_Click" UseSubmitBehavior="False" />
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+                    
+                <asp:UpdatePanel runat="server">
+                    <ContentTemplate>
+                        <asp:Button ID="WalkerBasinButton" runat="server" CssClass="network-button" Text="Walker Basin Hydroclimate"
+                            OnClick="WalkerBasinButton_Click" UseSubmitBehavior="False" />
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+
+                <asp:UpdatePanel runat="server">
+                    <ContentTemplate>
+                        <asp:Button ID="SolarNexusButton" runat="server" CssClass="network-button" Text="Solar Energy Nexus"
+                            OnClick="SolarNexusButton_Click" UseSubmitBehavior="False" />
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+                
 
             </div>
 
@@ -56,11 +76,15 @@
             <div id="StreamContent" class="tab-content" style="display:none;">
 
                 <!-- Network Hierarchy -->
-                <asp:TreeView ID="NetworkTree" runat="server" MaxDataBindDepth="4" OnTreeNodePopulate="NetworkTree_TreeNodePopulate" ExpandDepth="1">
-                    <Nodes>
-                        <asp:TreeNode PopulateOnDemand="True" Text="Sensor Network" Value="Sensor Network" SelectAction="Expand"></asp:TreeNode>
-                    </Nodes>
-                </asp:TreeView>
+                <asp:UpdatePanel runat="server">
+                    <ContentTemplate>
+                        <asp:TreeView ID="NetworkTree" runat="server" MaxDataBindDepth="4" OnTreeNodePopulate="NetworkTree_TreeNodePopulate" ExpandDepth="1">
+                            <Nodes>
+                                <asp:TreeNode PopulateOnDemand="True" Text="Sensor Network" Value="Sensor Network" SelectAction="Expand"></asp:TreeNode>
+                            </Nodes>
+                        </asp:TreeView>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
 
             </div>
 

@@ -12,7 +12,13 @@ public partial class Default : System.Web.UI.Page
     Thread th;
     ChordsService.ServiceClient client = new ChordsService.ServiceClient();
 
+    string networkAlias = "NevCAN";
     ChordsService.DataStream selectedStream;
+
+    System.Drawing.Color nevadaBlue = System.Drawing.Color.FromArgb(0, 46, 98);
+
+    System.Drawing.Color defaultButtonColor = System.Drawing.Color.FromArgb(190, System.Drawing.Color.AliceBlue);
+    System.Drawing.Color selectedButtonColor = System.Drawing.Color.DarkSlateBlue;
 
     /// <summary>
     ///     This method is executed as soon as the page loads.
@@ -22,6 +28,42 @@ public partial class Default : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         StartTimeCalendar.SelectedDate = DateTime.UtcNow.AddDays(-1);
+        NetworkTree.Nodes[0].Text = networkAlias;
+    }
+
+    /* Button Click Methods */
+
+    /// <summary>
+    ///     Sets the current sensor network to NevCAN
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void NevCanButton_Click(object sender, EventArgs e)
+    {
+        networkAlias = "NevCAN";
+        NetworkButtonClick(sender as Button);
+    }
+
+    /// <summary>
+    ///     Sets the current sensor network to Walker Basin Hydroclimate
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void WalkerBasinButton_Click(object sender, EventArgs e)
+    {
+        networkAlias = "WalkerBasinHydro";
+        NetworkButtonClick(sender as Button);
+    }
+
+    /// <summary>
+    ///     Sets the current sensor network to Solar Energy Nexus
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void SolarNexusButton_Click(object sender, EventArgs e)
+    {
+        networkAlias = "SolarNexus";
+        NetworkButtonClick(sender as Button);
     }
 
     /// <summary>
@@ -35,6 +77,8 @@ public partial class Default : System.Web.UI.Page
         th.Start();
         th.Join();
     }
+
+    /* Other Methods */
 
     /// <summary>
     ///     Posts measurements from the currently selected data stream from the start time until the current time.
@@ -52,15 +96,45 @@ public partial class Default : System.Web.UI.Page
         */
     }
 
+    /// <summary>
+    ///     Selects the provided button and repopulates the network hierarchy.
+    /// </summary>
+    /// <param name="button"></param>
+    protected void NetworkButtonClick(Button button)
+    {
+        UncolorNetworkButtons();
+        button.BackColor = selectedButtonColor;
+
+        TreeNode root = NetworkTree.Nodes[0];
+        root.Text = networkAlias;
+        root.ChildNodes.Clear();
+        PopulateSites(root);
+    }
+
+    /// <summary>
+    ///     Resets all the network buttons to the default color.
+    /// </summary>
+    protected void UncolorNetworkButtons()
+    {
+        NevCanButton.BackColor = defaultButtonColor;
+        WalkerBasinButton.BackColor = defaultButtonColor;
+        SolarNexusButton.BackColor = defaultButtonColor;
+    }
+
+    /* Network Tree Methods */
+
+    /// <summary>
+    ///     Is called whenever the network tree needs to be loaded dynamically
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void NetworkTree_TreeNodePopulate(object sender, TreeNodeEventArgs e)
     {
-        string network = "NevCAN";
         if (e.Node.ChildNodes.Count == 0)
         {
             switch (e.Node.Depth)
             {
                 case 0:
-                    NetworkTree.Nodes[0].Text = network;
                     PopulateSites(e.Node);
                     break;
                 case 1:
@@ -76,9 +150,13 @@ public partial class Default : System.Web.UI.Page
         }
     }
 
+    /// <summary>
+    ///     Populates the sites in the network tree
+    /// </summary>
+    /// <param name="parent"></param>
     protected void PopulateSites(TreeNode parent)
     {
-        var container = client.GetSiteList();
+        var container = client.GetSiteList(networkAlias);
         var sitelist = container.Object;
 
         foreach(var site in sitelist.Data)
@@ -101,9 +179,13 @@ public partial class Default : System.Web.UI.Page
         }
     }
 
+    /// <summary>
+    ///     Populates the systems in the network tree
+    /// </summary>
+    /// <param name="parent"></param>
     protected void PopulateSystems(TreeNode parent)
     {
-        var container = client.GetSystemList(int.Parse(parent.Value));
+        var container = client.GetSystemList(networkAlias, int.Parse(parent.Value));
         var systemList = container.Object;
 
         foreach(var system in systemList.Data)
@@ -123,9 +205,13 @@ public partial class Default : System.Web.UI.Page
         }
     }
 
+    /// <summary>
+    ///     Populates the deployments in the network tree
+    /// </summary>
+    /// <param name="parent"></param>
     protected void PopulateDeployments(TreeNode parent)
     {
-        var container = client.GetInstrumentList(int.Parse(parent.Value));
+        var container = client.GetInstrumentList(networkAlias, int.Parse(parent.Value));
         var deploymentList = container.Object;
 
         foreach (var deployment in deploymentList.Data)
@@ -145,17 +231,22 @@ public partial class Default : System.Web.UI.Page
         }
     }
 
+    /// <summary>
+    ///     Populates the streams in the network tree
+    /// </summary>
+    /// <param name="parent"></param>
     protected void PopulateStreams(TreeNode parent)
     {
-        var container = client.GetDataStreams(int.Parse(parent.Value));
+        var container = client.GetDataStreamList(networkAlias, int.Parse(parent.Value));
         var deploymentList = container.Object;
 
         foreach (var stream in deploymentList.Data)
         {
+            // TODO: Create tooltip
+
             string nodeText = "Data Stream. Type: " + stream.DataType.Name + ". Interval: " + stream.MeasurementInterval;
             var node = new TreeNode(nodeText, stream.ID.ToString())
             {
-                PopulateOnDemand = true,
                 SelectAction = TreeNodeSelectAction.Select,
                 Expanded = true
             };
