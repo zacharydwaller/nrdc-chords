@@ -277,7 +277,7 @@ namespace ChordsInterface.Api
         /// <param name="startTime"></param>
         /// <param name="endTime"></param>
         /// <returns>A list of measurements</returns>
-        public static Container<Chords.MeasurementList> GetMeasurements(Data.DataStream stream, DateTime startTime, DateTime endTime)
+        public static Container<Chords.MeasurementList> GetMeasurements(string networkAlias, Data.DataStream stream, DateTime startTime, DateTime endTime)
         {
             var container = new Container<Chords.MeasurementList>();
             // Create stream request HTTP message
@@ -289,7 +289,7 @@ namespace ChordsInterface.Api
             var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
             // Create HTTP POST
-            string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/download";
+            string uri = GetDataUrl(networkAlias) + "data/download";
             var response = ChordsInterface.Http.PostAsync(uri, stringContent).Result;
 
             // Check HTTP response

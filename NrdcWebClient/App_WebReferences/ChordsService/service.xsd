@@ -108,6 +108,7 @@
   <xs:element name="GetMeasurements">
     <xs:complexType>
       <xs:sequence>
+        <xs:element minOccurs="0" name="networkAlias" nillable="true" type="xs:string" />
         <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/ChordsInterface.Data" minOccurs="0" name="stream" nillable="true" type="q8:DataStream" />
         <xs:element minOccurs="0" name="startTime" type="xs:dateTime" />
         <xs:element minOccurs="0" name="endTime" type="xs:dateTime" />

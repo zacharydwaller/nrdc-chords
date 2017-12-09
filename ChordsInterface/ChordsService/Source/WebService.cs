@@ -105,14 +105,14 @@ namespace ChordsInterface.Service
         /// <param name="startTime"></param>
         /// <param name="endTime">Optional. If left empty will be set to current time.</param>
         /// <returns></returns>
-        public string GetMeasurements(Data.DataStream stream, DateTime startTime, DateTime endTime = default(DateTime))
+        public string GetMeasurements(string networkAlias, Data.DataStream stream, DateTime startTime, DateTime endTime = default(DateTime))
         {
             if(endTime == default(DateTime))
             {
                 endTime = DateTime.UtcNow;
             }
 
-            var apiResponse = Api.ApiInterface.GetMeasurements(stream, startTime, endTime);
+            var apiResponse = Api.ApiInterface.GetMeasurements(networkAlias, stream, startTime, endTime);
 
             if(apiResponse.Success)
             {
