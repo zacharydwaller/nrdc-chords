@@ -262,13 +262,20 @@ public partial class Default : System.Web.UI.Page
 
             foreach (var stream in deploymentList.Data)
             {
-                // TODO: Create tooltip
+                string tooltip =
+                    "ID: " + stream.ID + "\n" +
+                    "Category: " + stream.Category.Name + "\n" +
+                    "Property: " + stream.Property.Name + "\n" +
+                    "Units: " + stream.Units.Name + "\n" +
+                    "Data Type: " + stream.DataType.Name + "\n" +
+                    "Interval: " + stream.MeasurementInterval;
 
                 string nodeText = "Data Stream. Type: " + stream.DataType.Name + ". Interval: " + stream.MeasurementInterval;
                 var node = new TreeNode(nodeText, stream.ID.ToString())
                 {
                     SelectAction = TreeNodeSelectAction.Select,
-                    Expanded = true
+                    Expanded = true,
+                    ToolTip = tooltip
                 };
 
                 parent.ChildNodes.Add(node);
