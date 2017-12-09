@@ -1,6 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/ChordsInterface.Api" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Api" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Infrastructure" />
   <xs:import namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords" />
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Data" />
+  <xs:complexType name="ContainerOfNetworkList1_SCkzfeY">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="ContainerOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Api" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="NetworkList" Namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Infrastructure" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/ChordsInterface.Infrastructure" minOccurs="0" name="Object" nillable="true" type="q1:NetworkList" />
+      <xs:element minOccurs="0" name="Success" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ContainerOfNetworkList1_SCkzfeY" nillable="true" type="tns:ContainerOfNetworkList1_SCkzfeY" />
   <xs:complexType name="ContainerOfSiteListI_S_PJRJ2I">
     <xs:annotation>
       <xs:appinfo>
@@ -11,7 +28,7 @@
     </xs:annotation>
     <xs:sequence>
       <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
-      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords" minOccurs="0" name="Object" nillable="true" type="q1:SiteList" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords" minOccurs="0" name="Object" nillable="true" type="q2:SiteList" />
       <xs:element minOccurs="0" name="Success" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
@@ -26,7 +43,7 @@
     </xs:annotation>
     <xs:sequence>
       <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
-      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords" minOccurs="0" name="Object" nillable="true" type="q2:Site" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords" minOccurs="0" name="Object" nillable="true" type="q3:Site" />
       <xs:element minOccurs="0" name="Success" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
@@ -41,7 +58,7 @@
     </xs:annotation>
     <xs:sequence>
       <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
-      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords" minOccurs="0" name="Object" nillable="true" type="q3:SystemList" />
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords" minOccurs="0" name="Object" nillable="true" type="q4:SystemList" />
       <xs:element minOccurs="0" name="Success" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
@@ -56,9 +73,39 @@
     </xs:annotation>
     <xs:sequence>
       <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
-      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords" minOccurs="0" name="Object" nillable="true" type="q4:InstrumentList" />
+      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/ChordsInterface.Chords" minOccurs="0" name="Object" nillable="true" type="q5:InstrumentList" />
       <xs:element minOccurs="0" name="Success" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ContainerOfInstrumentListI_S_PJRJ2I" nillable="true" type="tns:ContainerOfInstrumentListI_S_PJRJ2I" />
+  <xs:complexType name="ContainerOfDataStreamListx1QsRUD4">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="ContainerOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Api" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="DataStreamList" Namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Data" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/ChordsInterface.Data" minOccurs="0" name="Object" nillable="true" type="q6:DataStreamList" />
+      <xs:element minOccurs="0" name="Success" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ContainerOfDataStreamListx1QsRUD4" nillable="true" type="tns:ContainerOfDataStreamListx1QsRUD4" />
+  <xs:complexType name="ContainerOfDataStreamx1QsRUD4">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="ContainerOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Api" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="DataStream" Namespace="http://schemas.datacontract.org/2004/07/ChordsInterface.Data" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/ChordsInterface.Data" minOccurs="0" name="Object" nillable="true" type="q7:DataStream" />
+      <xs:element minOccurs="0" name="Success" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ContainerOfDataStreamx1QsRUD4" nillable="true" type="tns:ContainerOfDataStreamx1QsRUD4" />
 </xs:schema>

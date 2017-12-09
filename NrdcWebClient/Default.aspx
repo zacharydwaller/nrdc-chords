@@ -1,34 +1,6 @@
-﻿<%@ Page Language="C#" %>
-<%@ Import Namespace="System.Threading" %>
+﻿<%@ Page Language="C#" Theme="NCTheme" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="Default" %>
 
 <!DOCTYPE html>
-
-<script runat="server">
-
-    Thread th;
-
-    protected void ButtonGetSite_Click(object sender, EventArgs e)
-    {
-        th = new Thread(PostMeasurements);
-        th.Start();
-        th.Join();
-    }
-
-    protected void PostMeasurements()
-    {
-        ChordsService.ServiceClient client = new ChordsService.ServiceClient();
-        int siteId = int.Parse(TextBoxSiteId.Text);
-        int streamIndex = int.Parse(TextBoxStreamIndex.Text);
-        DateTime startTime = StartTimeCalendar.SelectedDate;
-
-        string response = client.GetMeasurements(siteId, streamIndex, startTime, DateTime.UtcNow);
-
-        ResponseLabel.Text = response;
-
-        client.Close();
-    }
-
-</script>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head runat="server">
@@ -40,152 +12,130 @@
 
     <title>NRDC-CHORDS Web Client</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
-
-    <!-- Custom styles for this template -->
-    <link href="css/heroic-features.css" rel="stylesheet"/>
-
 </head>
 <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container">
-        <a class="navbar-brand" href="#">Start Bootstrap</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Services</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+    <nav>
+        <ul>
+            <li><a href="Default.aspx">Home</a></li>
+            <li><a href="About.aspx">About</a></li>
+        </ul>
     </nav>
 
-    <!-- Page Content -->
-    <div class="container">
-
-      <!-- Jumbotron Header -->
-      <header class="jumbotron my-4">
-        <h1 class="display-3">A Warm Welcome!</h1>
-        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, ipsam, eligendi, in quo sunt possimus non incidunt odit vero aliquid similique quaerat nam nobis illo aspernatur vitae fugiat numquam repellat.</p>
-        <a href="#" class="btn btn-primary btn-lg">Call to action!</a>
-      </header>
-
-      <!-- Page Features -->
-      <div class="row text-center">
-
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card">
-            <img class="card-img-top" src="http://placehold.it/500x325" alt=""/>
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
+    <!-- Tab Grid -->
+    <div class="tab-container">
+        <div class="tab-row">
+            <div id="NetTab" class="tab" onclick="openTab('NetTab', 'NetContent');">
+                Select a Sensor Network
             </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-primary">Find Out More!</a>
+
+            <div id="StreamTab" class="tab" onclick="openTab('StreamTab', 'StreamContent');">
+                Select a Data Stream
             </div>
-          </div>
+
+            <div id="VisTab" class="tab" onclick="openTab('VisTab', 'VisContent');">
+                Visualize
+            </div>
         </div>
 
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card">
-            <img class="card-img-top" src="http://placehold.it/500x325" alt=""/>
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo magni sapiente, tempore debitis beatae culpa natus architecto.</p>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-primary">Find Out More!</a>
-            </div>
-          </div>
-        </div>
+        <!-- Expanding grid -->
+        <form runat="server">
 
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card">
-            <img class="card-img-top" src="http://placehold.it/500x325" alt=""/>
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-primary">Find Out More!</a>
-            </div>
-          </div>
-        </div>
+            <!-- Select Network Tab -->
+            <div id="NetContent" class="tab-content" style="display:none;">
 
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card">
-            <img class="card-img-top" src="http://placehold.it/500x325" alt=""/>
-            <div class="card-body">
-              <h4 class="card-title">Card title</h4>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo magni sapiente, tempore debitis beatae culpa natus architecto.</p>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-primary">Find Out More!</a>
-            </div>
-          </div>
-        </div>
+                <!-- Network List -->
+                <asp:Button ID="NevCanButton" runat="server" CssClass="network-button" Text="NevCAN" />
+                <asp:Button ID="WalkerBasinButton" runat="server" CssClass="network-button" Text="Walker Basin Hydroclimate" />
+                <asp:Button ID="SolarNexusButton" runat="server" CssClass="network-button" Text="Solar Energy Nexus" />
 
-      </div>
-      <!-- /.row -->
+            </div>
 
+            <!-- Select Stream Tab -->
+            <div id="StreamContent" class="tab-content" style="display:none;">
+
+                <!-- Network Hierarchy -->
+                <asp:TreeView ID="NetworkTree" runat="server" MaxDataBindDepth="4" OnTreeNodePopulate="NetworkTree_TreeNodePopulate" ExpandDepth="1">
+                    <Nodes>
+                        <asp:TreeNode PopulateOnDemand="True" Text="Sensor Network" Value="Sensor Network" SelectAction="Expand"></asp:TreeNode>
+                    </Nodes>
+                </asp:TreeView>
+
+            </div>
+
+            <!-- Visualize Tab -->
+            <div id="VisContent" class="tab-content" style="display:none;">
+
+                <!-- Start Date Calender -->
+                <div>
+                    <p>
+                        Select Start Date
+                    </p>
+                    <asp:Calendar ID="StartTimeCalendar" runat="server"></asp:Calendar>
+                </div>
+                <div>
+                    <asp:Button ID="PostMeasurementsButton" runat="server" Text="Post Measurements" OnClick="ButtonGetSite_Click" />
+                </div>
+            </div>
+        </form>
     </div>
-    <!-- /.container -->
+
+    <script>
+
+        var nevadaBlue = "rgb(0,46,98)";
+        var aliceBlueTransp = "rgba(240,248,255,0.75)";
+        var nevadaBlueTransp = "rgba(0,46,98,0.75)";
+
+        function resetTabContents()
+        {
+            var contents = document.getElementsByClassName("tab-content");
+
+            // Close tabs
+            var i;
+            for (i = 0; i < contents.length; i++)
+            {
+                contents[i].style.display = "none";
+            }
+        }
+
+        function resetTabs()
+        {
+            var tabs = document.getElementsByClassName("tab");
+            var i;
+
+            for(i = 0; i < tabs.length; i++)
+            {
+                tabs[i].style.color = nevadaBlue;
+                tabs[i].style.backgroundColor = aliceBlueTransp;
+            }
+        }
+
+        function closeTab()
+        {
+            resetTabs();
+            resetTabContents();
+        }
+
+        function openTab(tabName, tabContentName)
+        {
+            resetTabs();
+            resetTabContents();
+
+            // Color selected tab
+            var tab = document.getElementById(tabName);
+            tab.style.color = "white";
+            tab.style.backgroundColor = nevadaBlueTransp;
+
+            // Open tab content
+            var tabContent = document.getElementById(tabContentName);
+            tabContent.style.display = "block";
+        }
+    </script>
 
     <!-- Footer -->
-    <footer class="py-5 bg-dark">
-      <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
-      </div>
-      <!-- /.container -->
+    <footer>
+        <p>Copyright &copy; Zachary Waller, Paul Marquis, Pat J, Tom Trowbridge 2017</p>
     </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Date Picker -->
-    <form id="form1" runat="server">
-        <div>
-            <p>
-                Select Site IDas
-            </p>
-            <asp:TextBox ID="TextBoxSiteId" runat="server"></asp:TextBox>
-        </div>
-        <div>
-            <p>
-                Select Stream Index
-            </p>
-            <asp:TextBox ID="TextBoxStreamIndex" runat="server"></asp:TextBox>
-        </div>
-        <div>
-            <p>
-                Select Start Date
-            </p>
-            <asp:Calendar ID="StartTimeCalendar" runat="server"></asp:Calendar>
-        </div>
-        <div>
-            <asp:Button ID="PostMeasurementsButton" runat="server" Text="Post Measurements" OnClick="ButtonGetSite_Click" />
-        </div>
-        <div>
-            <asp:Label ID="ResponseLabel" runat="server" Text=""></asp:Label>
-        </div>
-    </form>
 </body>
 </html>

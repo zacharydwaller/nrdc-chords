@@ -3,33 +3,53 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ChordsInterface.Nrdc;
 
+/// <summary>
+///     Contains a set of data structures used by the NRDC Infrastructure API.
+/// </summary>
 namespace ChordsInterface.Infrastructure
 {
-    public class SiteList : NrdcType
+    public class NetworkList
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public IList<Network> Data { get; set; }
+    }
+
+    public class SiteList
     {
         public bool Success { get; set; }
         public string Message { get; set; }
         public IList<Site> Data { get; set; }
     }
 
-    public class SystemList : NrdcType
+    public class SystemList
     {
         public bool Success { get; set; }
         public string Message { get; set; }
         public IList<System> Data { get; set; }
     }
 
-    public class DeploymentList : NrdcType
+    public class DeploymentList
     {
         public bool Success { get; set; }
         public string Message { get; set; }
         public IList<Deployment> Data { get; set; }
     }
 
-    public class Site : NrdcType
+    public class Network
     {
+        public string Name { get; set; }
+        public string Alias { get; set; }
+        public string InfrastructureUrl { get; set; }
+        public string DataUrl { get; set; }
+        public string ImageRetrievalUrl { get; set; }
+        public string WebCamInteractionUrl { get; set; }
+    }
+
+    public class Site
+    {
+        public string __type { get; set; }
         public int ID { get; set; }
         public string UniqueIdentifier { get; set; }
         public int Network { get; set; }
@@ -49,7 +69,7 @@ namespace ChordsInterface.Infrastructure
         public string GPSLandmark { get; set; }
     }
 
-    public class System : NrdcType
+    public class System
     {
         public int ID { get; set; }
         public string UniqueIdentifier { get; set; }
@@ -63,7 +83,7 @@ namespace ChordsInterface.Infrastructure
         public string ModificationDate { get; set; }
     }
 
-    public class Deployment : NrdcType
+    public class Deployment
     {
         public int ID { get; set; }
         public string UniqueIdentifier { get; set; }

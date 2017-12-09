@@ -25,8 +25,10 @@
     <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="a1dc35f7-8d8e-4218-8f9f-4211a4f70eb9" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Chords/Service/mex" />
     <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="3d956150-6e51-42bb-9eb1-a42ea682258c" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Chords/Service/mex" />
     <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="3ac59ae2-2eb7-45ca-a541-22cb384a96bc" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Chords/Service/mex" />
-    <MetadataFile FileName="ChordsInterface.Api.xsd" MetadataType="Schema" ID="81baafec-72d7-4667-8886-5f10267b27ed" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Chords/Service/mex" />
+    <MetadataFile FileName="ChordsInterface.Api.xsd" MetadataType="Schema" ID="e32e081c-0eb9-4de1-9639-f0f13e564231" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Chords/Service/mex" />
+    <MetadataFile FileName="ChordsInterface.Infrastructure.xsd" MetadataType="Schema" ID="2adbc256-2a7b-4068-8130-8cafc4defbe8" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Chords/Service/mex" />
     <MetadataFile FileName="ChordsInterface.Chords.xsd" MetadataType="Schema" ID="03398d9e-c940-4ba1-b2b6-ff9e0b4958d6" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Chords/Service/mex" />
+    <MetadataFile FileName="ChordsInterface.Data.xsd" MetadataType="Schema" ID="a5cce3bf-e211-4c0e-9162-c88478a4387b" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Chords/Service/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

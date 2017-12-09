@@ -20,34 +20,99 @@ namespace ChordsInterface.Service
 
         private const string CreateMeasurementSuccess = "Measurement created.";
 
-        public Api.Container<Chords.SiteList> GetSiteList()
+        /// <summary>
+        ///     Gets a list of all the sensor networks in the NRDC.
+        /// </summary>
+        /// <returns></returns>
+        public Api.Container<Infrastructure.NetworkList> GetNetworkList()
         {
-            return Api.ApiInterface.GetSiteList();
+            return Api.ApiInterface.GetNetworkList();
+        }
+
+        /// <summary>
+        ///     Gets a list of all sites from a specified sensor network.
+        /// </summary>
+        /// <param name="networkAlias"> </param>
+        /// <returns></returns>
+        public Api.Container<Chords.SiteList> GetSiteList(string networkAlias)
+        {
+            return Api.ApiInterface.GetSiteList(networkAlias);
         }
         
-        public Api.Container<Chords.Site> GetSite(int siteID)
+        /// <summary>
+        ///     Gets site metadata given its ID.
+        /// </summary>
+        /// <param name="networkAlias"></param>
+        /// <param name="siteID"></param>
+        /// <returns></returns>
+        public Api.Container<Chords.Site> GetSite(string networkAlias, int siteID)
         {
-            return Api.ApiInterface.GetSite(siteID);
+            return Api.ApiInterface.GetSite(networkAlias, siteID);
         }
 
-        public Api.Container<Chords.SystemList> GetSystemList(int siteID)
+        /// <summary>
+        ///     Gets a list of systems from the specified site.
+        /// </summary>
+        /// <param name="networkAlias"></param>
+        /// <param name="siteID"></param>
+        /// <returns></returns>
+        public Api.Container<Chords.SystemList> GetSystemList(string networkAlias, int siteID)
         {
-            return Api.ApiInterface.GetSystemList(siteID);
+            return Api.ApiInterface.GetSystemList(networkAlias, siteID);
         }
 
-        public Api.Container<Chords.InstrumentList> GetInstrumentList(int systemID)
+        /// <summary>
+        ///     Gets a list of deployments from the specified system.
+        /// </summary>
+        /// <param name="networkAlias"></param>
+        /// <param name="systemID"></param>
+        /// <returns></returns>
+        public Api.Container<Chords.InstrumentList> GetInstrumentList(string networkAlias, int systemID)
         {
-            return Api.ApiInterface.GetInstrumentList(systemID);
+            return Api.ApiInterface.GetInstrumentList(networkAlias, systemID);
         }
 
-        public Api.Container<Data.DataStreamList> GetDataStreams(int deploymentID)
+        /// <summary>
+        ///     Gets a list of data streams from a specified deployment.
+        /// </summary>
+        /// <param name="networkAlias"></param>
+        /// <param name="deploymentID"></param>
+        /// <returns></returns>
+        public Api.Container<Data.DataStreamList> GetDataStreamList(string networkAlias, int deploymentID)
         {
-
+            return Api.ApiInterface.GetDataStreams(networkAlias, deploymentID);
         }
 
-        public string GetMeasurements(int streamID, DateTime startTime, DateTime endTime)
+        /// <summary>
+        ///     Gets a datastream by ID. Optionally provide its deployment ID for faster searching.
+        ///     Will search all streams in network if stream is not found within provided deployment (slow).
+        /// </summary>
+        /// <param name="networkAlias"></param>
+        /// <param name="streamID"></param>
+        /// <param name="deploymentID">
+        ///     Optional. Leave empty to search in all deployments in network or specify to get a quicker search.
+        /// </param>
+        /// <returns></returns>
+        public Api.Container<Data.DataStream> GetDataStream(string networkAlias, int streamID, int deploymentID = -1)
         {
-            var apiResponse = Api.ApiInterface.GetMeasurements(siteID, streamIndex, startTime, endTime);
+            return Api.ApiInterface.GetDataStream(networkAlias, streamID, deploymentID);
+        }
+
+        /// <summary>
+        ///     Retrieves a list of measurements from the provided stream and time range and uploads them to the CHORDS instance.
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime">Optional. If left empty will be set to current time.</param>
+        /// <returns></returns>
+        public string GetMeasurements(Data.DataStream stream, DateTime startTime, DateTime endTime = default(DateTime))
+        {
+            if(endTime == default(DateTime))
+            {
+                endTime = DateTime.UtcNow;
+            }
+
+            var apiResponse = Api.ApiInterface.GetMeasurements(stream, startTime, endTime);
 
             if(apiResponse.Success)
             {
@@ -76,6 +141,11 @@ namespace ChordsInterface.Service
             }
         }
 
+        /// <summary>
+        ///     Posts a single measurement to the CHORDS instance.
+        /// </summary>
+        /// <param name="measurement"></param>
+        /// <returns></returns>
         public string CreateMeasurement(Chords.Measurement measurement)
         {
             string uri = CreateMeasurementUri(measurement, true);
@@ -102,6 +172,12 @@ namespace ChordsInterface.Service
             }
         }
 
+        /// <summary>
+        ///     Builds a CHORDS Put Data uri given the provided measurement and test data flag.
+        /// </summary>
+        /// <param name="measurement"></param>
+        /// <param name="isTestData"></param>
+        /// <returns></returns>
         private string CreateMeasurementUri(Chords.Measurement measurement, bool isTestData = true)
         {
             string uri =
