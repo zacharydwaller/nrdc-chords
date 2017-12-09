@@ -11,69 +11,6 @@ namespace ChordsInterface.Api
     public static class ApiInterface
     {
         /// <summary>
-        ///     Retrieves a list of measurements from the data stream. From startTime to endTime.
-        /// </summary>
-        /// <param name="stream">Data stream to retrieve measurements from. Get this from the GetDataStream function.</param>
-        /// <param name="startTime"></param>
-        /// <param name="endTime"></param>
-        /// <returns>A list of measurements</returns>
-        public static Container<Chords.MeasurementList> GetMeasurements(Data.DataStream stream, DateTime startTime, DateTime endTime)
-        {
-            var container = new Container<Chords.MeasurementList>();
-            // Create stream request HTTP message
-            string startTimeString = startTime.ToString("s");
-            string endTimeString = endTime.ToString("s");
-            var dataSpecification = new Data.DataSpecification(stream, startTimeString, endTimeString);
-
-            var jsonContent = Json.Serialize(dataSpecification);
-            var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-            // Create HTTP POST
-            string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/download";
-            var response = ChordsInterface.Http.PostAsync(uri, stringContent).Result;
-
-            // Check HTTP response
-            if (response.IsSuccessStatusCode)
-            {
-                string content = response.Content.ReadAsStringAsync().Result;
-
-                var dataDownloadResponse = Json.Parse<Data.DataDownloadResponse>(content);
-
-                // Check data download response
-                if (dataDownloadResponse.Success)
-                {
-                    // Check data download
-                    if (dataDownloadResponse.Data.TotalNumberOfMeasurements > 0)
-                    {
-                        var chordsList = new Chords.MeasurementList();
-
-                        foreach(var nrdcMeasurement in dataDownloadResponse.Data.Measurements)
-                        {
-                            var chordsMeasurement = Converter.Convert(nrdcMeasurement);
-                            chordsList.Data.Add(chordsMeasurement);
-                        }
-
-                        return container.Pass(chordsList);
-                    }
-                    else
-                    {
-                        return container.Fail("No measurements found");
-                    }
-                }
-                else
-                {
-                    // Data download failed
-                    return container.Fail(dataDownloadResponse.Message);
-                }
-            }
-            else
-            {
-                // HTTP didn't return OK
-                return container.Fail("Error From: " + response.RequestMessage + "\n" + response.ReasonPhrase);
-            }
-        }
-
-        /// <summary>
         ///     Returns a list of all the sites in a given sensor network.
         /// </summary>
         /// <returns></returns>
@@ -254,6 +191,69 @@ namespace ChordsInterface.Api
             }
 
             return container.Fail(failMessage);
+        }
+
+        /// <summary>
+        ///     Retrieves a list of measurements from the data stream. From startTime to endTime.
+        /// </summary>
+        /// <param name="stream">Data stream to retrieve measurements from. Get this from the GetDataStream function.</param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns>A list of measurements</returns>
+        public static Container<Chords.MeasurementList> GetMeasurements(Data.DataStream stream, DateTime startTime, DateTime endTime)
+        {
+            var container = new Container<Chords.MeasurementList>();
+            // Create stream request HTTP message
+            string startTimeString = startTime.ToString("s");
+            string endTimeString = endTime.ToString("s");
+            var dataSpecification = new Data.DataSpecification(stream, startTimeString, endTimeString);
+
+            var jsonContent = Json.Serialize(dataSpecification);
+            var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            // Create HTTP POST
+            string uri = ChordsInterface.DataServiceUrl + ChordsInterface.NevCanAlias + "data/download";
+            var response = ChordsInterface.Http.PostAsync(uri, stringContent).Result;
+
+            // Check HTTP response
+            if (response.IsSuccessStatusCode)
+            {
+                string content = response.Content.ReadAsStringAsync().Result;
+
+                var dataDownloadResponse = Json.Parse<Data.DataDownloadResponse>(content);
+
+                // Check data download response
+                if (dataDownloadResponse.Success)
+                {
+                    // Check data download
+                    if (dataDownloadResponse.Data.TotalNumberOfMeasurements > 0)
+                    {
+                        var chordsList = new Chords.MeasurementList();
+
+                        foreach (var nrdcMeasurement in dataDownloadResponse.Data.Measurements)
+                        {
+                            var chordsMeasurement = Converter.Convert(nrdcMeasurement);
+                            chordsList.Data.Add(chordsMeasurement);
+                        }
+
+                        return container.Pass(chordsList);
+                    }
+                    else
+                    {
+                        return container.Fail("No measurements found");
+                    }
+                }
+                else
+                {
+                    // Data download failed
+                    return container.Fail(dataDownloadResponse.Message);
+                }
+            }
+            else
+            {
+                // HTTP didn't return OK
+                return container.Fail("Error From: " + response.RequestMessage + "\n" + response.ReasonPhrase);
+            }
         }
 
         /* Private Methods */
