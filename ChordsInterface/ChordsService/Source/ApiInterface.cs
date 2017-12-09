@@ -105,6 +105,7 @@ namespace ChordsInterface.Api
         /// <summary>
         ///     Returns a list of systems that belong to a specified site.
         /// </summary>
+        /// <param name="networkAlias"></param>
         /// <param name="siteID"></param>
         /// <returns></returns>
         public static Container<Chords.SystemList> GetSystemList(string networkAlias, int siteID)
@@ -137,6 +138,7 @@ namespace ChordsInterface.Api
         /// <summary>
         ///     Returns a list of all deployments belonging to a system.
         /// </summary>
+        /// <param name="networkAlias"></param>
         /// <param name="systemID"></param>
         /// <returns></returns>
         public static Container<Chords.InstrumentList> GetInstrumentList(string networkAlias, int systemID)
@@ -169,6 +171,7 @@ namespace ChordsInterface.Api
         /// <summary>
         ///     Returns a list of all data streams belonging to a deployment.
         /// </summary>
+        /// <param name="networkAlias"></param>
         /// <param name="deploymentID"></param>
         /// <returns></returns>
         public static Container<Data.DataStreamList> GetDataStreams(string networkAlias, int deploymentID)
@@ -212,6 +215,7 @@ namespace ChordsInterface.Api
         ///     Gets a datastream by ID. Optionally provide its deployment ID for faster searching.
         ///     Will search all streams in network if stream is not found within provided deployment (slow).
         /// </summary>
+        /// <param name="networkAlias"></param>
         /// <param name="streamID"></param>
         /// <param name="deploymentID">
         ///     Optional. Leave empty to search in all deployments in network or specify to get a quicker search.

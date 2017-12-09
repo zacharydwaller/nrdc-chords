@@ -32,6 +32,7 @@ namespace ChordsInterface.Service
         /// <summary>
         ///     Gets a list of all sites from a specified sensor network.
         /// </summary>
+        /// <param name="networkAlias"> </param>
         /// <returns></returns>
         public Api.Container<Chords.SiteList> GetSiteList(string networkAlias)
         {
@@ -41,6 +42,7 @@ namespace ChordsInterface.Service
         /// <summary>
         ///     Gets site metadata given its ID.
         /// </summary>
+        /// <param name="networkAlias"></param>
         /// <param name="siteID"></param>
         /// <returns></returns>
         public Api.Container<Chords.Site> GetSite(string networkAlias, int siteID)
@@ -51,6 +53,7 @@ namespace ChordsInterface.Service
         /// <summary>
         ///     Gets a list of systems from the specified site.
         /// </summary>
+        /// <param name="networkAlias"></param>
         /// <param name="siteID"></param>
         /// <returns></returns>
         public Api.Container<Chords.SystemList> GetSystemList(string networkAlias, int siteID)
@@ -61,6 +64,7 @@ namespace ChordsInterface.Service
         /// <summary>
         ///     Gets a list of deployments from the specified system.
         /// </summary>
+        /// <param name="networkAlias"></param>
         /// <param name="systemID"></param>
         /// <returns></returns>
         public Api.Container<Chords.InstrumentList> GetInstrumentList(string networkAlias, int systemID)
@@ -71,6 +75,7 @@ namespace ChordsInterface.Service
         /// <summary>
         ///     Gets a list of data streams from a specified deployment.
         /// </summary>
+        /// <param name="networkAlias"></param>
         /// <param name="deploymentID"></param>
         /// <returns></returns>
         public Api.Container<Data.DataStreamList> GetDataStreamList(string networkAlias, int deploymentID)
@@ -82,6 +87,7 @@ namespace ChordsInterface.Service
         ///     Gets a datastream by ID. Optionally provide its deployment ID for faster searching.
         ///     Will search all streams in network if stream is not found within provided deployment (slow).
         /// </summary>
+        /// <param name="networkAlias"></param>
         /// <param name="streamID"></param>
         /// <param name="deploymentID">
         ///     Optional. Leave empty to search in all deployments in network or specify to get a quicker search.
