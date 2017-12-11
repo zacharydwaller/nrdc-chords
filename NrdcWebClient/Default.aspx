@@ -42,13 +42,33 @@
         <!-- Expanding grid -->
         <form runat="server">
 
+            <asp:ScriptManager runat="server" ID="ScriptMgr"></asp:ScriptManager>
+
             <!-- Select Network Tab -->
             <div id="NetContent" class="tab-content" style="display:none;">
 
-                <!-- Network List -->
-                <asp:Button ID="NevCanButton" runat="server" CssClass="network-button" Text="NevCAN" />
-                <asp:Button ID="WalkerBasinButton" runat="server" CssClass="network-button" Text="Walker Basin Hydroclimate" />
-                <asp:Button ID="SolarNexusButton" runat="server" CssClass="network-button" Text="Solar Energy Nexus" />
+                <!-- Network Buttons -->
+                <asp:UpdatePanel runat="server">
+                    <ContentTemplate>
+                        <asp:Button ID="NevCanButton" runat="server" CssClass="network-button" Text="NevCAN"
+                            OnClick="NevCanButton_Click" UseSubmitBehavior="False" />
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+
+                <asp:UpdatePanel runat="server">
+                    <ContentTemplate>
+                        <asp:Button ID="WalkerBasinButton" runat="server" CssClass="network-button" Text="Walker Basin Hydroclimate"
+                            OnClick="WalkerBasinButton_Click" UseSubmitBehavior="False" />
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+
+                <asp:UpdatePanel runat="server">
+                    <ContentTemplate>
+                        <asp:Button ID="SolarNexusButton" runat="server" CssClass="network-button" Text="Solar Energy Nexus"
+                            OnClick="SolarNexusButton_Click" UseSubmitBehavior="False" />
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+                
 
             </div>
 
@@ -56,26 +76,53 @@
             <div id="StreamContent" class="tab-content" style="display:none;">
 
                 <!-- Network Hierarchy -->
-                <asp:TreeView ID="NetworkTree" runat="server" MaxDataBindDepth="4" OnTreeNodePopulate="NetworkTree_TreeNodePopulate" ExpandDepth="1">
-                    <Nodes>
-                        <asp:TreeNode PopulateOnDemand="True" Text="Sensor Network" Value="Sensor Network" SelectAction="Expand"></asp:TreeNode>
-                    </Nodes>
-                </asp:TreeView>
+                <asp:UpdatePanel runat="server">
+                    <ContentTemplate>
+                        <asp:TreeView ID="NetworkTree" runat="server"
+                            MaxDataBindDepth="4" ExpandDepth="1"
+                            OnTreeNodePopulate="NetworkTree_TreeNodePopulate" OnSelectedNodeChanged="NetworkTree_SelectedNodeChanged">
+                            <Nodes>
+                                <asp:TreeNode PopulateOnDemand="True" Text="Sensor Network" Value="Sensor Network" SelectAction="Expand"></asp:TreeNode>
+                            </Nodes>
+                        </asp:TreeView>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
 
             </div>
 
             <!-- Visualize Tab -->
             <div id="VisContent" class="tab-content" style="display:none;">
 
-                <!-- Start Date Calender -->
-                <div>
-                    <p>
-                        Select Start Date
-                    </p>
-                    <asp:Calendar ID="StartTimeCalendar" runat="server"></asp:Calendar>
-                </div>
-                <div>
-                    <asp:Button ID="PostMeasurementsButton" runat="server" Text="Post Measurements" OnClick="ButtonGetSite_Click" />
+                <div class="column-row">
+                    <!-- Start Date Calender -->
+                    <div class="column width-33">
+                        <p style="font-size: 18pt; font-weight: 700">
+                            Select Start Date
+                        </p>
+                        <asp:UpdatePanel runat="server">
+                            <ContentTemplate>
+                                <asp:Calendar ID="StartTimeCalendar" runat="server" CssClass="calendar"></asp:Calendar>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                    </div>
+                    <div class="column width-66">
+                        <p>
+                            <asp:UpdatePanel runat="server">
+                                <ContentTemplate>
+                                    <asp:Label ID="NodeLabel" runat="server" Text="No Data Stream Selected" Font-Size="18pt" Font-Bold="true" />
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+                        </p>
+                        <!-- Stream Button -->
+                        <asp:UpdatePanel runat="server">
+                                <ContentTemplate>
+                                    <asp:Button ID="StreamButton" runat="server" CssClass="network-button" Text="Start Streaming" OnClick="StreamButton_Click" />
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+
+                        <!-- Go To CHORDS Button -->
+                        <asp:Button ID="ChordsButton" runat="server" CssClass="network-button" Text="Go To CHORDS" OnClick="ChordsButton_Click" />
+                    </div>
                 </div>
             </div>
         </form>

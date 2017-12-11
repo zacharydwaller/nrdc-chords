@@ -1,12 +1,23 @@
 ﻿<asp:Calendar runat="server"
-    BorderWidth=2 CellSpacing=8
-    BackColor="LightGray" BorderColor="DarkGray"
-    SelectedDayStyle-BackColor="DarkBlue" SelectedDayStyle-ForeColor="White"
-    TodayDayStyle-BackColor="White" />
+    BorderColor="#003366" BorderWidth=2
+    BackColor="AliceBlue" 
+    CellSpacing=8
+    Font-Size="14pt"
+    ForeColor="Black"
+    NextPrevFormat="ShortMonth"
+    SelectionMode="Day"
+>
+    <SelectedDayStyle BackColor="#003366" ForeColor="White"/>
+    <TodayDayStyle BackColor="White" />
+    <NextPrevStyle Font-Bold="True" Font-Size="12pt" />
+    <DayHeaderStyle Font-Bold="True" Font-Size="16pt" ForeColor="#003366"/>
+    <TitleStyle BackColor="AliceBlue" BorderStyle="None" Font-Bold="True" Font-Size="12pt" ForeColor="#003366"/>
+    <OtherMonthDayStyle ForeColor="DarkGray" />
+</asp:Calendar>
 
 <asp:TreeView runat="server" ImageSet="Arrows">
-            <HoverNodeStyle Font-Underline="True" ForeColor="LightBlue" />
-            <NodeStyle Font-Names="Arial" Font-Size="18pt" ForeColor="AliceBlue" HorizontalPadding="5px" NodeSpacing="0px" VerticalPadding="0px" />
             <ParentNodeStyle Font-Bold="False" />
-            <SelectedNodeStyle Font-Underline="True" ForeColor="#5555DD" HorizontalPadding="0px" VerticalPadding="0px" />
+            <NodeStyle Font-Names="Arial" Font-Size="18pt" ForeColor="AliceBlue" HorizontalPadding="5px" VerticalPadding="0px" NodeSpacing="0px" />
+            <HoverNodeStyle Font-Underline="True" ForeColor="LightBlue" />
+            <SelectedNodeStyle Font-Underline="True" ForeColor="#5555DD" HorizontalPadding="10px" VerticalPadding="0px" />
 </asp:TreeView>

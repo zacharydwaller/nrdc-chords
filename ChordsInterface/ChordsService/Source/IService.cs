@@ -35,7 +35,7 @@ namespace ChordsInterface.Service
         Api.Container<Data.DataStream> GetDataStream(string networkAlias, int streamID, int deploymentID = -1);
 
         [OperationContract]
-        string GetMeasurements(Data.DataStream stream, DateTime startTime, DateTime endTime = default(DateTime));
+        Api.Container<string> GetMeasurements(string networkAlias, Data.DataStream stream, DateTime startTime, DateTime endTime = default(DateTime));
 
         [OperationContract]
         string CreateMeasurement(Chords.Measurement measurement);

@@ -105,14 +105,16 @@ namespace ChordsInterface.Service
         /// <param name="startTime"></param>
         /// <param name="endTime">Optional. If left empty will be set to current time.</param>
         /// <returns></returns>
-        public string GetMeasurements(Data.DataStream stream, DateTime startTime, DateTime endTime = default(DateTime))
+        public Api.Container<string> GetMeasurements(string networkAlias, Data.DataStream stream, DateTime startTime, DateTime endTime = default(DateTime))
         {
+            var container = new Api.Container<string>();
+
             if(endTime == default(DateTime))
             {
                 endTime = DateTime.UtcNow;
             }
 
-            var apiResponse = Api.ApiInterface.GetMeasurements(stream, startTime, endTime);
+            var apiResponse = Api.ApiInterface.GetMeasurements(networkAlias, stream, startTime, endTime);
 
             if(apiResponse.Success)
             {
@@ -128,16 +130,16 @@ namespace ChordsInterface.Service
                     if(chordsResponse != CreateMeasurementSuccess)
                     {
                         // Measurement creation, return message from CHORDS
-                        return chordsResponse;
+                        return container.Fail(chordsResponse);
                     }
                 }
 
-                return "Number of Measurements Created: " + measurementList.Data.Count;
+                return container.Pass("Number of Measurements Created: " + measurementList.Data.Count);
             }
             else
             {
                 // GetMeasurements failed, return reason message
-                return apiResponse.Message;
+                return container.Fail(apiResponse.Message);
             }
         }
 
