@@ -1,7 +1,11 @@
 # NRDC-CHORDS
 A Generalized Interface for CHORDS
 
-### Our temporary CHORDS Portal
+### Web Client
+
+http://nrdcstudentweb.rd.unr.edu/team_16/services/NRDCWebClient/
+
+### Our CHORDS Portal
 
 http://ec2-13-57-134-131.us-west-1.compute.amazonaws.com
 
