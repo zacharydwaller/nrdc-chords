@@ -5,10 +5,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head runat="server">
 
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta name="description" content=""/>
-    <meta name="author" content="Zachary Waller, Pat J, Paul Marquis, Tom Trowbridge"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="Zachary Waller, Pat J, Paul Marquis, Tom Trowbridge" />
 
     <title>NRDC-CHORDS Web Client</title>
 
@@ -45,7 +45,7 @@
             <asp:ScriptManager runat="server" ID="ScriptMgr"></asp:ScriptManager>
 
             <!-- Select Network Tab -->
-            <div id="NetContent" class="tab-content" style="display:none;">
+            <div id="NetContent" class="tab-content" style="display: none;">
 
                 <!-- Network Buttons -->
                 <asp:UpdatePanel runat="server">
@@ -68,12 +68,12 @@
                             OnClick="SolarNexusButton_Click" UseSubmitBehavior="False" />
                     </ContentTemplate>
                 </asp:UpdatePanel>
-                
+
 
             </div>
 
             <!-- Select Stream Tab -->
-            <div id="StreamContent" class="tab-content" style="display:none;">
+            <div id="StreamContent" class="tab-content" style="display: none;">
 
                 <!-- Network Hierarchy -->
                 <asp:UpdatePanel runat="server">
@@ -91,7 +91,7 @@
             </div>
 
             <!-- Visualize Tab -->
-            <div id="VisContent" class="tab-content" style="display:none;">
+            <div id="VisContent" class="tab-content" style="display: none;">
 
                 <div class="column-row">
                     <!-- Start Date Calender -->
@@ -115,8 +115,8 @@
                         </p>
                         <!-- Stream Button -->
                         <asp:UpdatePanel runat="server">
-                                <ContentTemplate>
-                                    <asp:Button ID="StreamButton" runat="server" CssClass="network-button" Text="Start Streaming" OnClick="StreamButton_Click" />
+                            <ContentTemplate>
+                                <asp:Button ID="StreamButton" runat="server" CssClass="network-button" Text="Start Streaming" OnClick="StreamButton_Click" />
                             </ContentTemplate>
                         </asp:UpdatePanel>
 
@@ -181,8 +181,9 @@
     </script>
 
     <!-- Footer -->
-    <footer>
+   <%-- <footer>
         <p>Copyright &copy; Zachary Waller, Paul Marquis, Pat J, Tom Trowbridge 2017</p>
-    </footer>
+    </footer>--%>
+
 </body>
 </html>

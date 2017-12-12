@@ -106,12 +106,12 @@ public partial class Default : System.Web.UI.Page
         deploymentID = ViewState["deploymentID"] as string;
 
         var container = client.GetDataStream(networkAlias, int.Parse(streamID), int.Parse(deploymentID));
-
+        
         if(container.Success)
         {
             DateTime startTime = StartTimeCalendar.SelectedDate;
 
-            var response = client.GetMeasurements(networkAlias, container.Object, startTime, DateTime.UtcNow);
+            var response = client.GetMeasurements(networkAlias, container.Object, startTime, DateTime.Now);
 
             if(!response.Success)
             {
