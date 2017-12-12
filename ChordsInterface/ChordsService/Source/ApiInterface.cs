@@ -283,8 +283,8 @@ namespace ChordsInterface.Api
         {
             var container = new Container<Chords.MeasurementList>();
             // Create stream request HTTP message
-            string startTimeString = startTime.ToString("s");
-            string endTimeString = endTime.ToString("s");
+            string startTimeString = startTime.ToUniversalTime().ToString("s");
+            string endTimeString = endTime.ToUniversalTime().ToString("s");
             var dataSpecification = new Data.DataSpecification(stream, startTimeString, endTimeString);
 
             var jsonContent = Json.Serialize(dataSpecification);
