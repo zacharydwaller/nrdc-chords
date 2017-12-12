@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="d1522fb5-58e2-4fb2-a4c7-a6da264d2ca8" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="b0e57ae5-cc5a-49e3-91c5-002f44ff9761" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -22,13 +22,13 @@
     <MetadataSource Address="http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service1.wsdl" MetadataType="Wsdl" ID="a2281860-e3b5-4c8f-aa93-e62d4ded07d6" SourceId="1" SourceUrl="http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc/mex" />
-    <MetadataFile FileName="service2.xsd" MetadataType="Schema" ID="adf5fc24-9711-4fe7-8750-7b2b4606f151" SourceId="1" SourceUrl="http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc/mex" />
-    <MetadataFile FileName="service22.xsd" MetadataType="Schema" ID="7fc7c097-29ad-4de1-b837-2fe10baad0a7" SourceId="1" SourceUrl="http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc/mex" />
-    <MetadataFile FileName="ChordsInterface.Api1.xsd" MetadataType="Schema" ID="b3e138aa-6ad9-47bd-be56-5911226d60e1" SourceId="1" SourceUrl="http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc/mex" />
-    <MetadataFile FileName="ChordsInterface.Infrastructure1.xsd" MetadataType="Schema" ID="fa3d9c41-125c-4d3c-af7e-40259ccb58a1" SourceId="1" SourceUrl="http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc/mex" />
-    <MetadataFile FileName="ChordsInterface.Chords1.xsd" MetadataType="Schema" ID="c76932b2-f2f1-4eec-90c8-9f0b20784b9e" SourceId="1" SourceUrl="http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc/mex" />
-    <MetadataFile FileName="ChordsInterface.Data1.xsd" MetadataType="Schema" ID="b7af7d17-70a7-4e64-846b-6ddd214b344c" SourceId="1" SourceUrl="http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc/mex" />
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="10accdcb-08da-401d-9c1f-bca610866128" SourceId="1" SourceUrl="http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="71189ded-07db-4fc0-af20-0087784d6356" SourceId="1" SourceUrl="http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="bb15c7ed-bae7-48d1-abfc-e9f5d513f124" SourceId="1" SourceUrl="http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc/mex" />
+    <MetadataFile FileName="ChordsInterface.Api.xsd" MetadataType="Schema" ID="2b00c297-100f-438e-a7b6-d7c4b5678441" SourceId="1" SourceUrl="http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc/mex" />
+    <MetadataFile FileName="ChordsInterface.Infrastructure.xsd" MetadataType="Schema" ID="5395782e-bff9-44ad-85fe-fe9f1d9c5582" SourceId="1" SourceUrl="http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc/mex" />
+    <MetadataFile FileName="ChordsInterface.Chords.xsd" MetadataType="Schema" ID="bc899130-cc80-4896-a28f-9d3b533f5dd5" SourceId="1" SourceUrl="http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc/mex" />
+    <MetadataFile FileName="ChordsInterface.Data.xsd" MetadataType="Schema" ID="4a0e10fc-a485-4f95-93e2-71896dc9981f" SourceId="1" SourceUrl="http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

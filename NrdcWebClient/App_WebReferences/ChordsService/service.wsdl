@@ -188,7 +188,7 @@
   </wsdl:binding>
   <wsdl:service name="WebService">
     <wsdl:port name="BasicHttpBinding_IService" binding="tns:BasicHttpBinding_IService">
-      <soap:address location="http://nrdcstudentweb.rd.unr.edu/team_16/Services/Chords/ChordsInterface.Service.WebService.svc" />
+      <soap:address location="http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

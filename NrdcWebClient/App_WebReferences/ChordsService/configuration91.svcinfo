@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="6DydjdJ8jAJy+rNO7qawwSlriGg=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="NM+H0XgitY9iEXEphapuc9/Rw/E=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_IService">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_IService" contract="ChordsService.IService" bindingType="basicHttpBinding" address="http://nrdcstudentweb.rd.unr.edu/team_16/Services/Chords/ChordsInterface.Service.WebService.svc" bindingConfiguration="BasicHttpBinding_IService">
+    <endpoint name="BasicHttpBinding_IService" contract="ChordsService.IService" bindingType="basicHttpBinding" address="http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc" bindingConfiguration="BasicHttpBinding_IService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://nrdcstudentweb.rd.unr.edu/team_16/Services/Chords/ChordsInterface.Service.WebService.svc</serializedValue>
+          <serializedValue>http://nrdcstudentweb.rd.unr.edu/team_16/services/Chords/ChordsInterface.Service.WebService.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
