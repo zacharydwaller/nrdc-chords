@@ -29,6 +29,8 @@ namespace ChordsInterface.Api
                 ChordsInterface.InfrastructureUrlDict.Clear();
                 foreach (var network in networkList.Data)
                 {
+                    network.DataUrl = network.DataUrl.Replace("sensor.nevada.edu", "134.197.38.160");
+                    network.InfrastructureUrl = network.InfrastructureUrl.Replace("sensor.nevada.edu", "134.197.38.160");
                     ChordsInterface.DataUrlDict[network.Alias] = network.DataUrl;
                     ChordsInterface.InfrastructureUrlDict[network.Alias] = network.InfrastructureUrl;
                 }
