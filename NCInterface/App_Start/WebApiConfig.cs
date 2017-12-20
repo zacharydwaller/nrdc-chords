@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using System.Net.Http.Headers;
 
 namespace NCInterface
 {
@@ -12,6 +13,11 @@ namespace NCInterface
             // Web API routes
             config.MapHttpAttributeRoutes();
 
+            // Web API calls return JSON by default
+            config.Formatters.JsonFormatter.SupportedMediaTypes
+                .Add(new MediaTypeHeaderValue("text/html"));
+
+            // Create API route
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
