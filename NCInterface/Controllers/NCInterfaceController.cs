@@ -9,29 +9,28 @@ namespace NCInterface.Controllers
 {
     public class NCInterfaceController : ApiController
     {
-        // GET: api/NCInterface
-        public Container<Network> Get()
+        // GET: NCInterface
+        public Container<string> Get()
         {
-            return DataCenter.GetNetworkList();
+            return new Container<string>("NRDC-CHORDS Interface Service. " + Utilities.Version.GetString(), true);
         }
 
-        // GET: api/NCInterface/5
-        public string Get(int id)
+        public Container<Network> Get(string networkAlias)
         {
-            return "value";
+            return new Container<Network>(networkAlias);
         }
 
-        // POST: api/NCInterface
+        // POST: NCInterface
         public void Post([FromBody]string value)
         {
         }
 
-        // PUT: api/NCInterface/5
+        // PUT: NCInterface/5
         public void Put(int id, [FromBody]string value)
         {
         }
 
-        // DELETE: api/NCInterface/5
+        // DELETE: NCInterface/5
         public void Delete(int id)
         {
         }

@@ -10,17 +10,17 @@ namespace NCInterface
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.
 
-            // Web API routes
-            config.MapHttpAttributeRoutes();
-
             // Web API calls return JSON by default
             config.Formatters.JsonFormatter.SupportedMediaTypes
                 .Add(new MediaTypeHeaderValue("text/html"));
 
-            // Create API route
+            // Web API routes
+            config.MapHttpAttributeRoutes();
+
+            // Create convention-based API routes
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
+                routeTemplate: "{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
         }

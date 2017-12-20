@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Configuration\Chords.cs" />
+    <Compile Include="Controllers\DataCenterController.cs" />
     <Compile Include="Source\ConfigManager.cs" />
     <Compile Include="Configuration\DataCenter.cs" />
     <Compile Include="Controllers\NCInterfaceController.cs" />
