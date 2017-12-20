@@ -32,8 +32,8 @@ namespace NCInterface
         static Config()
         {
             // Read web.config
-            Chords chordsSection = ConfigurationManager.GetSection("chords") as Chords;
-            DataCenter dcSection = ConfigurationManager.GetSection("dataCenter") as DataCenter;
+            Configuration.Chords chordsSection = ConfigurationManager.GetSection("chords") as Configuration.Chords;
+            Configuration.DataCenter dcSection = ConfigurationManager.GetSection("dataCenter") as Configuration.DataCenter;
 
             if (chordsSection != null)
             {
