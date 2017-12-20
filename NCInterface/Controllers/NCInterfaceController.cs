@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
+using NCInterface.Structures;
+using NCInterface.Structures.Infrastructure;
+using NCInterface.Utilities;
 
 namespace NCInterface.Controllers
 {
     public class NCInterfaceController : ApiController
     {
         // GET: api/NCInterface
-        public IEnumerable<string> Get()
+        public Container<Network> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new Container<Network>(Config.NetworkDiscoveryUrl);
         }
 
         // GET: api/NCInterface/5
