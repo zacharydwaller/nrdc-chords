@@ -24,6 +24,11 @@ namespace NCInterface
         public static Dictionary<string, string> DataUrlDict { get; private set; }
 
         /// <summary>
+        /// NRDC download request can only return 1000 measurements at a time.
+        /// </summary>
+        public static int MaxMeasurements { get; private set; } = 1000;
+
+        /// <summary>
         /// Default Json.NET Serialization/Deserialization settings
         /// </summary>
         public static JsonSerializerSettings DefaultSerializationSettings;

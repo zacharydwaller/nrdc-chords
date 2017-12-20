@@ -13,6 +13,11 @@ namespace NCInterface.Structures
         public IList<T> Data { get; set; }
 
         /// <summary>
+        /// Default constructor. Should really only be used for serialization purposes.
+        /// </summary>
+        public Container() { }
+
+        /// <summary>
         ///     Default success/list constructor.
         ///     Can provide all or none of the class' properties.
         /// </summary>

@@ -12,7 +12,7 @@ namespace NCInterface.Controllers
         // GET: api/NCInterface
         public Container<Network> Get()
         {
-            return new Container<Network>(Config.NetworkDiscoveryUrl);
+            return DataCenter.GetNetworkList();
         }
 
         // GET: api/NCInterface/5
