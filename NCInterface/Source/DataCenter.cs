@@ -14,7 +14,7 @@ namespace NCInterface
     {
         private static HttpClient client = new HttpClient
         {
-            Timeout = TimeSpan.FromMilliseconds(10000)
+            Timeout = TimeSpan.FromMilliseconds(Config.DefaultTimeout)
         };
 
         /// <summary>

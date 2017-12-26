@@ -34,6 +34,11 @@ namespace NCInterface
         public static JsonSerializerSettings DefaultSerializationSettings;
         public static JsonSerializerSettings DefaultDeserializationSettings;
 
+        /// <summary>
+        /// HTTP Timeout
+        /// </summary>
+        public static int DefaultTimeout = 10000;
+
         static Config()
         {
             // Read web.config
