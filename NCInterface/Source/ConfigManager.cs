@@ -45,10 +45,6 @@ namespace NCInterface
                 NetworkDiscoveryUrl = dcSection.NetworkDiscoveryUrl;
             }
 
-            // Create Url dictionaries
-            InfrastructureUrlDict = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
-            DataUrlDict = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
-
             // Set default Json.NET settings
             DefaultSerializationSettings = new JsonSerializerSettings()
             {

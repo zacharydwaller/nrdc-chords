@@ -6,7 +6,6 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using NCInterface.Structures;
 using NCInterface.Structures.Infrastructure;
-using NCInterface.Structures.Data;
 
 namespace NCInterface
 {
@@ -30,6 +29,16 @@ namespace NCInterface
         };
 
         /// <summary>
+        /// Constructor, creates Url dictionaries
+        /// </summary>
+        static DataCenter()
+        {
+            // Create Url dictionaries
+            InfrastructureUrlDict = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+            DataUrlDict = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+        }
+
+        /// <summary>
         ///     Gets all of the sensor networks in NRDC. Populates the Data and Infrastructure Url dictionaries.
         /// </summary>
         /// <returns></returns>
@@ -38,61 +47,56 @@ namespace NCInterface
             string uri = Config.NetworkDiscoveryUrl;
             string message = GetHttpContent(uri);
 
-            return JsonConvert.DeserializeObject<Container<Network>>(message);
+            var networkList = JsonConvert.DeserializeObject<Container<Network>>(message);
 
-            /*
             if (networkList.Success)
             {
                 // Populate dictionaries with network Urls
-                ChordsInterface.DataUrlDict.Clear();
-                ChordsInterface.InfrastructureUrlDict.Clear();
+                DataUrlDict.Clear();
+                InfrastructureUrlDict.Clear();
                 foreach (var network in networkList.Data)
                 {
                     network.DataUrl = network.DataUrl.Replace("sensor.nevada.edu", "134.197.38.160");
                     network.InfrastructureUrl = network.InfrastructureUrl.Replace("sensor.nevada.edu", "134.197.38.160");
-                    ChordsInterface.DataUrlDict[network.Alias] = network.DataUrl;
-                    ChordsInterface.InfrastructureUrlDict[network.Alias] = network.InfrastructureUrl;
+                    DataUrlDict[network.Alias] = network.DataUrl;
+                    InfrastructureUrlDict[network.Alias] = network.InfrastructureUrl;
                 }
 
-                return container.Pass(networkList);
+                return networkList;
             }
             else
             {
-                return container.Fail("Unable to retrieve network list. Message from API: " + networkList.Message);
+                return new Container<Network>("Unable to retrieve network list. Message from API: " + networkList.Message);
             }
-            */
         }
 
-        /*
         /// <summary>
         ///     Returns a list of all the sites in a given sensor network.
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <returns></returns>
-        public static Container<Chords.SiteList> GetSiteList(string networkAlias)
-        {
-            var container = new Container<Chords.SiteList>();
+        public static Container<Site> GetSiteList(string networkAlias)
+        {;
             var urlContainer = GetInfrastructureUrl(networkAlias);
 
             // Couldn't find infrastructure Url
             if (!urlContainer.Success)
             {
-                return container.Fail(urlContainer.Message);
+                return new Container<Site>(urlContainer.Message);
             }
 
-            string uri = urlContainer.Object + "infrastructure/sites";
+            string uri = urlContainer.Data + "infrastructure/sites";
             string message = GetHttpContent(uri);
 
-            var sitelist = Json.Parse<Infrastructure.SiteList>(message);
+            var sitelist = JsonConvert.DeserializeObject<Container<Site>>(message);
 
             if (sitelist.Success)
             {
-                var chordsList = Converter.Convert(sitelist);
-                return new Container<Chords.SiteList>(chordsList);
+                return sitelist;
             }
             else
             {
-                return new Container<Chords.SiteList>(null, false, "Could not retrieve site list. Message from NRDC: " + sitelist.Message);
+                return new Container<Site>("Could not retrieve site list. Message from NRDC: " + sitelist.Message);
             }
         }
 
@@ -102,27 +106,25 @@ namespace NCInterface
         /// <param name="sensorNetwork"></param>
         /// <param name="siteID"></param>
         /// <returns></returns>
-        public static Container<Chords.Site> GetSite(string sensorNetwork, int siteID)
+        public static Container<Site> GetSite(string sensorNetwork, int siteID)
         {
-            var siteListContainer = GetSiteList(sensorNetwork);
-            var container = new Container<Chords.Site>();
+            var siteList = GetSiteList(sensorNetwork);
 
-            if (siteListContainer.Success)
+            if (siteList.Success)
             {
-                var sitelist = siteListContainer.Object;
-                var site = sitelist.Data.FirstOrDefault(s => s.ID == siteID);
+                var site = siteList.Data.FirstOrDefault(s => s.ID == siteID);
 
                 if (site != null)
                 {
-                    return container.Pass(site);
+                    return new Container<Site>(site);
                 }
                 else
                 {
-                    return container.Fail("Site not found. ID: " + siteID.ToString());
+                    return new Container<Site>("Site not found. ID: " + siteID.ToString());
                 }
             }
 
-            return container.Fail(siteListContainer.Message);
+            return new Container<Site>(siteList.Message);
         }
 
         /// <summary>
@@ -131,18 +133,17 @@ namespace NCInterface
         /// <param name="networkAlias"></param>
         /// <param name="siteID"></param>
         /// <returns></returns>
-        public static Container<Chords.SystemList> GetSystemList(string networkAlias, int siteID)
+        public static Container<NrdcSystem> GetSystemList(string networkAlias, int siteID)
         {
-            var container = new Container<Chords.SystemList>();
             var urlContainer = GetInfrastructureUrl(networkAlias);
 
             // Couldn't find infrastructure Url
             if (!urlContainer.Success)
             {
-                return container.Fail(urlContainer.Message);
+                return new Container<NrdcSystem>(urlContainer.Message);
             }
 
-            string uri = urlContainer.Object + "infrastructure/site/" + siteID.ToString() + "/systems";
+            string uri = urlContainer.Data + "infrastructure/site/" + siteID.ToString() + "/systems";
             string message = GetHttpContent(uri);
 
             var systemList = Json.Parse<Infrastructure.SystemList>(message);
@@ -363,7 +364,6 @@ namespace NCInterface
                 return container.Fail("Error From: " + response.RequestMessage + "\n" + response.ReasonPhrase);
             }
         }
-        */
 
         /// <summary>
         ///     Http.GetAsync wrapper. Makes a GET call to the uri and returns the response content as a string.
@@ -376,7 +376,6 @@ namespace NCInterface
             return response.Content.ReadAsStringAsync().Result;
         }
 
-        /*
         /// <summary>
         ///     Returns the Infrastructure Url for the specified sensor network. Returns empty string if no Url was found.
         /// </summary>
@@ -385,10 +384,9 @@ namespace NCInterface
         private static Container<string> GetInfrastructureUrl(string networkAlias)
         {
             string infrastructureUrl;
-            var container = new Container<string>();
 
             // Check for url in dictionary
-            if (!ChordsInterface.InfrastructureUrlDict.TryGetValue(networkAlias, out infrastructureUrl))
+            if (!InfrastructureUrlDict.TryGetValue(networkAlias, out infrastructureUrl))
             {
                 // Couldn't find in dictionary, call GetNetworks to populate dictionaries and try again
                 var networkList = GetNetworkList();
@@ -396,18 +394,18 @@ namespace NCInterface
                 if (networkList.Success)
                 {
                     // Try the dictionary again
-                    if (ChordsInterface.InfrastructureUrlDict.TryGetValue(networkAlias, out infrastructureUrl))
+                    if (InfrastructureUrlDict.TryGetValue(networkAlias, out infrastructureUrl))
                     {
-                        return container.Pass(infrastructureUrl);
+                        return new Container<string>(infrastructureUrl);
                     }
                 }
 
                 // Still couldn't find url, return empty string
-                return container.Fail("Couldn't find Infrastructure Services Url for Sensor Network: " + networkAlias);
+                return new Container<string>("Couldn't find Infrastructure Services Url for Sensor Network: " + networkAlias);
             }
 
             // Url was in dictionary
-            return container.Pass(infrastructureUrl);
+            return new Container<string>(infrastructureUrl);
         }
 
         /// <summary>
@@ -415,13 +413,12 @@ namespace NCInterface
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <returns></returns>
-        private static Api.Container<string> GetDataUrl(string networkAlias)
+        private static Container<string> GetDataUrl(string networkAlias)
         {
-            var container = new Api.Container<string>();
             string dataUrl;
 
             // Check for url in dictionary
-            if (!ChordsInterface.DataUrlDict.TryGetValue(networkAlias, out dataUrl))
+            if (!DataUrlDict.TryGetValue(networkAlias, out dataUrl))
             {
                 // Couldn't find in dictionary, call GetNetworks to populate dictionaries and try again
                 var networkList = GetNetworkList();
@@ -429,19 +426,18 @@ namespace NCInterface
                 if (networkList.Success)
                 {
                     // Try the dictionary again
-                    if (ChordsInterface.DataUrlDict.TryGetValue(networkAlias, out dataUrl))
+                    if (DataUrlDict.TryGetValue(networkAlias, out dataUrl))
                     {
-                        return container.Pass(dataUrl);
+                        return new Container<string>(dataUrl);
                     }
                 }
 
                 // Still couldn't find url, return empty string
-                return container.Fail("Couldn't find Data Services Url for Sensor Network: " + networkAlias);
+                return new Container<string>("Couldn't find Data Services Url for Sensor Network: " + networkAlias);
             }
 
             // Url was in dictionary
-            return container.Pass(dataUrl);
+            return new Container<string>(dataUrl);
         }
-        */
     }
 }
