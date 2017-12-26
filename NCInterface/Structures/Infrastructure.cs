@@ -36,7 +36,7 @@ namespace NCInterface.Structures.Infrastructure
         public string GPSLandmark { get; set; }
     }
 
-    public class System
+    public class NrdcSystem
     {
         public int ID { get; set; }
         public string UniqueIdentifier { get; set; }
