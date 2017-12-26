@@ -11,7 +11,7 @@ namespace NCInterface
         public static string ChordsHostUrl { get; private set; }
         public static string NetworkDiscoveryUrl { get; private set; }
 
-        
+        public static string DefaultTimeZoneID { get { return "Pacific Standard Time"; } }
 
         /// <summary>
         /// NRDC download request can only return 1000 measurements at a time.

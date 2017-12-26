@@ -26,17 +26,7 @@ namespace NCInterface.Controllers
         [HttpGet]
         public Container<Network> GetNetwork(string networkAlias)
         {
-            var network = DataCenter.GetNetworkList()
-                .Data.FirstOrDefault(n => n.Alias.Equals(networkAlias, StringComparison.InvariantCultureIgnoreCase));
-            
-            if(network != null)
-            {
-                return new Container<Network>(network);
-            }
-            else
-            {
-                return new Container<Network>(string.Format("Network with alias \"{0}\" not found.", networkAlias));
-            }
+            return DataCenter.GetNetwork(networkAlias);
         }
 
         /// <summary>
@@ -46,9 +36,9 @@ namespace NCInterface.Controllers
         /// <returns></returns>
         [Route("DataCenter/{networkAlias}/sites")]
         [HttpGet]
-        public Container<string> GetSiteList(string networkAlias)
+        public Container<Site> GetSiteList(string networkAlias)
         {
-            return new Container<string>("sites from " + networkAlias, true);
+            return DataCenter.GetSiteList(networkAlias);
         }
 
         /// <summary>
@@ -78,6 +68,20 @@ namespace NCInterface.Controllers
         }
 
         /// <summary>
+        ///     Gets the system metadata from a given site and system ID
+        /// </summary>
+        /// <param name="networkAlias"></param>
+        /// <param name="siteID"></param>
+        /// <param name="systemID"></param>
+        /// <returns></returns>
+        [Route("DataCenter/{networkAlias}/site/{siteID}/system/{systemID}")]
+        [HttpGet]
+        public Container<NrdcSystem> GetSystem(string networkAlias, int siteID, int systemID)
+        {
+            return DataCenter.GetSystem(networkAlias, siteID, systemID);
+        }
+
+        /// <summary>
         ///     Gets a list of deployments from the specified system.
         /// </summary>
         /// <param name="networkAlias"></param>
@@ -87,7 +91,21 @@ namespace NCInterface.Controllers
         [HttpGet]
         public Container<Deployment> GetDeploymentList(string networkAlias, int systemID)
         {
-            return DataCenter.GetInstrumentList(networkAlias, systemID);
+            return DataCenter.GetDeploymentList(networkAlias, systemID);
+        }
+
+        /// <summary>
+        ///     Gets deployment metadata from a given system and deployment ID
+        /// </summary>
+        /// <param name="networkAlias"></param>
+        /// <param name="systemID"></param>
+        /// <param name="deploymentID"></param>
+        /// <returns></returns>
+        [Route("DataCenter/{networkAlias}/system/{systemId}/deployment/{deploymentID}")]
+        [HttpGet]
+        public Container<Deployment> GetDeploymentList(string networkAlias, int systemID, int deploymentID)
+        {
+            return DataCenter.GetDeployment(networkAlias, systemID, deploymentID);
         }
 
         /// <summary>
@@ -112,7 +130,7 @@ namespace NCInterface.Controllers
         ///     Optional. Leave empty to search in all deployments in network or specify to get a quicker search.
         /// </param>
         /// <returns></returns>
-        [Route("DataCenter/{networkAlias}/streams/{streamID}")]
+        [Route("DataCenter/{networkAlias}/stream/{streamID}")]
         [HttpGet]
         public Container<Structures.Data.DataStream> GetDataStream(string networkAlias, int streamID)
         {

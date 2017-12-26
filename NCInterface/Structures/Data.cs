@@ -105,14 +105,14 @@ namespace NCInterface.Structures.Data
             UnitsID = stream.Units.ID;
         }
     }
-    /*
+    
     public class DataSpecification
     {
-        public string TimeZoneID { get; set; } = ChordsInterface.DefaultTimeZoneID;
+        public string TimeZoneID { get; set; } = Config.DefaultTimeZoneID;
         public string StartDateTime { get; set; }
         public string EndDateTime { get; set; }
         public long Skip { get; set; } = 0;
-        public long Take { get; set; } = ChordsInterface.MaxMeasurements;
+        public long Take { get; set; } = Config.MaxMeasurements;
         public IList<DataStreamRequest> DataStreams { get; set; } = new List<DataStreamRequest>();
 
         public DataSpecification() { }
@@ -125,7 +125,7 @@ namespace NCInterface.Structures.Data
             EndDateTime = endTime;
         }
     }
-    */
+    
 
     public class AggregateDataSpecification
     {
