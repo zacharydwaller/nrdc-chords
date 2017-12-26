@@ -12,6 +12,18 @@ namespace NCInterface
 {
     public static class DataCenter
     {
+        /// <summary>
+        /// Dictionary of sensor network infrastructure urls.
+        /// Key: Network Alias.
+        /// </summary>
+        public static Dictionary<string, string> InfrastructureUrlDict { get; private set; }
+
+        /// <summary>
+        /// Dictionary of sensor network data urls.
+        /// Key: Network Alias.
+        /// </summary>
+        public static Dictionary<string, string> DataUrlDict { get; private set; }
+
         private static HttpClient client = new HttpClient
         {
             Timeout = TimeSpan.FromMilliseconds(Config.DefaultTimeout)

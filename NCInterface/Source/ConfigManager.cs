@@ -11,17 +11,7 @@ namespace NCInterface
         public static string ChordsHostUrl { get; private set; }
         public static string NetworkDiscoveryUrl { get; private set; }
 
-        /// <summary>
-        /// Dictionary of sensor network infrastructure urls.
-        /// Key: Network Alias.
-        /// </summary>
-        public static Dictionary<string, string> InfrastructureUrlDict { get; private set; }
-
-        /// <summary>
-        /// Dictionary of sensor network data urls.
-        /// Key: Network Alias.
-        /// </summary>
-        public static Dictionary<string, string> DataUrlDict { get; private set; }
+        
 
         /// <summary>
         /// NRDC download request can only return 1000 measurements at a time.
