@@ -9,6 +9,7 @@ using NCInterface.Utilities;
 
 namespace NCInterface.Controllers
 {
+    [RoutePrefix("DataCenter")]
     public class DataCenterController : ApiController
     {
         private static HttpClient client = new HttpClient
@@ -17,12 +18,13 @@ namespace NCInterface.Controllers
         };
 
         // GET: DataCenter
+        [HttpGet]
         public Container<Network> GetNetworkList()
         {
             return DataCenter.GetNetworkList();
         }
 
-        [Route("DataCenter/{networkAlias}")]
+        [Route("{networkAlias}")]
         [HttpGet]
         public Container<Network> GetNetwork(string networkAlias)
         {
@@ -34,7 +36,7 @@ namespace NCInterface.Controllers
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <returns></returns>
-        [Route("DataCenter/{networkAlias}/sites")]
+        [Route("{networkAlias}/sites")]
         [HttpGet]
         public Container<Site> GetSiteList(string networkAlias)
         {
@@ -47,7 +49,7 @@ namespace NCInterface.Controllers
         /// <param name="networkAlias"></param>
         /// <param name="siteID"></param>
         /// <returns></returns>
-        [Route("DataCenter/{networkAlias}/site/{siteID}")]
+        [Route("{networkAlias}/site/{siteID}")]
         [HttpGet]
         public Container<Site> GetSite(string networkAlias, int siteID)
         {
@@ -60,7 +62,7 @@ namespace NCInterface.Controllers
         /// <param name="networkAlias"></param>
         /// <param name="siteID"></param>
         /// <returns></returns>
-        [Route("DataCenter/{networkAlias}/site/{siteID}/systems")]
+        [Route("{networkAlias}/site/{siteID}/systems")]
         [HttpGet]
         public Container<NrdcSystem> GetSystemList(string networkAlias, int siteID)
         {
@@ -74,7 +76,7 @@ namespace NCInterface.Controllers
         /// <param name="siteID"></param>
         /// <param name="systemID"></param>
         /// <returns></returns>
-        [Route("DataCenter/{networkAlias}/site/{siteID}/system/{systemID}")]
+        [Route("{networkAlias}/site/{siteID}/system/{systemID}")]
         [HttpGet]
         public Container<NrdcSystem> GetSystem(string networkAlias, int siteID, int systemID)
         {
@@ -87,7 +89,7 @@ namespace NCInterface.Controllers
         /// <param name="networkAlias"></param>
         /// <param name="systemID"></param>
         /// <returns></returns>
-        [Route("DataCenter/{networkAlias}/system/{systemId}/deployments")]
+        [Route("{networkAlias}/system/{systemId}/deployments")]
         [HttpGet]
         public Container<Deployment> GetDeploymentList(string networkAlias, int systemID)
         {
@@ -101,7 +103,7 @@ namespace NCInterface.Controllers
         /// <param name="systemID"></param>
         /// <param name="deploymentID"></param>
         /// <returns></returns>
-        [Route("DataCenter/{networkAlias}/system/{systemId}/deployment/{deploymentID}")]
+        [Route("{networkAlias}/system/{systemId}/deployment/{deploymentID}")]
         [HttpGet]
         public Container<Deployment> GetDeploymentList(string networkAlias, int systemID, int deploymentID)
         {
@@ -114,7 +116,7 @@ namespace NCInterface.Controllers
         /// <param name="networkAlias"></param>
         /// <param name="deploymentID"></param>
         /// <returns></returns>
-        [Route("DataCenter/{networkAlias}/system/{systemId}/deployment/{deploymentID}/streams")]
+        [Route("{networkAlias}/system/{systemId}/deployment/{deploymentID}/streams")]
         [HttpGet]
         public Container<Structures.Data.DataStream> GetDataStreamList(string networkAlias, int deploymentID)
         {
@@ -130,7 +132,7 @@ namespace NCInterface.Controllers
         ///     Optional. Leave empty to search in all deployments in network or specify to get a quicker search.
         /// </param>
         /// <returns></returns>
-        [Route("DataCenter/{networkAlias}/stream/{streamID}")]
+        [Route("{networkAlias}/stream/{streamID}")]
         [HttpGet]
         public Container<Structures.Data.DataStream> GetDataStream(string networkAlias, int streamID)
         {
@@ -147,7 +149,7 @@ namespace NCInterface.Controllers
         ///     Optional. Leave empty to search in all deployments in network or specify to get a quicker search.
         /// </param>
         /// <returns></returns>
-        [Route("DataCenter/{networkAlias}/deployment/{deploymentID}/stream/{streamID}")]
+        [Route("{networkAlias}/deployment/{deploymentID}/stream/{streamID}")]
         [HttpGet]
         public Container<Structures.Data.DataStream> GetDataStream(string networkAlias, int streamID, int deploymentID)
         {
@@ -161,7 +163,7 @@ namespace NCInterface.Controllers
         /// <param name="startTime"></param>
         /// <param name="endTime">Optional. If left empty will be set to current time.</param>
         /// <returns></returns>
-        [Route("DataCenter/{networkAlias}/deployment/{deploymentID}/stream/{streamID}")]
+        [Route("{networkAlias}/deployment/{deploymentID}/stream/{streamID}")]
         [HttpPost]
         public Container<string> PostMeasurements(string networkAlias, Structures.Data.DataStream stream, DateTime startTime, DateTime endTime = default(DateTime))
         {
