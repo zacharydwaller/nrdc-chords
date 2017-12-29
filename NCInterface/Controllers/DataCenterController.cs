@@ -17,7 +17,7 @@ namespace NCInterface.Controllers
         };
 
         // GET: DataCenter
-        public Container<Network> Get()
+        public Container<Network> GetNetworkList()
         {
             return DataCenter.GetNetworkList();
         }
