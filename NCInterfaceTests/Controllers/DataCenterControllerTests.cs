@@ -22,6 +22,12 @@ namespace NCInterface.Controllers.Tests
         public string BaseUrl { get; set; } = "http://localhost:3485/DataCenter";
         public HttpClient http = new HttpClient();
 
+        [TestCleanup()]
+        public void Cleanup()
+        {
+            http.Dispose();
+        }
+
         [TestMethod()]
         public void GetNetworkListTest()
         {
