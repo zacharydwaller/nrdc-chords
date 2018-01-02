@@ -5,3 +5,16 @@
     background-attachment: fixed;
     background-position: left bottom;
 }
+
+.panel {
+    border-color: #003366;
+}
+
+.panel-header {
+    background-color: #003366;
+}
+
+.thumbnail {
+    background-color: aliceblue;
+}
+
