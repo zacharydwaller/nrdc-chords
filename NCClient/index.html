@@ -7,14 +7,25 @@
     <meta name="description" content="" />
     <meta name="author" content="Zachary Waller, Pat J, Paul Marquis, Tom Trowbridge" />
 
+    <title>NRDC-CHORDS Web Client</title>
+
+    <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <!-- MDBootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.3/css/mdb.min.css" />
+
+    <!-- Our Stylesheet -->
     <link rel="stylesheet" href="css/nctheme.css" />
 
+    <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Bootstrap Core JS -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="js/netbuttons.js"></script>
+    <!-- MDBootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.3/js/mdb.min.js"></script>
 
-    <title>NRDC-CHORDS Web Client</title>
+    <!-- Our scripts-->
+    <script src="js/netbuttons.js"></script>
 
 </head>
 
@@ -31,6 +42,45 @@
                 <li class="active"><a href="#">Home</a></li>
                 <li><a data-toggle="modal" data-target="#aboutModal">About</a></li>
             </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Tab/Content Container -->
+        <div class="panel panel-default">
+
+            <!-- Tabs -->
+            <ul class="panel-header nav nav-tabs">
+                <li class="col-lg-4 active"><a data-toggle="tab" href="#NetContent">Select a Sensor Network</a></li>
+                <li class="col-lg-4"><a data-toggle="tab" href="#StreamContent">Select Data Streams</a></li>
+                <li class="col-lg-4"><a data-toggle="tab" href="#VisContent">Visualize</a></li>
+            </ul>
+
+            <!-- Tab Contents -->
+            <div class="panel-body tab-content">
+
+                <!-- Select Network Tab -->
+                <div id="NetContent" class="tab-pane fade in active">
+                    <!-- Network Buttons -->
+                    <button type="button" id="NevCanButton" class="btn btn-lg btn-block">NevCAN</button>
+                    <button type="button" id="WalkerBasinButton" class="btn btn-lg btn-block">Walker Basin Hydroclimate</button>
+                    <button type="button" id="SolarNexusButton" class="btn btn-lg btn-block">Solar Energy Nexus</button>
+                </div>
+
+                <!-- Select Stream Tab -->
+                <div id="StreamContent" class="tab-pane fade">
+
+                    <!-- Network Hierarchy -->
+                    Test
+                </div>
+
+                <!-- Visualize Tab -->
+                <div id="VisContent" class="tab-pane fade">
+                    Test2
+                </div>
+
+            </div>
+
         </div>
     </div>
 
@@ -79,51 +129,6 @@
 
         </div>
     </div>
-
-    <!-- Tab Grid -->
-    <div class="container-fluid">
-
-        <!-- Net Buttons -->
-        <div class="btn-group btn-group-justified">
-            <div class="btn-group">
-                <button type="button" id="NetTab" class="tab btn" onclick="openTab('NetTab', 'NetContent');">Select a Sensor Network</button>
-            </div>
-            <div class="btn-group">
-                <button type="button" id="StreamTab" class="tab btn" onclick="openTab('StreamTab', 'StreamContent');">Select a Data Stream</button>
-            </div>
-            <div class="btn-group">
-                <button type="button" id="VisTab" class="tab btn" onclick="openTab('VisTab', 'VisContent');">Visualize</button>
-            </div>
-        </div>
-
-        <!-- Expanding grid -->
-
-            <!-- Select Network Tab -->
-            <div id="NetContent" class="tab-content panel" style="display: none;">
-                <!-- Network Buttons -->
-                <button type="button" id="NevCanButton" class="btn">NevCAN</button>
-                <button type="button" id="NevCanButton" class="btn">NevCAN</button>
-
-            </div>
-
-            <!-- Select Stream Tab -->
-            <div id="StreamContent" class="tab-content" style="display: none;">
-
-                <!-- Network Hierarchy -->
-
-            </div>
-
-            <!-- Visualize Tab -->
-            <div id="VisContent" class="tab-content" style="display: none;">
-
-            </div>
-
-    </div>
-
-    <!-- Footer -->
-    <!-- <footer> -->
-    <!-- <p>Copyright &copy; Zachary Waller, Paul Marquis, Pat J, Tom Trowbridge 2017</p> -->
-    <!-- </footer> -->
 
 </body>
 </html>
