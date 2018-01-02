@@ -44,138 +44,156 @@ namespace NCInterface.Controllers
         }
 
         /// <summary>
-        ///     Gets site metadata given its ID.
+        /// Gets site metadata given its ID.
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <param name="siteID"></param>
         /// <returns></returns>
-        [Route("{networkAlias}/site/{siteID}")]
+        [Route("{networkAlias}/sites")]
         [HttpGet]
-        public Container<Site> GetSite(string networkAlias, int siteID)
+        public Container<Site> GetSite(string networkAlias, [FromUri] int siteID)
         {
             return DataCenter.GetSite(networkAlias, siteID);
         }
 
         /// <summary>
-        ///     Gets a list of systems from the specified site.
+        /// Gets a list of systems from the specified site.
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <param name="siteID"></param>
         /// <returns></returns>
-        [Route("{networkAlias}/site/{siteID}/systems")]
+        [Route("{networkAlias}/systems")]
         [HttpGet]
-        public Container<NrdcSystem> GetSystemList(string networkAlias, int siteID)
+        public Container<NrdcSystem> GetSystemList(string networkAlias, [FromUri] int siteID = 0)
         {
             return DataCenter.GetSystemList(networkAlias, siteID);
         }
 
         /// <summary>
-        ///     Gets the system metadata from a given site and system ID
+        /// Gets the system metadata from a given site and system ID
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <param name="siteID"></param>
         /// <param name="systemID"></param>
         /// <returns></returns>
-        [Route("{networkAlias}/site/{siteID}/system/{systemID}")]
+        [Route("{networkAlias}/systems")]
         [HttpGet]
-        public Container<NrdcSystem> GetSystem(string networkAlias, int siteID, int systemID)
+        public Container<NrdcSystem> GetSystem(string networkAlias, [FromUri] int siteID, [FromUri] int systemID)
         {
             return DataCenter.GetSystem(networkAlias, siteID, systemID);
         }
 
         /// <summary>
-        ///     Gets a list of deployments from the specified system.
+        /// Gets a list of deployments from the specified system.
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <param name="systemID"></param>
         /// <returns></returns>
-        [Route("{networkAlias}/system/{systemId}/deployments")]
+        [Route("{networkAlias}/deployments")]
         [HttpGet]
-        public Container<Deployment> GetDeploymentList(string networkAlias, int systemID)
+        public Container<Deployment> GetDeploymentList(string networkAlias, [FromUri] int systemID = 0)
         {
             return DataCenter.GetDeploymentList(networkAlias, systemID);
         }
 
         /// <summary>
-        ///     Gets deployment metadata from a given system and deployment ID
+        /// Gets deployment metadata from a given system and deployment ID
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <param name="systemID"></param>
         /// <param name="deploymentID"></param>
         /// <returns></returns>
-        [Route("{networkAlias}/system/{systemId}/deployment/{deploymentID}")]
+        [Route("{networkAlias}/deployments")]
         [HttpGet]
-        public Container<Deployment> GetDeploymentList(string networkAlias, int systemID, int deploymentID)
+        public Container<Deployment> GetDeployment(string networkAlias, [FromUri] int systemID, [FromUri] int deploymentID)
         {
             return DataCenter.GetDeployment(networkAlias, systemID, deploymentID);
         }
 
         /// <summary>
-        ///     Gets a list of data streams from a specified deployment.
+        /// Gets a list of data streams from a specified deployment.
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <param name="deploymentID"></param>
         /// <returns></returns>
-        [Route("{networkAlias}/system/{systemId}/deployment/{deploymentID}/streams")]
+        [Route("{networkAlias}/streams")]
         [HttpGet]
-        public Container<Structures.Data.DataStream> GetDataStreamList(string networkAlias, int deploymentID)
+        public Container<Structures.Data.DataStream> GetDataStreamList(string networkAlias, [FromUri] int deploymentID = 0)
         {
             return DataCenter.GetDataStreams(networkAlias, deploymentID);
         }
 
         /// <summary>
-        ///     Gets a datastream by ID.
+        /// Gets a datastream by ID. Provide its deployment ID for faster searching.
+        /// Will search all streams in network if stream is not found within provided deployment (slow).
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <param name="streamID"></param>
         /// <param name="deploymentID">
-        ///     Optional. Leave empty to search in all deployments in network or specify to get a quicker search.
+        /// Optional. Leave empty to search in all deployments in network or specify to get a quicker search.
         /// </param>
         /// <returns></returns>
-        [Route("{networkAlias}/stream/{streamID}")]
+        [Route("{networkAlias}/streams")]
         [HttpGet]
-        public Container<Structures.Data.DataStream> GetDataStream(string networkAlias, int streamID)
-        {
-            return DataCenter.GetDataStream(networkAlias, streamID);
-        }
-
-        /// <summary>
-        ///     Gets a datastream by ID. Provide its deployment ID for faster searching.
-        ///     Will search all streams in network if stream is not found within provided deployment (slow).
-        /// </summary>
-        /// <param name="networkAlias"></param>
-        /// <param name="streamID"></param>
-        /// <param name="deploymentID">
-        ///     Optional. Leave empty to search in all deployments in network or specify to get a quicker search.
-        /// </param>
-        /// <returns></returns>
-        [Route("{networkAlias}/deployment/{deploymentID}/stream/{streamID}")]
-        [HttpGet]
-        public Container<Structures.Data.DataStream> GetDataStream(string networkAlias, int streamID, int deploymentID)
+        public Container<Structures.Data.DataStream> GetDataStream(string networkAlias, [FromUri] int streamID, [FromUri] int deploymentID = 0)
         {
             return DataCenter.GetDataStream(networkAlias, streamID, deploymentID);
         }
 
         /// <summary>
-        ///     Retrieves a list of measurements from the provided stream and time range and uploads them to the CHORDS instance.
+        /// Retrieves a list of measurements from the provided stream and time range and uploads them to the CHORDS instance.
+        /// Optionally provide deployment ID to find stream quicker.
         /// </summary>
-        /// <param name="stream"></param>
-        /// <param name="startTime"></param>
+        /// <param name="streamID"></param>
+        /// <param name="deploymentID">Optional. If left empty will take longer to find stream metadata.</param>
+        /// /// <param name="startTime"></param>
         /// <param name="endTime">Optional. If left empty will be set to current time.</param>
         /// <returns></returns>
-        [Route("{networkAlias}/deployment/{deploymentID}/stream/{streamID}")]
-        [HttpPost]
-        public Container<string> PostMeasurements(string networkAlias, Structures.Data.DataStream stream, DateTime startTime, DateTime endTime = default(DateTime))
+        [Route("{networkAlias}/pushData")]
+        [HttpGet]
+        public Container<string> PostMeasurements(
+            string networkAlias,
+            [FromUri] int streamID = 0,
+            [FromUri] int deploymentID = 0,
+            [FromUri] string startTime = "",
+            [FromUri] string endTime = "")
         {
             //int instrumentID = stream.Deployment.ID;
             int instrumentID = 1;
 
-            if (endTime == default(DateTime))
+            // Get the stream metadata
+            var streamContainer = DataCenter.GetDataStream(networkAlias, streamID, deploymentID);
+            Structures.Data.DataStream stream;
+
+            if (streamContainer.Success)
             {
-                endTime = DateTime.UtcNow;
+                stream = streamContainer.Data[0];
+            }
+            else
+            {
+                // Couldn't get stream, return error
+                return new Container<string>("", false, streamContainer.Message);
             }
 
-            var apiResponse = DataCenter.GetMeasurements(networkAlias, stream, startTime, endTime);
+            // Get DateTimes
+            DateTime start, end;
+            
+            if(!DateTime.TryParse(startTime, out start))
+            {
+                return new Container<string>("", false, "Unable to read startTime: " + startTime);
+            }
+
+            if(endTime == "")
+            {
+                end = DateTime.UtcNow;
+            }
+            else if(!DateTime.TryParse(endTime, out end))
+            {
+                return new Container<string>("", false, "Unable to read endTime: " + endTime);
+            }
+
+            // Retrieve measurements
+            var apiResponse = DataCenter.GetMeasurements(networkAlias, stream, start, end);
 
             if (apiResponse.Success)
             {
@@ -188,11 +206,11 @@ namespace NCInterface.Controllers
                     if (chordsResponse != CreateMeasurementSuccess)
                     {
                         // Measurement creation, return message from CHORDS
-                        return new Container<string>(chordsResponse);
+                        return new Container<string>(chordsResponse, true);
                     }
                 }
 
-                return new Container<string>("Number of Measurements Created: " + measurementList.Count);
+                return new Container<string>("Number of Measurements Created: " + measurementList.Count, true);
             }
             else
             {
@@ -202,11 +220,11 @@ namespace NCInterface.Controllers
         }
 
         /// <summary>
-        ///     Posts a single measurement to the CHORDS instance.
+        /// Posts a single measurement to the CHORDS instance.
         /// </summary>
         /// <param name="measurement"></param>
         /// <returns></returns>
-        public string CreateMeasurement(Structures.Data.Measurement measurement, int instrumentID)
+        protected string CreateMeasurement(Structures.Data.Measurement measurement, int instrumentID)
         {
             string uri = CreateMeasurementUri(measurement, instrumentID, true);
             var httpTask = client.GetAsync(Config.ChordsHostUrl + uri);
@@ -235,7 +253,7 @@ namespace NCInterface.Controllers
         private const string CreateMeasurementSuccess = "Measurement created.";
 
         /// <summary>
-        ///     Builds a CHORDS Put Data uri given the provided measurement and test data flag.
+        /// Builds a CHORDS Put Data uri given the provided measurement and test data flag.
         /// </summary>
         /// <param name="measurement"></param>
         /// <param name="isTestData"></param>

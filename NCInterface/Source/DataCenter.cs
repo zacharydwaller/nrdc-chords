@@ -168,13 +168,13 @@ namespace NCInterface
 
             var systemList = JsonConvert.DeserializeObject<Container<NrdcSystem>>(message, Config.DefaultDeserializationSettings);
 
-            if (systemList.Success)
+            if (systemList.Data != null && systemList.Data.Count != 0)
             {
                 return systemList;
             }
             else
             {
-                return new Container<NrdcSystem>("Could not retrieve system list. Message from NRDC: " + systemList.Message);
+                return new Container<NrdcSystem>("Could not retrieve system list from site ID: " + siteID.ToString());
             }
         }
 
@@ -227,13 +227,13 @@ namespace NCInterface
 
             var deploymentList = JsonConvert.DeserializeObject<Container<Deployment>>(message, Config.DefaultDeserializationSettings);
 
-            if (deploymentList.Success)
+            if (deploymentList.Data != null && deploymentList.Data.Count != 0)
             {
                 return deploymentList;
             }
             else
             {
-                return new Container<Deployment>("Could not retrieve deployment list. Message from NRDC: " + deploymentList.Message);
+                return new Container<Deployment>("Could not retrieve deployment list from system ID: " + systemID.ToString());
             }
         }
 
@@ -432,7 +432,7 @@ namespace NCInterface
         /// </summary>
         /// <param name="uri"></param>
         /// <returns></returns>
-        private static string GetHttpContent(string uri)
+        public static string GetHttpContent(string uri)
         {
             var response = http.GetAsync(uri).Result;
             return response.Content.ReadAsStringAsync().Result;
