@@ -21,6 +21,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <!-- Our scripts-->
+    <script src="js/scripts.js"></script>
 
 </head>
 
@@ -61,7 +62,7 @@
                     <div class="btn-group btn-group-justified">
 
                         <div class="btn-group">
-                            <button type="button" id="NevCanButton" class="btn btn-lg thumbnail">
+                            <button type="button" id="nevcanButton" value="NevCAN" class="net-button btn btn-lg thumbnail">
                                 <img src="img/snakerange.jpg" class="img-circle" style="width:200px" />
                                 <div class="caption">
                                     <h3>NevCAN</h3>
@@ -70,7 +71,7 @@
                         </div>
                         
                         <div class="btn-group">
-                            <button type="button" id="WalkerBasinButton" class="btn btn-lg thumbnail">
+                            <button type="button" id="walkerBasinButton" value="WalkerBasinHydro" class="net-button btn btn-lg thumbnail">
                                 <img src="img/walkerriver.jpg" class="img-circle" style="width:200px" />
                                 <div class="caption">
                                     <h3>Walker Basin Hydroclimate</h3>
@@ -79,7 +80,7 @@
                         </div>
                         
                         <div class="btn-group">
-                            <button type="button" id="SolarNexusButton" class="btn btn-lg thumbnail">
+                            <button type="button" id="solarNexusButton" value="SolarNexus" class="net-button btn btn-lg thumbnail">
                                 <img src="img/solar.jpg" class="img-circle" style="width:200px" />
                                 <div class="caption">
                                     <h3>Solar Energy Nexus</h3>
@@ -95,7 +96,34 @@
                 <div id="StreamContent" class="tab-pane fade">
 
                     <!-- Network Hierarchy -->
-                    Test
+                    <div class="row">
+
+                        <!-- Sites -->
+                        <div class="col-sm-4">
+                            <div id="site-list" class="list-group">
+                                <a href="#" class="list-group-item hierarchy-item site-button">
+                                    <h4 class="list-group-item-heading">First List Group Item Heading</h4>
+                                    <p class="list-group-item-text">List Group Item Text</p>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Deployments -->
+                        <div class="col-sm-4">
+                            <div id="deployment-list" class="list-group">
+
+                            </div>
+                        </div>
+
+                        <!-- Streams -->
+                        <div class="col-sm-4">
+                            <div id="stream-list" class="list-group">
+
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
 
                 <!-- Visualize Tab -->
@@ -114,6 +142,7 @@
 
             <!-- Modal content-->
             <div class="modal-content">
+
                 <div class="modal-body">
                     <h3>About the NRDC</h3>
                     <p class="text-justify">
@@ -149,6 +178,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
+
             </div>
 
         </div>
