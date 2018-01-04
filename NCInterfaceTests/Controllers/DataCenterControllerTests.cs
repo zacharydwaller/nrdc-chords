@@ -286,7 +286,7 @@ namespace NCInterface.Controllers.Tests
 
             Assert.IsTrue(container.Success);
             Assert.AreEqual(8, container.Data.Count);
-            Assert.AreEqual(48, container.Data[0].ID);
+            Assert.AreEqual(24, container.Data[0].Deployment.ID);
 
             // Get Fail - bad net alias
             uri = format.Replace("NevCAN", "Fail");
