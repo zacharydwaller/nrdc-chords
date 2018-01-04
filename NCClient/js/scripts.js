@@ -1,6 +1,6 @@
 ﻿var serviceUrl = "http://localhost:3485/DataCenter/";
 
-var selectedNetwork = "";
+var selectedNetwork = "NevCAN";
 var selectedSite = 0;
 var selectedSystem = 0;
 var selectedDeployment = 0;
@@ -16,6 +16,9 @@ $(document).ready(function ()
 
     // Attach netbuttonClick function to network buttons 
     $(".net-button").click(netbuttonClick);
+
+    // Retrieve NevCAN sites
+    expandHierarchy(serviceUrl + selectedNetwork + "/sites?", expandSites);
 });
 
 function netbuttonClick()
@@ -28,6 +31,8 @@ function netbuttonClick()
     $(".hierarchy-item").remove();
 
     expandHierarchy(serviceUrl + selectedNetwork + "/sites?", expandSites);
+
+    $("#streamTab").click();
 }
 
 function siteButtonClick()
