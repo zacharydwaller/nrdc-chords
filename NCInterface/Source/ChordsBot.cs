@@ -10,7 +10,7 @@ using System.IO;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
-namespace ChordsPusher
+namespace NCInterface
 {
     public class ChordsBot
     {
@@ -27,7 +27,7 @@ namespace ChordsPusher
             Driver = new ChromeDriver();
         }
 
-        public void Login()
+        public string Login()
         { 
             Driver.Url = PortalUrl + loginUrl;
             Driver.Navigate();
@@ -43,14 +43,17 @@ namespace ChordsPusher
 
             var cookies = Driver.Manage().Cookies.AllCookies;
 
+            var sb = new StringBuilder();
             if(cookies.Count > 0)
             {
-                Console.WriteLine("\n\nLogin Successful.\nCookies Retrieved:");
+                sb.AppendLine("\n\nLogin Successful.\nCookies Retrieved:");
                 foreach (var cookie in cookies)
                 {
-                    Console.WriteLine(string.Format("{0}: {1}", cookie.Name, cookie.Value));
+                    sb.AppendLine(string.Format("{0}: {1}", cookie.Name, cookie.Value));
                 }
             }
+
+            return sb.ToString();
         }
 
         public void CreateInstrument()
