@@ -18,15 +18,39 @@ namespace ChordsPusher
 
         private ChromeDriver Driver { get; set; }
 
+        private string Email { get; set; } = @"chords@mailinator.com";
+        private string Password { get; set; } = "nrdc2018";
+
         public ChordsBot(string portalUrl)
         {
             PortalUrl = portalUrl;
-            Driver = new ChromeDriver(@"chromedriver_win32");
+            Driver = new ChromeDriver();
         }
 
         public void Login()
-        {
+        { 
             Driver.Url = PortalUrl + loginUrl;
+            Driver.Navigate();
+
+            var email = Driver.FindElementById("user_email");
+            var pass = Driver.FindElementById("user_password");
+            var submit = Driver.FindElementByName("commit");
+
+            email.SendKeys(Email);
+            pass.SendKeys(Password);
+
+            submit.Click();
+
+            var cookies = Driver.Manage().Cookies.AllCookies;
+
+            if(cookies.Count > 0)
+            {
+                Console.WriteLine("\n\nLogin Successful.\nCookies Retrieved:");
+                foreach (var cookie in cookies)
+                {
+                    Console.WriteLine(string.Format("{0}: {1}", cookie.Name, cookie.Value));
+                }
+            }
         }
 
         public void CreateInstrument()
