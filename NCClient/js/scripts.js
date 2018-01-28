@@ -176,6 +176,8 @@ function expandHierarchy(uri, callback)
 
 function expandSites(data)
 {
+    hideHeaders();
+
     for (var i = 0; i < data.length; i++)
     {
         var button = createButton("site-button", "#site-list", siteButtonClick);
