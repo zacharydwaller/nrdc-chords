@@ -146,7 +146,7 @@ function expandHierarchy(uri, callback)
         {
             $("#loading").remove();
 
-            console.log(result);
+            //console.log(result);
             if (result.Success == true)
             {
                 callback(result.Data);
@@ -202,7 +202,9 @@ function expandStreams(data)
     {
         var button = createButton("stream-button", "#stream-list", streamButtonClick);
         button.innerHTML =
-            "<h4 class=\"list-group-item-heading\">" + data[i].DataType.Name + "</h4>" +
+            "<h4 class=\"list-group-item-heading\">" + data[i].Property.Name + "</h4>" +
+            "<p class=\"list-group-item-heading\">" + data[i].DataType.Name + "</p>" +
+            "<p class=\"list-group-item-text\">" + "(" + data[i].Units.Abbreviation + ")" + "</p>" +
             "<p class=\"list-group-item-text\">" + "Interval: " + data[i].MeasurementInterval + "</p>";
         $(button).attr("value", data[i].ID)
     }
