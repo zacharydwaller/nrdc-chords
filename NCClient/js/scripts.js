@@ -10,12 +10,20 @@ var hiClasses = "list-group-item hierarchy-item";
 
 var loader = "<img id=\"loading\" src=\"img/spinner.gif\" style=\"width:100px\" />";
 
+var systemsHeader;
+var deploymentsHeader;
+var streamsHeader;
+var selectedStreamsHeader;
+
 $(document).ready(function ()
 {
     $(".hierarchy-item").remove();
 
     // Attach netbuttonClick function to network buttons 
     $(".net-button").click(netbuttonClick);
+    
+    getHeaders();
+    hideHeaders();
 
     // Retrieve NevCAN sites
     expandHierarchy(serviceUrl + selectedNetwork + "/sites?", expandSites);
@@ -178,6 +186,10 @@ function expandSites(data)
 
 function expandSystems(data)
 {
+    systemsHeader.show();
+    deploymentsHeader.hide();
+    streamsHeader.hide();
+
     for (var i = 0; i < data.length; i++)
     {
         var button = createButton("system-button", "#system-list", systemButtonClick);
@@ -188,6 +200,9 @@ function expandSystems(data)
 
 function expandDeployments(data)
 {
+    deploymentsHeader.show();
+    streamsHeader.hide();
+
     for (var i = 0; i < data.length; i++)
     {
         var button = createButton("deployment-button", "#deployment-list", deploymentButtonClick);
@@ -198,6 +213,8 @@ function expandDeployments(data)
 
 function expandStreams(data)
 {
+    streamsHeader.show();
+
     for (var i = 0; i < data.length; i++)
     {
         var button = createButton("stream-button", "#stream-list", streamButtonClick);
@@ -208,4 +225,20 @@ function expandStreams(data)
             "<p class=\"list-group-item-text\">" + "Interval: " + data[i].MeasurementInterval + "</p>";
         $(button).attr("value", data[i].ID)
     }
+}
+
+function getHeaders()
+{
+    systemsHeader = $("#systems-header");
+    deploymentsHeader = $("#deployments-header");
+    streamsHeader = $("#streams-header");
+    selectedStreamsHeader = $("#selectedstreams-header");
+}
+
+function hideHeaders()
+{
+    systemsHeader.hide();
+    deploymentsHeader.hide();
+    streamsHeader.hide();
+    selectedStreamsHeader.hide();
 }
