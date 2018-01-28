@@ -15,8 +15,8 @@ namespace NCInterface.Controllers
         [HttpGet]
         public Container<String> ChordsLogin()
         {
-            var bot = new ChordsBot(Config.ChordsHostUrl);
-            return new Container<string>(bot.Login(), true);
+            //return new Container<string>(ChordsBot.Login(), true);
+            return new Container<string>("", true);
         }
     }
 }

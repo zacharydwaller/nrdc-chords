@@ -23,6 +23,8 @@ namespace NCInterface
                 routeTemplate: "{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            ChordsBot.Initialize(Config.ChordsHostUrl);
         }
     }
 }

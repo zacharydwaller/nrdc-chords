@@ -8,26 +8,28 @@ using System.Web;
 using System.Net;
 using System.IO;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.PhantomJS;
 
 namespace NCInterface
 {
-    public class ChordsBot
+    public static class ChordsBot
     {
-        public string PortalUrl { get; private set; }
+        public static string PortalUrl { get; private set; }
 
-        private PhantomJSDriver Driver { get; set; }
+        private static PhantomJSDriver Driver { get; set; }
 
-        private string Email { get; set; } = @"chords@mailinator.com";
-        private string Password { get; set; } = "nrdc2018";
+        private static string Email { get; set; } = @"chords@mailinator.com";
+        private static string Password { get; set; } = "nrdc2018";
 
-        public ChordsBot(string portalUrl)
+        public static void Initialize(string portalUrl)
         {
             PortalUrl = portalUrl;
             Driver = new PhantomJSDriver();
+            Login();
         }
 
-        public string Login()
+        private static string Login()
         { 
             Driver.Url = PortalUrl + loginUrl;
             Driver.Navigate();
@@ -56,7 +58,7 @@ namespace NCInterface
             return sb.ToString();
         }
 
-        public void CreateInstrument()
+        public static void CreateInstrument()
         {
             //var keyValues = CreateInstrumentData();
 
@@ -89,7 +91,7 @@ namespace NCInterface
             //
         }
 
-        private List<KeyValuePair<string,string>> CreateInstrumentData()
+        private static List<KeyValuePair<string,string>> CreateInstrumentData()
         {
             /*
              * To retrive authenticity-token:
@@ -112,6 +114,6 @@ namespace NCInterface
             return keyValues;
         }
 
-        private string loginUrl = @"/users/sign_in";
+        private static string loginUrl = @"/users/sign_in";
     }
 }
