@@ -8,7 +8,7 @@ using System.Web;
 using System.Net;
 using System.IO;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.PhantomJS;
 
 namespace NCInterface
 {
@@ -16,7 +16,7 @@ namespace NCInterface
     {
         public string PortalUrl { get; private set; }
 
-        private ChromeDriver Driver { get; set; }
+        private PhantomJSDriver Driver { get; set; }
 
         private string Email { get; set; } = @"chords@mailinator.com";
         private string Password { get; set; } = "nrdc2018";
@@ -24,7 +24,7 @@ namespace NCInterface
         public ChordsBot(string portalUrl)
         {
             PortalUrl = portalUrl;
-            Driver = new ChromeDriver();
+            Driver = new PhantomJSDriver();
         }
 
         public string Login()
