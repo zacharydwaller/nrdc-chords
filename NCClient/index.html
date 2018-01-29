@@ -1,0 +1,205 @@
+﻿<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="Zachary Waller, Pat J, Paul Marquis, Tom Trowbridge" />
+
+    <title>NRDC-CHORDS Web Client</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+    <!-- Our Stylesheet -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Bootstrap Core JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Our scripts-->
+    <script src="js/scripts.js"></script>
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <div class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">NRDC-CHORDS Client</a>
+            </div>
+
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a data-toggle="modal" data-target="#aboutModal">About</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Tab/Content Container -->
+        <div class="panel panel-default">
+
+            <!-- Tabs -->
+            <ul class="panel-header nav nav-tabs text-center lead">
+                <li class="col-lg-4 active"><a data-toggle="tab" href="#NetContent">Select a Sensor Network</a></li>
+                <li class="col-lg-4"><a id="streamTab" data-toggle="tab" href="#StreamContent">Select Data Streams</a></li>
+                <li class="col-lg-4"><a data-toggle="tab" href="#VisContent">Visualize</a></li>
+            </ul>
+
+            <!-- Tab Contents -->
+            <div class="panel-body tab-content">
+
+                <!-- Select Network Tab -->
+                <div id="NetContent" class="tab-pane fade in active">
+
+                    <!-- Network Buttons -->
+                    <div class="btn-group btn-group-justified">
+
+                        <div class="btn-group">
+                            <button type="button" id="nevcanButton" value="NevCAN" class="net-button btn btn-lg thumbnail">
+                                <img src="img/snakerange.jpg" class="img-circle" style="width:200px" />
+                                <div class="caption">
+                                    <h3>NevCAN</h3>
+                                </div>
+                            </button>
+                        </div>
+                        
+                        <div class="btn-group">
+                            <button type="button" id="walkerBasinButton" value="WalkerBasinHydro" class="net-button btn btn-lg thumbnail">
+                                <img src="img/walkerriver.jpg" class="img-circle" style="width:200px" />
+                                <div class="caption">
+                                    <h3>Walker Basin Hydroclimate</h3>
+                                </div>
+                            </button>
+                        </div>
+                        
+                        <div class="btn-group">
+                            <button type="button" id="solarNexusButton" value="SolarNexus" class="net-button btn btn-lg thumbnail">
+                                <img src="img/solar.jpg" class="img-circle" style="width:200px" />
+                                <div class="caption">
+                                    <h3>Solar Energy Nexus</h3>
+                                </div>
+                            </button>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+
+                <!-- Select Stream Tab -->
+                <div id="StreamContent" class="tab-pane fade">
+
+                    <!-- Network Hierarchy -->
+                    <div class="row">
+
+                        <!-- Sites -->
+                        <div class="col-sm-3">
+                            <h3>Sites</h3>
+                            <div id="site-list" class="list-group">
+                                <a href="#" class="list-group-item hierarchy-item site-button">
+                                    <h4 class="list-group-item-heading">First List Group Item Heading</h4>
+                                    <p class="list-group-item-text">List Group Item Text</p>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Systems -->
+                        <div class="col-sm-3">
+                            <h3 id="systems-header">Systems</h3>
+                            <div id="system-list" class="list-group">
+
+                            </div>
+
+                            <!-- Deployments -->
+                            <h3 id="deployments-header">Deployments</h3>
+                            <div id="deployment-list" class="list-group pre pre-scrollable">
+
+                            </div>
+                        </div>
+
+                        <!-- Streams -->
+                        <div class="col-sm-3">
+                            <h3 id="streams-header">Streams</h3>
+                            <div id="stream-list" class="list-group pre pre-scrollable">
+
+                            </div>
+                        </div>
+
+                        <!-- Selected Streams -->
+                        <div class="col-sm-3">
+                            <h3 id="selectedstreams-header">Selected Streams</h3>
+                            <div id="stream-list" class="list-group pre pre-scrollable">
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Visualize Tab -->
+                <div id="VisContent" class="tab-pane fade">
+                    Test2
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div id="aboutModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <h3>About the NRDC</h3>
+                    <p class="text-justify">
+                        The Nevada Research Data Center serves in a critical role of science cyberinfrastructure
+                        for sensor-based research data management. We facilitate the acquisition, transport,
+                        storage, query, and dissemination of observational data created by automated digital sensor
+                        systems. The NRDC participates in cutting-edge software and systems development to enhance
+                        next-generation science that leverages the Internet of Things (IoT). Our goal is to transform
+                        the scale, quality, impact, and bottom-line cost of research projects in Nevada that seek to
+                        deploy automated sensor systems as part of their scientific workflow.
+                    </p>
+
+                    <h3>About Us</h3>
+                    <p class="text-justify">
+                        Zachary Waller, born and raised in Reno, is experienced with C++ as well as C# and the .NET
+                        platform. He has a strong interest in simulations and user interfaces.
+                    </p>
+                    <p class="text-justify">
+                        Pattaphol Jirasessakul is experienced with Python, C++, and R with interests in big data,
+                        statistics, data mining, and web design. He hopes to get some experience in C# with this project
+                        along with some experience in data visualization.
+                    </p>
+                    <p class="text-justify">
+                        Tom Trowbridge, a Las Vegas native,  is experienced with C++ and Java, and is interested in
+                        cloud hosted services relating to big data.
+                    </p>
+                    <p class="text-justify">
+                        Paul Marquis is also a Las Vegas native with experience in C++, python and an interest in
+                        big data and data streaming technologies.
+                    </p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
