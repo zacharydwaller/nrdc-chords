@@ -18,6 +18,7 @@ namespace NCInterface
         public static string PortalUrl { get; private set; }
 
         private static PhantomJSDriver Driver { get; set; }
+        //private static ChromeDriver Driver { get; set; }
 
         private static string Email { get; set; } = @"chords@mailinator.com";
         private static string Password { get; set; } = "nrdc2018";
@@ -26,6 +27,7 @@ namespace NCInterface
         {
             PortalUrl = portalUrl;
             Driver = new PhantomJSDriver();
+            //Driver = new ChromeDriver();
             Login();
         }
 
