@@ -22,9 +22,16 @@ namespace NCInterface.Controllers
         [Route("CreateInstrument")]
         [HttpGet]
 
-        public Container<int> createInstrument()
+        public Container<int> CreateInstrument()
        {
             return ChordsBot.CreateInstrument("test");
        }
+
+        [Route("DeleteInstrument")]
+        [HttpGet]
+        public Container<int> DeleteInstrument([FromUri] int instrumentId)
+        {
+            return ChordsBot.DeleteInstrument(instrumentId);
+        }
     }
 }

@@ -87,6 +87,31 @@ namespace NCInterface
             }
         }
 
+        public static Container<int> DeleteInstrument(int instrumentID)
+        {
+
+            string instrumentPage = @"/instruments/";
+            Driver.Url = PortalUrl + instrumentPage;
+            Driver.Navigate();
+
+            var destroyButtons = Driver.FindElements(By.ClassName("button_to"));
+
+            string idString = string.Format("/instruments/{0}", instrumentID);
+
+            var instrButton = destroyButtons.FirstOrDefault(b => b.GetAttribute("action").Contains(idString));
+            instrButton.Click();
+
+            Driver.SwitchTo().Alert().Accept();
+
+            if(instrButton != null)
+            {
+                return new Container<int>(instrumentID);
+            }
+            else
+            {
+                return new Container<int>("Could not delete instrument ID: " + instrumentID);
+            }
+        }
 
         private static List<KeyValuePair<string,string>> CreateInstrumentData()
         {
