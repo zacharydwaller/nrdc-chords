@@ -18,5 +18,13 @@ namespace NCInterface.Controllers
             //return new Container<string>(ChordsBot.Login(), true);
             return new Container<string>("", true);
         }
+
+        [Route("CreateInstrument")]
+        [HttpGet]
+
+        public Container<int> createInstrument()
+       {
+            return ChordsBot.CreateInstrument("test");
+       }
     }
 }

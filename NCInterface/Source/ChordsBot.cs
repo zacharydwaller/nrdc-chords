@@ -10,6 +10,7 @@ using System.IO;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.PhantomJS;
+using NCInterface.Structures;
 
 namespace NCInterface
 {
@@ -17,8 +18,8 @@ namespace NCInterface
     {
         public static string PortalUrl { get; private set; }
 
-        private static PhantomJSDriver Driver { get; set; }
-        //private static ChromeDriver Driver { get; set; }
+        //private static PhantomJSDriver Driver { get; set; }
+        private static ChromeDriver Driver { get; set; }
 
         private static string Email { get; set; } = @"chords@mailinator.com";
         private static string Password { get; set; } = "nrdc2018";
@@ -26,8 +27,8 @@ namespace NCInterface
         public static void Initialize(string portalUrl)
         {
             PortalUrl = portalUrl;
-            Driver = new PhantomJSDriver();
-            //Driver = new ChromeDriver();
+          //  Driver = new PhantomJSDriver();
+            Driver = new ChromeDriver();
             Login();
         }
 
@@ -60,8 +61,8 @@ namespace NCInterface
             return sb.ToString();
         }
 
-        public static void CreateInstrument()
-        {
+        //public static void CreateInstrument()
+        //{
             //var keyValues = CreateInstrumentData();
 
             //var client = new HttpClient
@@ -91,7 +92,32 @@ namespace NCInterface
             //    Console.WriteLine(response.Content.ReadAsStringAsync().Result);
             //}
             //
+        //}
+
+        public static Container<int> CreateInstrument(string name)
+        {
+            string newInstrument = @"/instruments/new";
+
+            var keyValues = CreateInstrumentData();
+            Driver.Url = PortalUrl + newInstrument;
+            Driver.Navigate();
+
+            Driver.FindElementById("instrument_name").SendKeys(name);
+            Driver.FindElementById("instrument_sample_rate_seconds").SendKeys(Config.DefaultSampleRate.ToString());
+            Driver.FindElementByName("commit").Click();
+
+            int id;
+            string idString = Driver.Url.Substring(Driver.Url.LastIndexOf("/")+1);
+            if (int.TryParse(idString, out id))
+            {
+                return new Container<int>(id, true);
+            }
+            else
+            {
+                return new Container<int>("Instrument URL could not be parsed: "+ Driver.Url);
+            }
         }
+
 
         private static List<KeyValuePair<string,string>> CreateInstrumentData()
         {
