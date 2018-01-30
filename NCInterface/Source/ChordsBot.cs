@@ -61,38 +61,7 @@ namespace NCInterface
             return sb.ToString();
         }
 
-        //public static void CreateInstrument()
-        //{
-            //var keyValues = CreateInstrumentData();
-
-            //var client = new HttpClient
-            //{
-            //    BaseAddress = new Uri(url)
-            //};
-
-            //client.DefaultRequestHeaders.ExpectContinue = false;
-
-            //var request = new HttpRequestMessage(HttpMethod.Post, "/instruments");
-            //request.Headers.Add("Upgrade-Insecure-Requests", "1");
-            //request.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*; q=0.8");
-            //request.Headers.Add("Referer", "http://ec2-13-57-134-131.us-west-1.compute.amazonaws.com/instruments/new");
-            //request.Headers.Add("Accept-Encoding", "gzip, deflate");
-            //request.Headers.Add("Accept-Language", "en-US,en;q=0.9");
-
-            //request.Content = new FormUrlEncodedContent(keyValues);
-
-            //Console.WriteLine(request);
-
-            //var response = client.SendAsync(request).Result;
-
-            //Console.WriteLine(string.Format("{0} {1}", response.StatusCode, response.ReasonPhrase));
-
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    Console.WriteLine(response.Content.ReadAsStringAsync().Result);
-            //}
-            //
-        //}
+      
 
         public static Container<int> CreateInstrument(string name)
         {
