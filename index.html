@@ -24,7 +24,14 @@
 
 </head>
 
-<body>
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <ul class="nav navbar-nav">
+            <li><a href="#section1">Section 1</a></li>
+            <li><a href="#section2">Section 2</a></li>
+        </ul>
+    </nav>
 
     <div class="container">
         <div class="jumbotron">
@@ -32,10 +39,14 @@
             <p>A Generalized Software Interface for CHORDS.</p>
         </div>
 
-        <div class="panel panel-default">
+        <div id="section1">
 
             Test
 
+        </div>
+
+        <div id="section2">
+            
         </div>
     </div>
 
