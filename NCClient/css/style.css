@@ -8,6 +8,7 @@
 
 .panel {
     border-color: #003366;
+    padding: 4px 10px 4px 10px;
 }
 
 .panel-header {

@@ -15,12 +15,26 @@
     <!-- Our Stylesheet -->
     <link rel="stylesheet" href="NCClient/css/style.css" />
 
+    <style>
+        p {
+            color: rgb(128, 128, 128);
+            font-size: large;
+        }
+
+        .panel {
+            border-color: rgba(0, 0, 0, 0.25);
+        }
+    </style>
+
+
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- Bootstrap Core JS -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <!-- Our scripts-->
+
+    
 
 </head>
 
@@ -29,8 +43,10 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#section1">Section 1</a></li>
-                <li><a href="#section2">Section 2</a></li>
+                <li class="active"><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#team">The Team</a></li>
+                <li><a href="#resources">Resources</a></li>
             </ul>
         </div>
         
@@ -38,9 +54,11 @@
     
     <div class="container">
 
-        <div class="panel">
+        <div class="panel text-center">
 
-            <div id="section1" class="jumbotron text-center">
+            <!-- Jumbotron -->
+            <div id="home" class="jumbotron text-center">
+
                 <p>
                     <br />
                     Department of Computer Science and Engineering
@@ -68,18 +86,145 @@
 
             </div>
 
+            <!-- About the Project -->
+            <div id="about" class="panel">
 
+                <h1>About This Project</h1>
+                <div class="text-justify">
+                    <p>
+                        The goal of this project is to create an open-source near-realtime
+                        interface between the Nevada Research Data Center (NRDC) and CHORDS
+                        a data visualization package. While the product is primarily being
+                        built for the NRDC, there will be an emphasis on building the project
+                        to be as generalized and generic as possible. The goal end product
+                        will be a plug-and-play solution that will allow any small or medium
+                        sized science team to take advantage of the benefits of data
+                        visualization at no cost and limited technical knowledge. An
+                        open-source approach will allow for wide adaptability and customization
+                        of the product and be offered as a free alternative to existing
+                        proprietary or custom-built data visualization solutions.
+                        <br />
+                        <br />
+                        We are working with the Nevada Research Data Center
+                        (NRDC) to develop an open-source interface between arbitrary
+                        data streams and CHORDS, a data visualization package. In
+                        addition to fulfilling the NRDC’s requirement that the package
+                        work with their cyberinfrastructure, there will be an emphasis
+                        on building the project to be as generic as possible. The goal
+                        end product will be a plug-and-play cloud-hosted visualization
+                        package that can interface with any variety of standard data
+                        streams to visualize the data in near-real time. This will allow
+                        any small to medium sized scientific research team to take
+                        advantage of the benefits of data visualization with little
+                        effort and no cost.
+                        <br />
+                        <br />
+                        Data visualization is an important tool for scientists working
+                        with large and constantly updating data sets. However, scientists
+                        are usually presented with two options for robust visualization:
+                        expensive proprietary solutions, or programming language libraries
+                        that require developer-level knowledge to use. Our project will
+                        benefit scientists by giving them the full benefits of data
+                        visualization in a free and easy to use package. This will save
+                        science teams the cost of integrating proprietary solutions and
+                        also enable teams with little-to-no technical knowledge to use our
+                        product. In addition, our project will also be open source, which
+                        will allow teams with the technical skill to fork the source code
+                        and build their own custom solution using our platform.
+                    </p>
 
-            <div id="section2">
-               
+                    <!-- Technologies Used -->
+                    <h3 class="text-center">Technologies Used</h3>
+                    <div class="container text-center">
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-2">
+                                <a href="https://www.microsoft.com/net/download/dotnet-framework-runtime" target="_blank">
+                                    <img src="https://docs.microsoft.com/en-us/dotnet/images/hub/netframework.svg" style="width:100px"/>
+                                </a>
+                                <p>.NET Framework</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <a href="https://www.newtonsoft.com/json" target="_blank">
+                                    <img src="https://avatars1.githubusercontent.com/u/14144343?s=400&v=4" style="width:100px" />
+                                </a>
+                                <p>Json.NET</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <a href="http://www.seleniumhq.org/" target="_blank">
+                                    <img src="http://www.seleniumhq.org/images/big-logo.png" style="width:100px" />
+                                </a>
+                                <p>Selenium</p>
+                            </div>
+                            <div class="col-sm-3"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-2">
+                                <a href="http://phantomjs.org/" target="_blank">
+                                    <img src="https://pbs.twimg.com/profile_images/1884362265/phantomjs_400x400.png" style="width:100px" />
+                                </a>
+                                <p>PhantomJS</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <a href="https://getbootstrap.com/" target="_blank">
+                                    <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" style="width:100px" />
+                                </a>
+                                <p>Bootstrap</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <a href="https://jquery.com/" target="_blank">
+                                    <img src="https://avatars0.githubusercontent.com/u/70142?s=200&v=4" style="width:100px" />
+                                </a>
+                                <p>jQuery</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <div id="section3">
+            <!-- About the Team -->
+            <div id="team" class="panel">
+
+                <h1>About the Team</h1>
+                <p class="text-justify">
+                    <b>Zachary Waller</b>, born and raised in Reno, is experienced with C++ as well as C# and the .NET
+                    platform. He has a strong interest in simulations and user interfaces.
+                    <br /><br />
+                    <b>Pattaphol Jirasessakul</b> is experienced with Python, C++, and R with interests in big data,
+                    statistics, data mining, and web design. He hopes to get some experience in C# with this project
+                    along with some experience in data visualization.
+                    <br /><br />
+                    <b>Paul Marquis</b> is a Las Vegas native with experience in C++, python and an interest in
+                    big data and data streaming technologies.
+                    <br /><br />
+                    <b>Tom Trowbridge</b>, a Las Vegas native,  is experienced with C++ and Java, and is interested in
+                    cloud hosted services relating to big data.
+                </p>
 
             </div>
+
+            <div id="resources" class="panel">
+
+                <h1>Project Resources</h1>
+
+            </div>
+
+            <footer class="panel">
+
+                <p>
+                    <div style="">Supported by NSF grant # IIA-1301726</div>
+                </p>
+
+            </footer>
+
         </div>
+
+        
     </div>
 
+    
 
 </body>
 </html>
