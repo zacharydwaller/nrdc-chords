@@ -33,5 +33,18 @@ namespace NCInterface.Controllers
         {
             return ChordsBot.DeleteInstrument(instrumentId);
         }
+
+        [Route("ConfigureVariables")]
+        [HttpGet]
+        public Container<string> ConfigureVariables([FromUri] int instrumentId)
+        {
+
+            List<int> DataStreamID= new List<int>();
+            DataStreamID.Add(1);
+            return ChordsBot.ConfigureVariables(instrumentId, DataStreamID);
+        }
+
+
+
     }
 }

@@ -113,6 +113,13 @@ namespace NCInterface
             }
         }
 
+
+        public static Container<string> ConfigureVariables (int instrumentID, List<int> DataStreamIDs)
+        {
+            //DataCenter.GetDataStream
+            return new Container<string>("test");
+        }
+
         private static List<KeyValuePair<string,string>> CreateInstrumentData()
         {
             /*
