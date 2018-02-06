@@ -41,7 +41,7 @@ namespace NCInterface.Controllers
             DateTime testDate = new DateTime(2008,5,1,8,30,52);
             List<int> DataStreamID = new List<int>();
             DataStreamID.Add(1);
-            Session session = new Session("testKey", "nevcan", DataStreamID, instrumentId,testDate);
+            Session session = new Session("testKey", "nevcan", DataStreamID, testDate);
              
              
             return ChordsBot.ConfigureVariables(session);
