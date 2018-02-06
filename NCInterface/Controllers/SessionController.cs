@@ -11,14 +11,21 @@ using NCInterface.Utilities;
 
 namespace NCInterface.Controllers
 {
-    [RoutePrefix("DataCenter")]
+    [RoutePrefix("Session")]
     public class SessionController : ApiController
     {
-        private Dictionary<string, Session> SessionDict = new Dictionary<string, Session>();
-
-        public Container<string> InitializeSession([FromBody] SessionInitializer args)
+        [Route("NewSession")]
+        [HttpGet]
+        public Container InitializeSession([FromUri] SessionInitializer args)
         {
-            return new Container<string>("Not implemented");
+            return SessionManager.InitializeSession(args);
+        }
+
+        [Route("RandomKey")]
+        [HttpGet]
+        public Container<string> GetNewKey()
+        {
+            return SessionManager.GetRandomKey();
         }
     }
 }
