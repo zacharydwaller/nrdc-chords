@@ -119,19 +119,24 @@ namespace NCInterface
             string instrumentIDPage = @"/instruments/" + session.InstrumentID;
             Driver.Url = PortalUrl + instrumentIDPage;
             Driver.Navigate();
-
-            var testStream = DataCenter.GetDataStream(session.NetworkAlias, session.StreamIDs[0]);
-            var testData = testStream.Data;
-
-
-            Driver.ExecuteScript("document.getElementsByName('var[shortname]')[0].setAttribute('type', 'text');");
-            Driver.FindElementById("var_shortname").Clear();
-            Driver.FindElementById("var_shortname").SendKeys("TestNameTest");
-            Driver.FindElement(By.XPath("//input[@name='commit' and @value='Add a New Variable']")).Click();
-
-            //Tested getting the data stream, will implement creating the variable on CHORDS next
+            int counter = 0;
+            foreach(int ID  in session.StreamIDs)
+            {
+                var testStream = DataCenter.GetDataStream(session.NetworkAlias, session.StreamIDs[counter]);
+                var testData = testStream.Data;
 
 
+                Driver.ExecuteScript("document.getElementsByName('var[shortname]')[0].setAttribute('type', 'text');");
+                Driver.ExecuteScript("document.getElementsByName('var[name]')[0].setAttribute('type', 'text');");
+                Driver.FindElementById("var_shortname").Clear();
+                Driver.FindElementById("var_shortname").SendKeys(session.StreamIDs[counter].ToString());
+                Driver.FindElementById("var_name").Clear();
+                Driver.FindElementById("var_name").SendKeys(testStream.Data[0].Site.Name + " , " + testStream.Data[0].Deployment.Name + " , " + testStream.Data[0].DataType.Name + " , " + testStream.Data[0].Property.Name);
+                Driver.FindElement(By.XPath("//input[@name='commit' and @value='Add a New Variable']")).Click();
+
+                //Tested getting the data stream, will implement creating the variable on CHORDS next
+                counter++;
+            }
 
 
             return new Container<string>("test");
