@@ -67,7 +67,6 @@ namespace NCInterface
         {
             string newInstrument = @"/instruments/new";
 
-            var keyValues = CreateInstrumentData();
             Driver.Url = PortalUrl + newInstrument;
             Driver.Navigate();
 
@@ -140,29 +139,6 @@ namespace NCInterface
 
 
             return new Container<string>("test");
-        }
-
-        private static List<KeyValuePair<string,string>> CreateInstrumentData()
-        {
-            /*
-             * To retrive authenticity-token:
-             * GET {PortalUrl}/instruments/new
-             * And get the meta name="crsf-token" value. Use this as the authenticity-token
-             */
-
-            var keyValues = new List<KeyValuePair<string, string>>();
-            keyValues.Add(new KeyValuePair<string, string>("utf8", "\u2713"));
-            keyValues.Add(new KeyValuePair<string, string>("authenticity_token", "FbbywjE1ZxQEzXAY5Zw6GTSSLiVk4A8BwM6gAZGNi3XqOZ+Jfg5JvmG8RKT4KFv50+Y1ArS3LQmzjTjWxXI7Iw=="));
-            keyValues.Add(new KeyValuePair<string, string>("instrument[name]", "Instrument"));
-            keyValues.Add(new KeyValuePair<string, string>("instrument[topic_category_id]", "1"));
-            keyValues.Add(new KeyValuePair<string, string>("instrument[description]", "Instrument"));
-            keyValues.Add(new KeyValuePair<string, string>("instrument[site_id]", "1"));
-            keyValues.Add(new KeyValuePair<string, string>("instrument[display_points]", "120"));
-            keyValues.Add(new KeyValuePair<string, string>("instrument[plot_offset_value]", "1"));
-            keyValues.Add(new KeyValuePair<string, string>("instrument[plot_offset_units]", "weeks"));
-            keyValues.Add(new KeyValuePair<string, string>("instrument[sample_rate_seconds]", "60"));
-            keyValues.Add(new KeyValuePair<string, string>("commit", "Create Instrument"));
-            return keyValues;
         }
 
         private static string loginUrl = @"/users/sign_in";
