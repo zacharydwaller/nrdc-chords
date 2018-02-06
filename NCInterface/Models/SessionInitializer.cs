@@ -7,9 +7,20 @@ namespace NCInterface.Structures
 {
     public class SessionInitializer
     {
+        public string NetAlias { get; set; }
         public int[] StreamIDs { get; set; }
         public string StartTime { get; set; }
         public string EndTime { get; set; }
+
+        public SessionInitializer(string netAlias, int[] streamIDs, string startTime = null, string endTime = null)
+        {
+            NetAlias = netAlias;
+            StreamIDs = streamIDs;
+            StartTime = startTime;
+            EndTime = endTime;
+
+            Validate();
+        }
 
         /// <summary>
         /// Returns true if Session Initializer args are valid.
@@ -18,19 +29,25 @@ namespace NCInterface.Structures
         public Container Validate()
         {
             // Check nulls
+            if (NetAlias == null)
+            {
+                return new Container("Network Alias is null.");
+            }
             if (StreamIDs == null)
             {
                 return new Container("StreamID list is null.");
-            }
-            if (StartTime == null)
-            {
-                return new Container("StartTime is null.");
             }
 
             // if EndTime is empty, set it to Now
             if (EndTime == null)
             {
                 EndTime = DateTime.UtcNow.ToString("s");
+            }
+
+            // If StartTime is empty, set it to EndTime - 1 hour
+            if (StartTime == null)
+            {
+                StartTime = DateTime.UtcNow.AddHours(-1).ToString("s");
             }
 
             // Check IDs

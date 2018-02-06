@@ -14,13 +14,25 @@ namespace NCInterface.Structures
         public DateTime LastMeasTime { get; private set; }
         public DateTime LastRefresh { get; private set; }
 
-        public Session(string sessionKey, string networkAlias, List<int> streamIDs, int instrumentID, DateTime startTime)
+        public Session(string sessionKey, string networkAlias, List<int> streamIDs, DateTime startTime)
         {
             SessionKey = sessionKey;
             NetworkAlias = networkAlias;
             StreamIDs = new List<int>(streamIDs.ToArray());
-            InstrumentID = instrumentID;
             LastMeasTime = startTime;
+        }
+
+        public Session(string sessionKey, SessionInitializer initializer)
+        {
+            SessionKey = sessionKey;
+            NetworkAlias = initializer.NetAlias;
+            StreamIDs = new List<int>(initializer.StreamIDs);
+            LastMeasTime = DateTime.Parse(initializer.StartTime);
+        }
+
+        public void SetInstrument(int id)
+        {
+            InstrumentID = id;
         }
 
         /// <summary>

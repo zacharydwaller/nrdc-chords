@@ -18,18 +18,41 @@ namespace NCInterface
             SessionDict = new Dictionary<string, Session>();
         }
 
-        public static Container InitializeSession(SessionInitializer args)
+        public static Container<string> InitializeSession(SessionInitializer args)
         {
-            if (args.Validate().Success)
+            var validation = args.Validate();
+            if (validation.Success)
             {
+                var session = new Session(GetRandomKey().Data[0], args);
+                var createInstContainer = ChordsBot.CreateInstrument(session.SessionKey);
 
+                if (!createInstContainer.Success) return new Container<string>("", false, createInstContainer.Message);
+
+                int id = createInstContainer.Data[0];
+                session.SetInstrument(id);
+
+                SessionDict.Add(session.SessionKey, session);
+
+                return new Container<string>(session.SessionKey, true);
             }
             else
             {
-
+                return new Container<string>("", false, validation.Message);
             }
+        }
 
-            return null;
+        public static Container<Session> GetSession(string key)
+        {
+            Session session;
+
+            if(SessionDict.TryGetValue(key.ToUpper(), out session))
+            {
+                return new Container<Session>(session);
+            }
+            else
+            {
+                return new Container<Session>("Session key not found.");
+            }
         }
 
         public static Container<string> GetRandomKey()
