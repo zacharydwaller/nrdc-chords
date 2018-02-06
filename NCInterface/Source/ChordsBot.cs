@@ -124,8 +124,10 @@ namespace NCInterface
             var testData = testStream.Data;
 
 
-
-           Driver.FindElement(By.XPath("//input[@name='commit' and @value='Add a New Variable']")).Click();
+            Driver.ExecuteScript("document.getElementsByName('var[shortname]')[0].setAttribute('type', 'text');");
+            Driver.FindElementById("var_shortname").Clear();
+            Driver.FindElementById("var_shortname").SendKeys("TestNameTest");
+            Driver.FindElement(By.XPath("//input[@name='commit' and @value='Add a New Variable']")).Click();
 
             //Tested getting the data stream, will implement creating the variable on CHORDS next
 
