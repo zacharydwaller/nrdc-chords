@@ -114,10 +114,14 @@ namespace NCInterface
         }
 
 
-        public static Container<string> ConfigureVariables (int instrumentID, List<int> DataStreamIDs)
+        public static Container<string> ConfigureVariables (Session session)
         {
-            //DataCenter.GetDataStream
-            return new Container<string>("test");
+            //Tested getting the data stream, will implement creating the variable on CHORDS next
+            var testStream = DataCenter.GetDataStream(session.NetworkAlias, session.StreamIDs[0]);
+            var testData = testStream.Data;
+            
+            
+            return new Container<string>(testData[0].Site.Name);
         }
 
         private static List<KeyValuePair<string,string>> CreateInstrumentData()

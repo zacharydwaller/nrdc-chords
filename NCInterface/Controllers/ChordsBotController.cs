@@ -38,10 +38,13 @@ namespace NCInterface.Controllers
         [HttpGet]
         public Container<string> ConfigureVariables([FromUri] int instrumentId)
         {
-
-            List<int> DataStreamID= new List<int>();
+            DateTime testDate = new DateTime(2008,5,1,8,30,52);
+            List<int> DataStreamID = new List<int>();
             DataStreamID.Add(1);
-            return ChordsBot.ConfigureVariables(instrumentId, DataStreamID);
+            Session session = new Session("testKey", "nevcan", DataStreamID, instrumentId,testDate);
+             
+             
+            return ChordsBot.ConfigureVariables(session);
         }
 
 
