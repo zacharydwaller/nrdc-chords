@@ -116,12 +116,23 @@ namespace NCInterface
 
         public static Container<string> ConfigureVariables (Session session)
         {
-            //Tested getting the data stream, will implement creating the variable on CHORDS next
+            string instrumentIDPage = @"/instruments/" + session.InstrumentID;
+            Driver.Url = PortalUrl + instrumentIDPage;
+            Driver.Navigate();
+
             var testStream = DataCenter.GetDataStream(session.NetworkAlias, session.StreamIDs[0]);
             var testData = testStream.Data;
-            
-            
-            return new Container<string>(testData[0].Site.Name);
+
+
+
+           Driver.FindElement(By.XPath("//input[@name='commit' and @value='Add a New Variable']")).Click();
+
+            //Tested getting the data stream, will implement creating the variable on CHORDS next
+
+
+
+
+            return new Container<string>("test");
         }
 
         private static List<KeyValuePair<string,string>> CreateInstrumentData()
