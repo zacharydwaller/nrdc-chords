@@ -12,6 +12,11 @@ namespace NCInterface.Structures
         public string StartTime { get; set; }
         public string EndTime { get; set; }
 
+        public SessionInitializer()
+        {
+
+        }
+
         public SessionInitializer(string netAlias, int[] streamIDs, string startTime = null, string endTime = null)
         {
             NetAlias = netAlias;

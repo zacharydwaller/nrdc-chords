@@ -42,6 +42,11 @@ namespace NCInterface
                 // Add session to dict
                 SessionDict.Add(session.SessionKey, session);
 
+                // Initial refresh
+                var refreshContainer = RefreshSession(session.SessionKey);
+
+                if (!refreshContainer.Success) return new Container<string>("", false, refreshContainer.Message);
+
                 return new Container<string>(session.SessionKey, true);
             }
             else
@@ -61,6 +66,54 @@ namespace NCInterface
             else
             {
                 return new Container<Session>("Session key not found.");
+            }
+        }
+
+        public static Container RefreshSession(string key, string endTime = null)
+        {
+            // Get ending time
+            DateTime end;
+
+            if(endTime == null)
+            {
+                end = DateTime.UtcNow;
+            }
+            else
+            {
+                if(!DateTime.TryParse(endTime, out end))
+                {
+                    end = DateTime.UtcNow;
+                }
+            }
+
+            // Stream data
+            var sessionContainer = GetSession(key);
+            if (sessionContainer.Success)
+            {
+                var session = sessionContainer.Data[0];
+
+                foreach (int id in session.StreamIDs)
+                {
+                    // Get stream object
+                    var streamContainer = DataCenter.GetDataStream(session.NetworkAlias, id);
+
+                    if (!streamContainer.Success) continue;
+
+                    // Get data download
+                    var dataContainer = DataCenter.GetMeasurements(session.NetworkAlias, streamContainer.Data[0], session.LastMeasTime, end);
+
+                    if (!dataContainer.Success) continue;
+
+                    // Push data
+                    var dataDownload = dataContainer.Data;
+                    ChordsBot.PushMeasurementList(session, dataDownload);
+                }
+
+                return new Container();
+            }
+            else
+            {
+                return new Container(sessionContainer.Message);
             }
         }
 

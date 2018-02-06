@@ -11,6 +11,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.PhantomJS;
 using NCInterface.Structures;
+using NCInterface.Structures.Data;
 
 namespace NCInterface
 {
@@ -21,14 +22,25 @@ namespace NCInterface
         //private static PhantomJSDriver Driver { get; set; }
         private static ChromeDriver Driver { get; set; }
 
+        private static HttpClient Client { get; set; }
+
         private static string Email { get; set; } = @"chords@mailinator.com";
         private static string Password { get; set; } = "nrdc2018";
+
+        private static string KeyValue { get; set; } = "key";
 
         public static void Initialize(string portalUrl)
         {
             PortalUrl = portalUrl;
+
           //  Driver = new PhantomJSDriver();
             Driver = new ChromeDriver();
+
+            Client = new HttpClient()
+            {
+                Timeout = TimeSpan.FromMilliseconds(Config.DefaultTimeout)
+            };
+
             Login();
         }
 
@@ -60,8 +72,6 @@ namespace NCInterface
 
             return sb.ToString();
         }
-
-      
 
         public static Container<int> CreateInstrument(string name)
         {
@@ -138,7 +148,74 @@ namespace NCInterface
             }
 
 
-            return new Container<string>("test");
+            return new Container<string>("Success", true);
+        }
+
+        public static Container PushMeasurementList(Session session, IList<Measurement> measurementList)
+        {
+            foreach(var meas in measurementList)
+            {
+                var container = PushMeasurement(session, meas);
+
+                if (!container.Success) return new Container(container.Message);
+            }
+
+            return new Container();
+        }
+
+        public static Container PushMeasurement(Session session, Measurement measurement)
+        {
+            string uri = CreateMeasurementUri(session, measurement);
+
+            var httpTask = Client.GetAsync(Config.ChordsHostUrl + uri);
+
+            try
+            {
+                httpTask.Wait();
+            }
+            catch (Exception e)
+            {
+                
+                return new Container(e.InnerException.Message);
+            }
+
+            // Measurement successfully created
+            if (httpTask.Result.IsSuccessStatusCode)
+            {
+                return new Container();
+            }
+            // Creation failed
+            else
+            {
+                return new Container(httpTask.Result.ReasonPhrase);
+            }
+        }
+
+        private static string CreateMeasurementUri(Session session, Measurement measurement)
+        {
+            string uri =
+                "measurements/url_create?" +
+                "instrument_id=" + session.InstrumentID.ToString() +
+                "&" + measurement.Stream + measurement.Value.ToString() +
+                "&key" + KeyValue;
+
+            // Insert timestamp
+            // Get measurement timestamp, using current local time for now
+            // The ToString() arg formats the date as ISO-8601
+            String timestamp;
+
+            if (measurement.TimeStamp != null)
+            {
+                timestamp = measurement.TimeStamp;
+            }
+            else
+            {
+                timestamp = DateTime.Now.ToString("s");
+            }
+
+            uri += "&at" + timestamp;
+
+            return uri;
         }
 
         private static string loginUrl = @"/users/sign_in";
