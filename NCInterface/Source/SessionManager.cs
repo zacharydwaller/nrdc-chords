@@ -23,7 +23,10 @@ namespace NCInterface
             var validation = args.Validate();
             if (validation.Success)
             {
+                // Construct new session from args
                 var session = new Session(GetRandomKey().Data[0], args);
+
+                // Create instrument on CHORDS and set session's instrument ID
                 var createInstContainer = ChordsBot.CreateInstrument(session.SessionKey);
 
                 if (!createInstContainer.Success) return new Container<string>("", false, createInstContainer.Message);
@@ -31,6 +34,12 @@ namespace NCInterface
                 int id = createInstContainer.Data[0];
                 session.SetInstrument(id);
 
+                // Map session streams to CHORDS variables
+                var confVarsContainer = ChordsBot.ConfigureVariables(session);
+
+                if (!confVarsContainer.Success) return new Container<string>("", false, confVarsContainer.Message);
+
+                // Add session to dict
                 SessionDict.Add(session.SessionKey, session);
 
                 return new Container<string>(session.SessionKey, true);
