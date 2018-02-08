@@ -1,6 +1,10 @@
 # NRDC-CHORDS
 A Generalized Interface for CHORDS
 
+### Project Site
+
+https://zacharydwaller.github.io/nrdc-chords/
+
 ### Web Client
 
 http://nrdcstudentweb.rd.unr.edu/team_16/services/NRDCWebClient/
