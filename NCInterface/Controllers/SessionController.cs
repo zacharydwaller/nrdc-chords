@@ -19,6 +19,7 @@ namespace NCInterface.Controllers
         public Container<string> InitializeSession([FromUri] string netAlias, [FromUri] int[] streamIDs, [FromUri] string startTime = null, [FromUri] string endTime = null)
         {
             var args = new SessionInitializer(netAlias, streamIDs, startTime, endTime);
+           
             return SessionManager.InitializeSession(args);
         }
 

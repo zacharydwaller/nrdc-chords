@@ -125,30 +125,48 @@ namespace NCInterface
 
         public static Container<string> ConfigureVariables (Session session)
         {
-            string instrumentIDPage = @"/instruments/" + session.InstrumentID;
+             
+            string instrumentIDPage = @"instruments/" + session.InstrumentID;
             Driver.Url = PortalUrl + instrumentIDPage;
             Driver.Navigate();
             int counter = 0;
-            foreach(int ID  in session.StreamIDs)
-            {
-                var testStream = DataCenter.GetDataStream(session.NetworkAlias, session.StreamIDs[counter]);
-                var testData = testStream.Data;
+             
+              foreach (int ID  in session.StreamIDs)
+              {
+                  var testStream = DataCenter.GetDataStream(session.NetworkAlias, session.StreamIDs[counter]);
+                  var testData = testStream.Data;
 
 
-                Driver.ExecuteScript("document.getElementsByName('var[shortname]')[0].setAttribute('type', 'text');");
-                Driver.ExecuteScript("document.getElementsByName('var[name]')[0].setAttribute('type', 'text');");
-                Driver.FindElementById("var_shortname").Clear();
-                Driver.FindElementById("var_shortname").SendKeys(session.StreamIDs[counter].ToString());
-                Driver.FindElementById("var_name").Clear();
-                Driver.FindElementById("var_name").SendKeys(testStream.Data[0].Site.Name + " , " + testStream.Data[0].Deployment.Name + " , " + testStream.Data[0].DataType.Name + " , " + testStream.Data[0].Property.Name);
-                Driver.FindElement(By.XPath("//input[@name='commit' and @value='Add a New Variable']")).Click();
+                  Driver.ExecuteScript("document.getElementsByName('var[shortname]')[0].setAttribute('type', 'text');");
+                  Driver.ExecuteScript("document.getElementsByName('var[name]')[0].setAttribute('type', 'text');");
+                  Driver.FindElementById("var_shortname").Clear();
+                  Driver.FindElementById("var_shortname").SendKeys(session.StreamIDs[counter].ToString());
+                  Driver.FindElementById("var_name").Clear();
+                  Driver.FindElementById("var_name").SendKeys(testStream.Data[0].Site.Name + " , " + testStream.Data[0].Deployment.Name + " , " + testStream.Data[0].DataType.Name + " , " + testStream.Data[0].Property.Name);
+                  Driver.FindElement(By.XPath("//input[@name='commit' and @value='Add a New Variable']")).Click();
+
+                
+                 var testTable = Driver.FindElement(By.XPath("/html/body/div[2]/div[10]/div/table/tbody/tr[last()]/td[3]") );
+                testTable.FindElement(By.CssSelector("input")).Clear();
+                testTable.FindElement(By.CssSelector("input")).SendKeys("testttttt");
+
+                
 
                 //Tested getting the data stream, will implement creating the variable on CHORDS next
                 counter++;
-            }
+              }
 
+           
+                  
 
+            
+
+            
+
+            
+            
             return new Container<string>("Success", true);
+
         }
 
         public static Container PushMeasurementList(Session session, IList<Measurement> measurementList)
