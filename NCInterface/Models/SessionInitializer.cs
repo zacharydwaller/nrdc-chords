@@ -49,10 +49,10 @@ namespace NCInterface.Structures
                 EndTime = DateTime.UtcNow.ToString("s");
             }
 
-            // If StartTime is empty, set it to EndTime - 1 hour
+            // If StartTime is empty, set it to EndTime - 24 horus
             if (StartTime == null)
             {
-                StartTime = DateTime.UtcNow.AddHours(-1).ToString("s");
+                StartTime = DateTime.Parse(EndTime).AddHours(-24).ToString("s");
             }
 
             // Check IDs
