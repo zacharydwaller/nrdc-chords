@@ -4,7 +4,7 @@ var selectedNetwork = "NevCAN";
 var selectedSite = 0;
 var selectedSystem = 0;
 var selectedDeployment = 0;
-var selectedStream = 0;
+var selectedStreams = new Set();
 
 var hiClasses = "list-group-item hierarchy-item";
 
@@ -87,10 +87,41 @@ function deploymentButtonClick()
 
 function streamButtonClick()
 {
-    selectedStream = $(this).attr("value");
+    var id = $(this).attr("value");
 
-    $(".stream-button").removeClass("active");
-    $(this).addClass("active");
+    if (selectedStreams.has(id))
+    {
+        selectedStreams.delete(id);
+    }
+    else
+    {
+        selectedStreams.add(id);
+    }
+
+    updateSelectedStreams();
+}
+
+function selstreamButtonClick()
+{
+    var id = $(this).attr("value");
+
+    selectedStreams.delete(id);
+
+    updateSelectedStreams();
+}
+
+function updateSelectedStreams()
+{
+    if (selectedStreams.size > 0)
+    {
+        selectedStreamsHeader.show();
+    }
+    else
+    {
+        selectedStreamsHeader.hide();
+    }
+
+    expandSelectedStreams();
 }
 
 function fadeInButton(button)
@@ -111,32 +142,6 @@ function createButton(buttonClass, listName, callback)
     fadeInButton(item);
 
     return item;
-}
-
-function createCollapsible(text)
-{
-    var panel = document.createElement("div");
-    $(panel).addClass("panel panel-default");
-
-    var heading = document.createElement("div");
-    $(heading).addClass("panel-heading");
-    $(panel).append(heading);
-
-    var title = document.createElement("h4");
-    $(title).addClass("panel-title");
-    $(heading).append(title);
-
-    var dataToggle = document.createElement("a");
-    $(dataToggle).attr("data-toggle", "collapse");
-    $(dataToggle).attr("href", "#" + text);
-    dataToggle.innerHTML = text;
-    $(title).append(dataToggle);
-
-    var collaspe = document.createElement("div");
-    $(collapse).addClass("panel-collapse collapse");
-    $(collapse).attr("id", text);
-
-    // Unfinished
 }
 
 function expandHierarchy(uri, callback)
@@ -221,11 +226,23 @@ function expandStreams(data)
     {
         var button = createButton("stream-button", "#stream-list", streamButtonClick);
         button.innerHTML =
-            "<h4 class=\"list-group-item-heading\">" + data[i].Property.Name + "</h4>" +
+            "<h4 class=\"list-group-item-heading\">" + data[i].ID + " - " + data[i].Property.Name + "</h4>" +
             "<p class=\"list-group-item-heading\">" + data[i].DataType.Name + "</p>" +
             "<p class=\"list-group-item-text\">" + "(" + data[i].Units.Abbreviation + ")" + "</p>" +
             "<p class=\"list-group-item-text\">" + "Interval: " + data[i].MeasurementInterval + "</p>";
         $(button).attr("value", data[i].ID)
+    }
+}
+
+function expandSelectedStreams()
+{
+    $(".selstream-button").remove();
+
+    for (let id of selectedStreams)
+    {
+        var button = createButton("selstream-button", "#selstream-list", streamButtonClick);
+        button.innerHTML = id;
+        $(button).attr("value", id)
     }
 }
 
