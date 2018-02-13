@@ -81,7 +81,8 @@ namespace NCInterface
             Driver.Navigate();
 
             Driver.FindElementById("instrument_name").SendKeys(name);
-            Driver.FindElementById("instrument_sample_rate_seconds").SendKeys(Config.DefaultSampleRate.ToString());
+            Driver.FindElementById("instrument_sample_rate_seconds").Clear();
+            Driver.FindElementById("instrument_sample_rate_seconds").SendKeys("60");
             Driver.FindElementByName("commit").Click();
 
             int id;
@@ -130,42 +131,59 @@ namespace NCInterface
             Driver.Url = PortalUrl + instrumentIDPage;
             Driver.Navigate();
             int counter = 0;
+
+
+
+            
+
+                for (int index = 0; index <= session.StreamIDs.Count()-1; index++)
+                 {
+
+                    var testStream = DataCenter.GetDataStream(session.NetworkAlias, session.StreamIDs[counter]);
+                    var testData = testStream.Data;
+
+                    Driver.ExecuteScript("document.getElementsByName('var[shortname]')[0].setAttribute('type', 'text');");
+                    Driver.ExecuteScript("document.getElementsByName('var[name]')[0].setAttribute('type', 'text');");
+                    Driver.FindElementById("var_shortname").Clear();
+                    Driver.FindElementById("var_shortname").SendKeys(session.StreamIDs[counter].ToString());
+                    Driver.FindElementById("var_name").Clear();
+
+
+                    Driver.FindElementById("var_name").SendKeys(testStream.Data[0].Site.Alias + " , " + testStream.Data[0].Deployment.Name + " , " + testStream.Data[0].DataType.Name + " , " + testStream.Data[0].Property.Name);
+                    Driver.FindElement(By.XPath("//input[@name='commit' and @value='Add a New Variable']")).Click();
+
+
+
+
+                   var testTable = Driver.FindElement(By.XPath("/html/body/div[2]/div[10]/div/table/tbody/tr[last()]/td[3]") );
+                   testTable.FindElement(By.CssSelector("input")).Clear();
+                   testTable.FindElement(By.CssSelector("input")).SendKeys(testStream.Data[0].Units.Name);
+
+
+
+
+                   //Tested getting the data stream, will implement creating the variable on CHORDS next
+                   counter++;
+                 }
+
+              
+
+            /*
+            var testStream = DataCenter.GetDataStream(session.NetworkAlias, session.StreamIDs[0]);
+            var testData = testStream.Data;
+
+            var testTable = Driver.FindElement(By.XPath("/html/body/div[2]/div[10]/div/table/tbody/tr[last()]/td[3]"));
+            testTable.FindElement(By.CssSelector("input")).Clear();
+            testTable.FindElement(By.CssSelector("input")).SendKeys(testStream.Data[0].Units.Name);
+           // testTable.FindElement(By.CssSelector("input")).Click();
+            testTable.FindElement(By.CssSelector("input")).SendKeys(Keys.Down);
+           //  Driver.FindElement(By.CssSelector("div")).Click();
+           // testTable.FindElement(By.CssSelector("input")).SendKeys(Keys.Enter);
              
-              foreach (int ID  in session.StreamIDs)
-              {
-                  var testStream = DataCenter.GetDataStream(session.NetworkAlias, session.StreamIDs[counter]);
-                  var testData = testStream.Data;
-
-
-                  Driver.ExecuteScript("document.getElementsByName('var[shortname]')[0].setAttribute('type', 'text');");
-                  Driver.ExecuteScript("document.getElementsByName('var[name]')[0].setAttribute('type', 'text');");
-                  Driver.FindElementById("var_shortname").Clear();
-                  Driver.FindElementById("var_shortname").SendKeys(session.StreamIDs[counter].ToString());
-                  Driver.FindElementById("var_name").Clear();
-                  Driver.FindElementById("var_name").SendKeys(testStream.Data[0].Site.Name + " , " + testStream.Data[0].Deployment.Name + " , " + testStream.Data[0].DataType.Name + " , " + testStream.Data[0].Property.Name);
-                  Driver.FindElement(By.XPath("//input[@name='commit' and @value='Add a New Variable']")).Click();
-
-                
-                 var testTable = Driver.FindElement(By.XPath("/html/body/div[2]/div[10]/div/table/tbody/tr[last()]/td[3]") );
-                testTable.FindElement(By.CssSelector("input")).Clear();
-                testTable.FindElement(By.CssSelector("input")).SendKeys("testttttt");
-
-                
-
-                //Tested getting the data stream, will implement creating the variable on CHORDS next
-                counter++;
-              }
-
-           
-                  
-
+        */
+            //*[@id="unit_for_tag_47"]
             
-
-            
-
-            
-            
-            return new Container<string>("Success", true);
+            return new Container<string>("Success",true);
 
         }
 
