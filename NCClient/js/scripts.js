@@ -1,4 +1,5 @@
-﻿var serviceUrl = "http://localhost:3485/DataCenter/";
+﻿var serviceUrl = "http://localhost:3485/";
+var chordsUrl = "http://ec2-13-57-134-131.us-west-1.compute.amazonaws.com/";
 
 var selectedNetwork = "NevCAN";
 var selectedSite = 0;
@@ -15,6 +16,9 @@ var deploymentsHeader;
 var streamsHeader;
 var selectedStreamsHeader;
 
+var startCalendar;
+var endCalendar;
+
 $(document).ready(function ()
 {
     $(".hierarchy-item").remove();
@@ -26,7 +30,12 @@ $(document).ready(function ()
     hideHeaders();
 
     // Retrieve NevCAN sites
-    expandHierarchy(serviceUrl + selectedNetwork + "/sites?", expandSites);
+    expandHierarchy(serviceUrl +"DataCenter/" + selectedNetwork + "/sites?", expandSites);
+
+    $("#VisResult").hide();
+
+    startCalendar = $("#startdate").datepicker();
+    endCalendar = $("#enddate").datepicker();
 });
 
 function netbuttonClick()
@@ -38,7 +47,7 @@ function netbuttonClick()
 
     $(".hierarchy-item").remove();
 
-    expandHierarchy(serviceUrl + selectedNetwork + "/sites?", expandSites);
+    expandHierarchy(serviceUrl + "DataCenter/" + selectedNetwork + "/sites?", expandSites);
 
     $("#streamTab").click();
 }
@@ -55,7 +64,7 @@ function siteButtonClick()
     $(".stream-button").remove();
 
     $("#system-list").append(loader);
-    expandHierarchy(serviceUrl + selectedNetwork + "/systems?siteID=" + selectedSite, expandSystems);
+    expandHierarchy(serviceUrl + "DataCenter/" + selectedNetwork + "/systems?siteID=" + selectedSite, expandSystems);
 }
 
 function systemButtonClick()
@@ -69,7 +78,7 @@ function systemButtonClick()
     $(".stream-button").remove();
 
     $("#deployment-list").append(loader);
-    expandHierarchy(serviceUrl + selectedNetwork + "/deployments?systemID=" + selectedSystem, expandDeployments);
+    expandHierarchy(serviceUrl + "DataCenter/" + selectedNetwork + "/deployments?systemID=" + selectedSystem, expandDeployments);
 }
 
 function deploymentButtonClick()
@@ -82,7 +91,7 @@ function deploymentButtonClick()
     $(".stream-button").remove();
 
     $("#stream-list").append(loader);
-    expandHierarchy(serviceUrl + selectedNetwork + "/streams?deploymentID=" + selectedDeployment, expandStreams);
+    expandHierarchy(serviceUrl + "DataCenter/" + selectedNetwork + "/streams?deploymentID=" + selectedDeployment, expandStreams);
 }
 
 function streamButtonClick()
@@ -108,6 +117,56 @@ function selstreamButtonClick()
     selectedStreams.delete(id);
 
     updateSelectedStreams();
+}
+
+function visualizeButtonClick()
+{
+    uri = serviceUrl + "Session/newSession?"
+        + "netAlias=" + selectedNetwork;
+
+    for (let id of selectedStreams)
+    {
+        uri += "&streamIDs=" + id;
+    }
+
+    $("#VisOptions").hide();
+
+    $("#VisResult").show();
+    $("#VisResult").append(loader);
+
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: uri,
+
+        xhrFields: {
+            withCredentials: false
+        },
+
+        success: function (result)
+        {
+            $("#loading").remove();
+
+            if (result.Success)
+            {
+                $("#sessionKey").append("Your Session Key: " + result.Data);
+                window.open(chordsUrl, "_blank");
+            }
+            else
+            {
+                $("#sessionKey").append(result.Message);
+            }
+        },
+
+        error: function ()
+        {
+            $("#loading").remove();
+
+            console.error("Call to " + uri + " unable to be completed.");
+
+            $("#VisResult").append("Call to " + uri + " unable to be completed.");
+        }
+    });
 }
 
 function updateSelectedStreams()
