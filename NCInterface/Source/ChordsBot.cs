@@ -232,8 +232,8 @@ namespace NCInterface
             string uri =
                 "measurements/url_create?" +
                 "instrument_id=" + session.InstrumentID.ToString() +
-                "&" + measurement.Stream + measurement.Value.ToString() +
-                "&key" + KeyValue;
+                "&" + measurement.Stream.ToString() + "=" + measurement.Value.ToString() +
+                "&key=" + KeyValue;
 
             // Insert timestamp
             // Get measurement timestamp, using current local time for now

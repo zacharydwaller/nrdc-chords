@@ -42,11 +42,6 @@ namespace NCInterface
                 // Add session to dict
                 SessionDict.Add(session.SessionKey, session);
 
-                // Initial refresh
-                var refreshContainer = RefreshSession(session.SessionKey);
-
-                if (!refreshContainer.Success) return new Container<string>("", false, refreshContainer.Message);
-
                 return new Container<string>(session.SessionKey, true);
             }
             else
@@ -106,7 +101,9 @@ namespace NCInterface
 
                     // Push data
                     var dataDownload = dataContainer.Data;
-                    ChordsBot.PushMeasurementList(session, dataDownload);
+                    var pushDataContainer = ChordsBot.PushMeasurementList(session, dataDownload);
+
+                    if (!pushDataContainer.Success) return pushDataContainer;
                 }
 
                 return new Container();

@@ -30,6 +30,13 @@ namespace NCInterface.Controllers
             return SessionManager.GetSession(key);
         }
 
+        [Route("RefreshSession")]
+        [HttpGet]
+        public Container RefreshSession([FromUri] string key)
+        {
+            return SessionManager.RefreshSession(key);
+        }
+
         [Route("RandomKey")]
         [HttpGet]
         public Container<string> GetNewKey()
