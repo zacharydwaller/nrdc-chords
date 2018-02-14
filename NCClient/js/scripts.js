@@ -19,6 +19,9 @@ var selectedStreamsHeader;
 var startCalendar;
 var endCalendar;
 
+var sessionKey;
+var intervalFunc;
+
 $(document).ready(function ()
 {
     $(".hierarchy-item").remove();
@@ -152,8 +155,16 @@ function visualizeButtonClick()
 
             if (result.Success)
             {
-                $("#sessionKey").append("Your Session Key: " + result.Data);
+                sessionKey = result.Data;
+                $("#sessionKey").append("Your Session Key: " + sessionKey);
                 window.open(chordsUrl, "_blank");
+
+                refreshSession();
+
+                interval = $("#refreshdelay").val() * 1000;
+                intervalFunc = setInterval(refreshSession, interval);
+
+                console.log(interval);
             }
             else
             {
@@ -168,6 +179,60 @@ function visualizeButtonClick()
             console.error("Call to " + uri + " unable to be completed.");
 
             $("#VisResult").append("Call to " + uri + " unable to be completed.");
+        }
+    });
+}
+
+function resumeButtonClick()
+{
+    sessionKey = $("#keyInput").val();
+    interval = $("#refreshdelay2").val() * 1000;
+
+    $("#VisOptions").hide();
+
+    $("#VisResult").show();
+    
+
+    refreshSession();
+    intervalFunc = setInterval(refreshSession, interval);
+
+    $("#sessionKey").append("Resuming Session: " + sessionKey);
+
+    window.open(chordsUrl, "_blank");
+}
+
+function refreshSession()
+{
+    uri = serviceUrl + "Session/refreshSession?"
+        + "key=" + sessionKey;
+
+    console.log("Refreshed");
+
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: uri,
+
+        xhrFields: {
+            withCredentials: false
+        },
+
+        success: function (result)
+        {
+            if (!result.success)
+            {
+                $("#sessionKey").append("<br>" + result.Message);
+                clearInterval(intervalFunc);
+            }
+        },
+
+        error: function ()
+        {
+            console.error("Call to " + uri + " unable to be completed.");
+            console.error(result.Message);
+
+            $("#VisResult").append("Error: Call to " + uri + " unable to be completed.");
+            $("#VisResult").append(result.Message);
         }
     });
 }
