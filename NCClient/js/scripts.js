@@ -37,8 +37,11 @@ $(document).ready(function ()
 
     $("#VisResult").hide();
 
-    startCalendar = $("#startdate").datepicker();
-    endCalendar = $("#enddate").datepicker();
+    startCalendar = $("#startdate");
+    endCalendar = $("#enddate");
+
+    startCalendar.datepicker();
+    endCalendar.datepicker();
 });
 
 function netbuttonClick()
@@ -135,6 +138,22 @@ function visualizeButtonClick()
         uri += "&streamIDs=" + id;
     }
 
+    var start = startCalendar.datepicker("getDate");
+    var end = endCalendar.datepicker("getDate");
+    if (start != null)
+    {
+        var date = new Date(start);
+
+        uri += "&startTime=" + date.toISOString(); 
+    }
+
+    if (end != null)
+    {
+        var date = new Date(end);
+
+        uri += "&endTime=" + date.toISOString();
+    }
+
     $("#VisOptions").hide();
 
     $("#VisResult").show();
@@ -168,7 +187,11 @@ function visualizeButtonClick()
             }
             else
             {
-                $("#sessionKey").append(result.Message);
+                //$("#sessionKey").append(result.Message);
+                console.error(result.Message);
+
+                $("#VisOptions").show();
+                $("#VisResult").hide();
             }
         },
 
