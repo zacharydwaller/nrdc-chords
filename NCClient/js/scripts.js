@@ -19,6 +19,9 @@ var selectedStreamsHeader;
 var startCalendar;
 var endCalendar;
 
+var sessionKey;
+var interval;
+
 $(document).ready(function ()
 {
     $(".hierarchy-item").remove();
@@ -149,8 +152,14 @@ function visualizeButtonClick()
 
             if (result.Success)
             {
-                $("#sessionKey").append("Your Session Key: " + result.Data);
+                sessionKey = result.Data;
+                $("#sessionKey").append("Your Session Key: " + sessionKey);
                 window.open(chordsUrl, "_blank");
+
+                refreshSession();
+
+                interval = $("#refreshdelay").attr("value") * 1000;
+                setInterval(refreshSession, interval);
             }
             else
             {
@@ -167,6 +176,11 @@ function visualizeButtonClick()
             $("#VisResult").append("Call to " + uri + " unable to be completed.");
         }
     });
+}
+
+function refreshSession()
+{
+    console.log(interval);
 }
 
 function updateSelectedStreams()
