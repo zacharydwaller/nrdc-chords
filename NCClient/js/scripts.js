@@ -101,10 +101,12 @@ function streamButtonClick()
     if (selectedStreams.has(id))
     {
         selectedStreams.delete(id);
+        $(this).removeClass("active");
     }
     else
     {
         selectedStreams.add(id);
+        $(this).addClass("active");
     }
 
     updateSelectedStreams();
@@ -116,6 +118,7 @@ function selstreamButtonClick()
 
     selectedStreams.delete(id);
 
+    $(".stream-button").filter(function () { return $(this).attr("value") == id }).removeClass("active");
     updateSelectedStreams();
 }
 
@@ -290,6 +293,11 @@ function expandStreams(data)
             "<p class=\"list-group-item-text\">" + "(" + data[i].Units.Abbreviation + ")" + "</p>" +
             "<p class=\"list-group-item-text\">" + "Interval: " + data[i].MeasurementInterval + "</p>";
         $(button).attr("value", data[i].ID)
+
+        if (selectedStreams.has(data[i].ID.toString()))
+        {
+            $(button).addClass("active");
+        }
     }
 }
 
@@ -299,7 +307,7 @@ function expandSelectedStreams()
 
     for (let id of selectedStreams)
     {
-        var button = createButton("selstream-button", "#selstream-list", streamButtonClick);
+        var button = createButton("selstream-button", "#selstream-list", selstreamButtonClick);
         button.innerHTML = id;
         $(button).attr("value", id)
     }
