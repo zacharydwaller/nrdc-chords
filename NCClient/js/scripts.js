@@ -20,7 +20,7 @@ var startCalendar;
 var endCalendar;
 
 var sessionKey;
-var interval;
+var intervalFunc;
 
 $(document).ready(function ()
 {
@@ -158,8 +158,10 @@ function visualizeButtonClick()
 
                 refreshSession();
 
-                interval = $("#refreshdelay").attr("value") * 1000;
-                setInterval(refreshSession, interval);
+                interval = $("#refreshdelay").val() * 1000;
+                intervalFunc = setInterval(refreshSession, interval);
+
+                console.log(interval);
             }
             else
             {
@@ -178,9 +180,58 @@ function visualizeButtonClick()
     });
 }
 
+function resumeButtonClick()
+{
+    sessionKey = $("#keyInput").val();
+    interval = $("#refreshdelay2").val() * 1000;
+
+    $("#VisOptions").hide();
+
+    $("#VisResult").show();
+    
+
+    refreshSession();
+    intervalFunc = setInterval(refreshSession, interval);
+
+    $("#sessionKey").append("Resuming Session: " + sessionKey);
+
+    window.open(chordsUrl, "_blank");
+}
+
 function refreshSession()
 {
-    console.log(interval);
+    uri = serviceUrl + "Session/refreshSession?"
+        + "key=" + sessionKey;
+
+    console.log("Refreshed");
+
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: uri,
+
+        xhrFields: {
+            withCredentials: false
+        },
+
+        success: function (result)
+        {
+            if (!result.success)
+            {
+                $("#sessionKey").append("<br>" + result.Message);
+                clearInterval(intervalFunc);
+            }
+        },
+
+        error: function ()
+        {
+            console.error("Call to " + uri + " unable to be completed.");
+            console.error(result.Message);
+
+            $("#VisResult").append("Error: Call to " + uri + " unable to be completed.");
+            $("#VisResult").append(result.Message);
+        }
+    });
 }
 
 function updateSelectedStreams()

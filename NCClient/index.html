@@ -155,11 +155,33 @@
 
                     <!-- Visualize Options -->
                     <div id="VisOptions">
-                        <h2>Visualization Options</h2>
-                        <h3>Start Date: <input type="text" id="startdate" /></h3>
-                        <h3>End Date: <input type="text" id="enddate" /></h3>
-                        <h3>Refresh Delay (sec): <input type="text" id="refreshdelay" value="30"/></h3>
-                        <button class="btn btn-lg" onclick="visualizeButtonClick()">Start Session</button>
+                        <div class="container">
+
+                            <div class="row">
+
+                                <div class="col-lg-6">
+                                    <h2>Begin New Visualization</h2>
+                                    <hr class="half-rule" />
+                                    <h3>Start Date: <input type="text" id="startdate" /></h3>
+                                    <h3>End Date: <input type="text" id="enddate" /></h3>
+                                    <h3>Refresh Delay (sec): <input type="text" id="refreshdelay" value="30" /></h3>
+                                    <button class="btn btn-lg btn-default" onclick="visualizeButtonClick()">Start Session</button>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <h2>Resume Visualization</h2>
+                                    <hr class="half-rule" />
+                                    <h3>Refresh Delay (sec): <input type="text" id="refreshdelay2" value="30" /></h3>
+                                    <h3>Session Key: <input type="text" id="keyInput" value="" /></h3>
+                                    <button class="btn btn-lg btn-default" onclick="resumeButtonClick()">Resume Session</button>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        
+                        
+                        
                     </div>
 
                     <!-- Visualize Results -->
