@@ -70,8 +70,8 @@
     <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
-    <Reference Include="WebDriver, Version=3.8.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Selenium.WebDriver.3.8.0\lib\net45\WebDriver.dll</HintPath>
+    <Reference Include="WebDriver, Version=3.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selenium.WebDriver.3.9.0\lib\net45\WebDriver.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +79,9 @@
     <Compile Include="Configuration\Chords.cs" />
     <Compile Include="Controllers\ChordsBotController.cs" />
     <Compile Include="Controllers\DataCenterController.cs" />
+    <Compile Include="Controllers\SessionController.cs" />
+    <Compile Include="Models\Session.cs" />
+    <Compile Include="Models\SessionInitializer.cs" />
     <Compile Include="Source\ChordsBot.cs" />
     <Compile Include="Source\ConfigManager.cs" />
     <Compile Include="Configuration\DataCenter.cs" />
@@ -91,6 +94,7 @@
     <Compile Include="Models\Container.cs" />
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\Infrastructure.cs" />
+    <Compile Include="Source\SessionManager.cs" />
     <Compile Include="Utilities\Version.cs" />
   </ItemGroup>
   <ItemGroup>

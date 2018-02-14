@@ -2,6 +2,32 @@
 
 namespace NCInterface.Structures
 {
+    public class Container
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+
+        /// <summary>
+        ///     Success constructor. Sets Success to true with an empty Message string.
+        /// </summary>
+        public Container()
+        {
+            Success = true;
+            Message = "";
+        }
+
+        /// <summary>
+        ///     Failure/Error constructor. Must provide an error message.
+        ///     Success set to false.
+        /// </summary>
+        /// <param name="errorMessage"></param>
+        public Container(string errorMessage)
+        { 
+            Success = false;
+            Message = errorMessage;
+        }
+    }
+
     /// <summary>
     ///     Generic container type for use with both our API and the NRDC APIs.
     ///     Contains a success flag, data list, and a message string for error reporting.

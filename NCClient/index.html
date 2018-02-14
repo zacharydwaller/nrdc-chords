@@ -12,11 +12,18 @@
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 
+    <!-- JQuery UI CSS -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     <!-- Our Stylesheet -->
     <link rel="stylesheet" href="css/style.css" />
 
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- JQuery UI -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <!-- Bootstrap Core JS -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -134,8 +141,8 @@
                         <!-- Selected Streams -->
                         <div class="col-sm-3">
                             <h3 id="selectedstreams-header">Selected Streams</h3>
-                            <div id="stream-list" class="list-group pre pre-scrollable">
-
+                            <div id="selstream-list" class="list-group pre pre-scrollable">
+                                
                             </div>
                         </div>
 
@@ -145,7 +152,43 @@
 
                 <!-- Visualize Tab -->
                 <div id="VisContent" class="tab-pane fade">
-                    Test2
+
+                    <!-- Visualize Options -->
+                    <div id="VisOptions">
+                        <div class="container">
+
+                            <div class="row">
+
+                                <div class="col-lg-6">
+                                    <h2>Begin New Visualization</h2>
+                                    <hr class="half-rule" />
+                                    <h3>Start Date: <input type="text" id="startdate" /></h3>
+                                    <h3>End Date: <input type="text" id="enddate" /></h3>
+                                    <h3>Refresh Delay (sec): <input type="text" id="refreshdelay" value="30" /></h3>
+                                    <button class="btn btn-lg btn-default" onclick="visualizeButtonClick()">Start Session</button>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <h2>Resume Visualization</h2>
+                                    <hr class="half-rule" />
+                                    <h3>Refresh Delay (sec): <input type="text" id="refreshdelay2" value="30" /></h3>
+                                    <h3>Session Key: <input type="text" id="keyInput" value="" /></h3>
+                                    <button class="btn btn-lg btn-default" onclick="resumeButtonClick()">Resume Session</button>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        
+                        
+                        
+                    </div>
+
+                    <!-- Visualize Results -->
+                    <div id="VisResult">
+                        <h2 id="sessionKey"></h2>
+                    </div>
+
                 </div>
 
             </div>

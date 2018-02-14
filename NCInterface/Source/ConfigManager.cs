@@ -13,6 +13,8 @@ namespace NCInterface
 
         public static string DefaultTimeZoneID { get { return "Pacific Standard Time"; } }
 
+        public static int DefaultSampleRate { get; private set; } = 10;
+
         /// <summary>
         /// NRDC download request can only return 1000 measurements at a time.
         /// </summary>

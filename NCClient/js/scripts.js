@@ -1,10 +1,11 @@
-﻿var serviceUrl = "http://localhost:3485/DataCenter/";
+﻿var serviceUrl = "http://localhost:3485/";
+var chordsUrl = "http://ec2-13-57-134-131.us-west-1.compute.amazonaws.com/";
 
 var selectedNetwork = "NevCAN";
 var selectedSite = 0;
 var selectedSystem = 0;
 var selectedDeployment = 0;
-var selectedStream = 0;
+var selectedStreams = new Set();
 
 var hiClasses = "list-group-item hierarchy-item";
 
@@ -14,6 +15,12 @@ var systemsHeader;
 var deploymentsHeader;
 var streamsHeader;
 var selectedStreamsHeader;
+
+var startCalendar;
+var endCalendar;
+
+var sessionKey;
+var intervalFunc;
 
 $(document).ready(function ()
 {
@@ -26,7 +33,12 @@ $(document).ready(function ()
     hideHeaders();
 
     // Retrieve NevCAN sites
-    expandHierarchy(serviceUrl + selectedNetwork + "/sites?", expandSites);
+    expandHierarchy(serviceUrl +"DataCenter/" + selectedNetwork + "/sites?", expandSites);
+
+    $("#VisResult").hide();
+
+    startCalendar = $("#startdate").datepicker();
+    endCalendar = $("#enddate").datepicker();
 });
 
 function netbuttonClick()
@@ -38,7 +50,7 @@ function netbuttonClick()
 
     $(".hierarchy-item").remove();
 
-    expandHierarchy(serviceUrl + selectedNetwork + "/sites?", expandSites);
+    expandHierarchy(serviceUrl + "DataCenter/" + selectedNetwork + "/sites?", expandSites);
 
     $("#streamTab").click();
 }
@@ -55,7 +67,7 @@ function siteButtonClick()
     $(".stream-button").remove();
 
     $("#system-list").append(loader);
-    expandHierarchy(serviceUrl + selectedNetwork + "/systems?siteID=" + selectedSite, expandSystems);
+    expandHierarchy(serviceUrl + "DataCenter/" + selectedNetwork + "/systems?siteID=" + selectedSite, expandSystems);
 }
 
 function systemButtonClick()
@@ -69,7 +81,7 @@ function systemButtonClick()
     $(".stream-button").remove();
 
     $("#deployment-list").append(loader);
-    expandHierarchy(serviceUrl + selectedNetwork + "/deployments?systemID=" + selectedSystem, expandDeployments);
+    expandHierarchy(serviceUrl + "DataCenter/" + selectedNetwork + "/deployments?systemID=" + selectedSystem, expandDeployments);
 }
 
 function deploymentButtonClick()
@@ -82,15 +94,158 @@ function deploymentButtonClick()
     $(".stream-button").remove();
 
     $("#stream-list").append(loader);
-    expandHierarchy(serviceUrl + selectedNetwork + "/streams?deploymentID=" + selectedDeployment, expandStreams);
+    expandHierarchy(serviceUrl + "DataCenter/" + selectedNetwork + "/streams?deploymentID=" + selectedDeployment, expandStreams);
 }
 
 function streamButtonClick()
 {
-    selectedStream = $(this).attr("value");
+    var id = $(this).attr("value");
 
-    $(".stream-button").removeClass("active");
-    $(this).addClass("active");
+    if (selectedStreams.has(id))
+    {
+        selectedStreams.delete(id);
+    }
+    else
+    {
+        selectedStreams.add(id);
+    }
+
+    updateSelectedStreams();
+}
+
+function selstreamButtonClick()
+{
+    var id = $(this).attr("value");
+
+    selectedStreams.delete(id);
+
+    updateSelectedStreams();
+}
+
+function visualizeButtonClick()
+{
+    uri = serviceUrl + "Session/newSession?"
+        + "netAlias=" + selectedNetwork;
+
+    for (let id of selectedStreams)
+    {
+        uri += "&streamIDs=" + id;
+    }
+
+    $("#VisOptions").hide();
+
+    $("#VisResult").show();
+    $("#VisResult").append(loader);
+
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: uri,
+
+        xhrFields: {
+            withCredentials: false
+        },
+
+        success: function (result)
+        {
+            $("#loading").remove();
+
+            if (result.Success)
+            {
+                sessionKey = result.Data;
+                $("#sessionKey").append("Your Session Key: " + sessionKey);
+                window.open(chordsUrl, "_blank");
+
+                refreshSession();
+
+                interval = $("#refreshdelay").val() * 1000;
+                intervalFunc = setInterval(refreshSession, interval);
+
+                console.log(interval);
+            }
+            else
+            {
+                $("#sessionKey").append(result.Message);
+            }
+        },
+
+        error: function ()
+        {
+            $("#loading").remove();
+
+            console.error("Call to " + uri + " unable to be completed.");
+
+            $("#VisResult").append("Call to " + uri + " unable to be completed.");
+        }
+    });
+}
+
+function resumeButtonClick()
+{
+    sessionKey = $("#keyInput").val();
+    interval = $("#refreshdelay2").val() * 1000;
+
+    $("#VisOptions").hide();
+
+    $("#VisResult").show();
+    
+
+    refreshSession();
+    intervalFunc = setInterval(refreshSession, interval);
+
+    $("#sessionKey").append("Resuming Session: " + sessionKey);
+
+    window.open(chordsUrl, "_blank");
+}
+
+function refreshSession()
+{
+    uri = serviceUrl + "Session/refreshSession?"
+        + "key=" + sessionKey;
+
+    console.log("Refreshed");
+
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: uri,
+
+        xhrFields: {
+            withCredentials: false
+        },
+
+        success: function (result)
+        {
+            if (!result.success)
+            {
+                $("#sessionKey").append("<br>" + result.Message);
+                clearInterval(intervalFunc);
+            }
+        },
+
+        error: function ()
+        {
+            console.error("Call to " + uri + " unable to be completed.");
+            console.error(result.Message);
+
+            $("#VisResult").append("Error: Call to " + uri + " unable to be completed.");
+            $("#VisResult").append(result.Message);
+        }
+    });
+}
+
+function updateSelectedStreams()
+{
+    if (selectedStreams.size > 0)
+    {
+        selectedStreamsHeader.show();
+    }
+    else
+    {
+        selectedStreamsHeader.hide();
+    }
+
+    expandSelectedStreams();
 }
 
 function fadeInButton(button)
@@ -111,32 +266,6 @@ function createButton(buttonClass, listName, callback)
     fadeInButton(item);
 
     return item;
-}
-
-function createCollapsible(text)
-{
-    var panel = document.createElement("div");
-    $(panel).addClass("panel panel-default");
-
-    var heading = document.createElement("div");
-    $(heading).addClass("panel-heading");
-    $(panel).append(heading);
-
-    var title = document.createElement("h4");
-    $(title).addClass("panel-title");
-    $(heading).append(title);
-
-    var dataToggle = document.createElement("a");
-    $(dataToggle).attr("data-toggle", "collapse");
-    $(dataToggle).attr("href", "#" + text);
-    dataToggle.innerHTML = text;
-    $(title).append(dataToggle);
-
-    var collaspe = document.createElement("div");
-    $(collapse).addClass("panel-collapse collapse");
-    $(collapse).attr("id", text);
-
-    // Unfinished
 }
 
 function expandHierarchy(uri, callback)
@@ -221,11 +350,23 @@ function expandStreams(data)
     {
         var button = createButton("stream-button", "#stream-list", streamButtonClick);
         button.innerHTML =
-            "<h4 class=\"list-group-item-heading\">" + data[i].Property.Name + "</h4>" +
+            "<h4 class=\"list-group-item-heading\">" + data[i].ID + " - " + data[i].Property.Name + "</h4>" +
             "<p class=\"list-group-item-heading\">" + data[i].DataType.Name + "</p>" +
             "<p class=\"list-group-item-text\">" + "(" + data[i].Units.Abbreviation + ")" + "</p>" +
             "<p class=\"list-group-item-text\">" + "Interval: " + data[i].MeasurementInterval + "</p>";
         $(button).attr("value", data[i].ID)
+    }
+}
+
+function expandSelectedStreams()
+{
+    $(".selstream-button").remove();
+
+    for (let id of selectedStreams)
+    {
+        var button = createButton("selstream-button", "#selstream-list", streamButtonClick);
+        button.innerHTML = id;
+        $(button).attr("value", id)
     }
 }
 

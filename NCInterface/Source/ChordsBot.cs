@@ -10,6 +10,8 @@ using System.IO;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.PhantomJS;
+using NCInterface.Structures;
+using NCInterface.Structures.Data;
 
 namespace NCInterface
 {
@@ -17,17 +19,28 @@ namespace NCInterface
     {
         public static string PortalUrl { get; private set; }
 
-        private static PhantomJSDriver Driver { get; set; }
-        //private static ChromeDriver Driver { get; set; }
+        //private static PhantomJSDriver Driver { get; set; }
+        private static ChromeDriver Driver { get; set; }
+
+        private static HttpClient Client { get; set; }
 
         private static string Email { get; set; } = @"chords@mailinator.com";
         private static string Password { get; set; } = "nrdc2018";
 
+        private static string KeyValue { get; set; } = "key";
+
         public static void Initialize(string portalUrl)
         {
             PortalUrl = portalUrl;
-            Driver = new PhantomJSDriver();
-            //Driver = new ChromeDriver();
+
+          //  Driver = new PhantomJSDriver();
+            Driver = new ChromeDriver();
+
+            Client = new HttpClient()
+            {
+                Timeout = TimeSpan.FromMilliseconds(Config.DefaultTimeout)
+            };
+
             Login();
         }
 
@@ -60,60 +73,185 @@ namespace NCInterface
             return sb.ToString();
         }
 
-        public static void CreateInstrument()
+        public static Container<int> CreateInstrument(string name)
         {
-            //var keyValues = CreateInstrumentData();
+            string newInstrument = @"/instruments/new";
 
-            //var client = new HttpClient
-            //{
-            //    BaseAddress = new Uri(url)
-            //};
+            Driver.Url = PortalUrl + newInstrument;
+            Driver.Navigate();
 
-            //client.DefaultRequestHeaders.ExpectContinue = false;
+            Driver.FindElementById("instrument_name").SendKeys(name);
+            Driver.FindElementById("instrument_sample_rate_seconds").Clear();
+            Driver.FindElementById("instrument_sample_rate_seconds").SendKeys("60");
+            Driver.FindElementByName("commit").Click();
 
-            //var request = new HttpRequestMessage(HttpMethod.Post, "/instruments");
-            //request.Headers.Add("Upgrade-Insecure-Requests", "1");
-            //request.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*; q=0.8");
-            //request.Headers.Add("Referer", "http://ec2-13-57-134-131.us-west-1.compute.amazonaws.com/instruments/new");
-            //request.Headers.Add("Accept-Encoding", "gzip, deflate");
-            //request.Headers.Add("Accept-Language", "en-US,en;q=0.9");
-
-            //request.Content = new FormUrlEncodedContent(keyValues);
-
-            //Console.WriteLine(request);
-
-            //var response = client.SendAsync(request).Result;
-
-            //Console.WriteLine(string.Format("{0} {1}", response.StatusCode, response.ReasonPhrase));
-
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    Console.WriteLine(response.Content.ReadAsStringAsync().Result);
-            //}
-            //
+            int id;
+            string idString = Driver.Url.Substring(Driver.Url.LastIndexOf("/")+1);
+            if (int.TryParse(idString, out id))
+            {
+                return new Container<int>(id, true);
+            }
+            else
+            {
+                return new Container<int>("Instrument URL could not be parsed: "+ Driver.Url);
+            }
         }
 
-        private static List<KeyValuePair<string,string>> CreateInstrumentData()
+        public static Container<int> DeleteInstrument(int instrumentID)
         {
-            /*
-             * To retrive authenticity-token:
-             * GET {PortalUrl}/instruments/new
-             * And get the meta name="crsf-token" value. Use this as the authenticity-token
-             */
 
-            var keyValues = new List<KeyValuePair<string, string>>();
-            keyValues.Add(new KeyValuePair<string, string>("utf8", "\u2713"));
-            keyValues.Add(new KeyValuePair<string, string>("authenticity_token", "FbbywjE1ZxQEzXAY5Zw6GTSSLiVk4A8BwM6gAZGNi3XqOZ+Jfg5JvmG8RKT4KFv50+Y1ArS3LQmzjTjWxXI7Iw=="));
-            keyValues.Add(new KeyValuePair<string, string>("instrument[name]", "Instrument"));
-            keyValues.Add(new KeyValuePair<string, string>("instrument[topic_category_id]", "1"));
-            keyValues.Add(new KeyValuePair<string, string>("instrument[description]", "Instrument"));
-            keyValues.Add(new KeyValuePair<string, string>("instrument[site_id]", "1"));
-            keyValues.Add(new KeyValuePair<string, string>("instrument[display_points]", "120"));
-            keyValues.Add(new KeyValuePair<string, string>("instrument[plot_offset_value]", "1"));
-            keyValues.Add(new KeyValuePair<string, string>("instrument[plot_offset_units]", "weeks"));
-            keyValues.Add(new KeyValuePair<string, string>("instrument[sample_rate_seconds]", "60"));
-            keyValues.Add(new KeyValuePair<string, string>("commit", "Create Instrument"));
-            return keyValues;
+            string instrumentPage = @"/instruments/";
+            Driver.Url = PortalUrl + instrumentPage;
+            Driver.Navigate();
+
+            var destroyButtons = Driver.FindElements(By.ClassName("button_to"));
+
+            string idString = string.Format("/instruments/{0}", instrumentID);
+
+            var instrButton = destroyButtons.FirstOrDefault(b => b.GetAttribute("action").Contains(idString));
+            instrButton.Click();
+
+            Driver.SwitchTo().Alert().Accept();
+
+            if(instrButton != null)
+            {
+                return new Container<int>(instrumentID);
+            }
+            else
+            {
+                return new Container<int>("Could not delete instrument ID: " + instrumentID);
+            }
+        }
+
+
+        public static Container<string> ConfigureVariables (Session session)
+        {
+             
+            string instrumentIDPage = @"instruments/" + session.InstrumentID;
+            Driver.Url = PortalUrl + instrumentIDPage;
+            Driver.Navigate();
+            int counter = 0;
+
+
+
+            
+
+                for (int index = 0; index <= session.StreamIDs.Count()-1; index++)
+                 {
+
+                    var testStream = DataCenter.GetDataStream(session.NetworkAlias, session.StreamIDs[counter]);
+                    var testData = testStream.Data;
+
+                    Driver.ExecuteScript("document.getElementsByName('var[shortname]')[0].setAttribute('type', 'text');");
+                    Driver.ExecuteScript("document.getElementsByName('var[name]')[0].setAttribute('type', 'text');");
+                    Driver.FindElementById("var_shortname").Clear();
+                    Driver.FindElementById("var_shortname").SendKeys(session.StreamIDs[counter].ToString());
+                    Driver.FindElementById("var_name").Clear();
+
+
+                    Driver.FindElementById("var_name").SendKeys(testStream.Data[0].Site.Alias + " , " + testStream.Data[0].Deployment.Name + " , " + testStream.Data[0].DataType.Name + " , " + testStream.Data[0].Property.Name);
+                    Driver.FindElement(By.XPath("//input[@name='commit' and @value='Add a New Variable']")).Click();
+
+
+
+
+                   var testTable = Driver.FindElement(By.XPath("/html/body/div[2]/div[10]/div/table/tbody/tr[last()]/td[3]") );
+                   testTable.FindElement(By.CssSelector("input")).Clear();
+                   testTable.FindElement(By.CssSelector("input")).SendKeys(testStream.Data[0].Units.Name);
+
+
+
+
+                   //Tested getting the data stream, will implement creating the variable on CHORDS next
+                   counter++;
+                 }
+
+              
+
+            /*
+            var testStream = DataCenter.GetDataStream(session.NetworkAlias, session.StreamIDs[0]);
+            var testData = testStream.Data;
+
+            var testTable = Driver.FindElement(By.XPath("/html/body/div[2]/div[10]/div/table/tbody/tr[last()]/td[3]"));
+            testTable.FindElement(By.CssSelector("input")).Clear();
+            testTable.FindElement(By.CssSelector("input")).SendKeys(testStream.Data[0].Units.Name);
+           // testTable.FindElement(By.CssSelector("input")).Click();
+            testTable.FindElement(By.CssSelector("input")).SendKeys(Keys.Down);
+           //  Driver.FindElement(By.CssSelector("div")).Click();
+           // testTable.FindElement(By.CssSelector("input")).SendKeys(Keys.Enter);
+             
+        */
+            //*[@id="unit_for_tag_47"]
+            
+            return new Container<string>("Success",true);
+
+        }
+
+        public static Container PushMeasurementList(Session session, IList<Measurement> measurementList)
+        {
+            foreach(var meas in measurementList)
+            {
+                var container = PushMeasurement(session, meas);
+
+                if (!container.Success) return new Container(container.Message);
+            }
+
+            return new Container();
+        }
+
+        public static Container PushMeasurement(Session session, Measurement measurement)
+        {
+            string uri = CreateMeasurementUri(session, measurement);
+
+            var httpTask = Client.GetAsync(Config.ChordsHostUrl + uri);
+
+            try
+            {
+                httpTask.Wait();
+            }
+            catch (Exception e)
+            {
+                
+                return new Container(e.InnerException.Message);
+            }
+
+            // Measurement successfully created
+            if (httpTask.Result.IsSuccessStatusCode)
+            {
+                return new Container();
+            }
+            // Creation failed
+            else
+            {
+                return new Container(httpTask.Result.ReasonPhrase);
+            }
+        }
+
+        private static string CreateMeasurementUri(Session session, Measurement measurement)
+        {
+            string uri =
+                "measurements/url_create?" +
+                "instrument_id=" + session.InstrumentID.ToString() +
+                "&" + measurement.Stream.ToString() + "=" + measurement.Value.ToString() +
+                "&key=" + KeyValue;
+
+            // Insert timestamp
+            // Get measurement timestamp, using current local time for now
+            // The ToString() arg formats the date as ISO-8601
+            String timestamp;
+
+            if (measurement.TimeStamp != null)
+            {
+                timestamp = measurement.TimeStamp;
+            }
+            else
+            {
+                timestamp = DateTime.Now.ToString("s");
+            }
+
+            uri += "&at" + timestamp;
+
+            return uri;
         }
 
         private static string loginUrl = @"/users/sign_in";
