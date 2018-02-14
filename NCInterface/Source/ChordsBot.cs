@@ -229,11 +229,7 @@ namespace NCInterface
 
         private static string CreateMeasurementUri(Session session, Measurement measurement)
         {
-            string uri =
-                "measurements/url_create?" +
-                "instrument_id=" + session.InstrumentID.ToString() +
-                "&" + measurement.Stream.ToString() + "=" + measurement.Value.ToString() +
-                "&key=" + KeyValue;
+            string uri = String.Format("measurements/url_create?instrument_id={0}&{1}={2}&key={3}", session.InstrumentID.ToString(), measurement.Stream, measurement.Value, KeyValue);
 
             // Insert timestamp
             // Get measurement timestamp, using current local time for now
@@ -249,7 +245,7 @@ namespace NCInterface
                 timestamp = DateTime.Now.ToString("s");
             }
 
-            uri += "&at" + timestamp;
+            uri += string.Format("&at={0}", timestamp);
 
             return uri;
         }

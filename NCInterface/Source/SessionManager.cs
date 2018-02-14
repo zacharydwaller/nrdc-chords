@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Threading;
 using NCInterface.Structures;
 using NCInterface.Structures.Infrastructure;
 using NCInterface.Utilities;
@@ -87,23 +88,20 @@ namespace NCInterface
             {
                 var session = sessionContainer.Data[0];
 
+                var threads = new List<Thread>();
+
                 foreach (int id in session.StreamIDs)
                 {
-                    // Get stream object
-                    var streamContainer = DataCenter.GetDataStream(session.NetworkAlias, id);
+                    var refreshObj = new StreamRefresher(session, id, end);
+                    var thread = new Thread(refreshObj.Refresh);
+                    threads.Add(thread);
 
-                    if (!streamContainer.Success) continue;
+                    thread.Start();
+                }
 
-                    // Get data download
-                    var dataContainer = DataCenter.GetMeasurements(session.NetworkAlias, streamContainer.Data[0], session.LastMeasTime, end);
-
-                    if (!dataContainer.Success) continue;
-
-                    // Push data
-                    var dataDownload = dataContainer.Data;
-                    var pushDataContainer = ChordsBot.PushMeasurementList(session, dataDownload);
-
-                    if (!pushDataContainer.Success) return pushDataContainer;
+                foreach(var thread in threads)
+                {
+                    thread.Join();
                 }
 
                 return new Container();
