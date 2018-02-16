@@ -36,7 +36,7 @@ namespace NCInterface.Controllers
 
         [Route("ConfigureVariables")]
         [HttpGet]
-        public Container<string> ConfigureVariables([FromUri] int instrumentId)
+        public Container ConfigureVariables([FromUri] int instrumentId)
         {
             DateTime testDate = new DateTime(2008,5,1,8,30,52);
             List<int> DataStreamID = new List<int>();

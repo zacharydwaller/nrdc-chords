@@ -33,7 +33,7 @@ namespace NCInterface
         {
             PortalUrl = portalUrl;
 
-          //  Driver = new PhantomJSDriver();
+            // Driver = new PhantomJSDriver();
             Driver = new ChromeDriver();
 
             Client = new HttpClient()
@@ -46,7 +46,7 @@ namespace NCInterface
 
         private static string Login()
         { 
-            Driver.Url = PortalUrl + loginUrl;
+            Driver.Url = PortalUrl + @"/users/sign_in";
             Driver.Navigate();
 
             var email = Driver.FindElementById("user_email");
@@ -99,7 +99,6 @@ namespace NCInterface
 
         public static Container<int> DeleteInstrument(int instrumentID)
         {
-
             string instrumentPage = @"/instruments/";
             Driver.Url = PortalUrl + instrumentPage;
             Driver.Navigate();
@@ -124,49 +123,34 @@ namespace NCInterface
         }
 
 
-        public static Container<string> ConfigureVariables (Session session)
+        public static Container ConfigureVariables (Session session)
         {
-             
             string instrumentIDPage = @"instruments/" + session.InstrumentID;
             Driver.Url = PortalUrl + instrumentIDPage;
             Driver.Navigate();
             int counter = 0;
 
+            for (int index = 0; index < session.StreamIDs.Count(); index++)
+            {
+                var testStream = DataCenter.GetDataStream(session.NetworkAlias, session.StreamIDs[counter]);
+                var testData = testStream.Data;
 
+                Driver.ExecuteScript("document.getElementsByName('var[shortname]')[0].setAttribute('type', 'text');");
+                Driver.ExecuteScript("document.getElementsByName('var[name]')[0].setAttribute('type', 'text');");
+                Driver.FindElementById("var_shortname").Clear();
+                Driver.FindElementById("var_shortname").SendKeys(session.StreamIDs[counter].ToString());
+                Driver.FindElementById("var_name").Clear();
 
-            
+                Driver.FindElementById("var_name").SendKeys(testStream.Data[0].Site.Alias + " , " + testStream.Data[0].Deployment.Name + " , " + testStream.Data[0].DataType.Name + " , " + testStream.Data[0].Property.Name);
+                Driver.FindElement(By.XPath("//input[@name='commit' and @value='Add a New Variable']")).Click();
 
-                for (int index = 0; index <= session.StreamIDs.Count()-1; index++)
-                 {
+                var testTable = Driver.FindElement(By.XPath("/html/body/div[2]/div[10]/div/table/tbody/tr[last()]/td[3]") );
+                testTable.FindElement(By.CssSelector("input")).Clear();
+                testTable.FindElement(By.CssSelector("input")).SendKeys(testStream.Data[0].Units.Name);
 
-                    var testStream = DataCenter.GetDataStream(session.NetworkAlias, session.StreamIDs[counter]);
-                    var testData = testStream.Data;
-
-                    Driver.ExecuteScript("document.getElementsByName('var[shortname]')[0].setAttribute('type', 'text');");
-                    Driver.ExecuteScript("document.getElementsByName('var[name]')[0].setAttribute('type', 'text');");
-                    Driver.FindElementById("var_shortname").Clear();
-                    Driver.FindElementById("var_shortname").SendKeys(session.StreamIDs[counter].ToString());
-                    Driver.FindElementById("var_name").Clear();
-
-
-                    Driver.FindElementById("var_name").SendKeys(testStream.Data[0].Site.Alias + " , " + testStream.Data[0].Deployment.Name + " , " + testStream.Data[0].DataType.Name + " , " + testStream.Data[0].Property.Name);
-                    Driver.FindElement(By.XPath("//input[@name='commit' and @value='Add a New Variable']")).Click();
-
-
-
-
-                   var testTable = Driver.FindElement(By.XPath("/html/body/div[2]/div[10]/div/table/tbody/tr[last()]/td[3]") );
-                   testTable.FindElement(By.CssSelector("input")).Clear();
-                   testTable.FindElement(By.CssSelector("input")).SendKeys(testStream.Data[0].Units.Name);
-
-
-
-
-                   //Tested getting the data stream, will implement creating the variable on CHORDS next
-                   counter++;
-                 }
-
-              
+                //Tested getting the data stream, will implement creating the variable on CHORDS next
+                counter++;
+            }
 
             /*
             var testStream = DataCenter.GetDataStream(session.NetworkAlias, session.StreamIDs[0]);
@@ -175,16 +159,15 @@ namespace NCInterface
             var testTable = Driver.FindElement(By.XPath("/html/body/div[2]/div[10]/div/table/tbody/tr[last()]/td[3]"));
             testTable.FindElement(By.CssSelector("input")).Clear();
             testTable.FindElement(By.CssSelector("input")).SendKeys(testStream.Data[0].Units.Name);
-           // testTable.FindElement(By.CssSelector("input")).Click();
+            // testTable.FindElement(By.CssSelector("input")).Click();
             testTable.FindElement(By.CssSelector("input")).SendKeys(Keys.Down);
-           //  Driver.FindElement(By.CssSelector("div")).Click();
-           // testTable.FindElement(By.CssSelector("input")).SendKeys(Keys.Enter);
-             
-        */
+            //  Driver.FindElement(By.CssSelector("div")).Click();
+            // testTable.FindElement(By.CssSelector("input")).SendKeys(Keys.Enter);
+            
+            */
             //*[@id="unit_for_tag_47"]
             
-            return new Container<string>("Success",true);
-
+            return new Container();
         }
 
         public static Container PushMeasurementList(Session session, IList<Measurement> measurementList)
@@ -211,7 +194,6 @@ namespace NCInterface
             }
             catch (Exception e)
             {
-                
                 return new Container(e.InnerException.Message);
             }
 
@@ -249,7 +231,5 @@ namespace NCInterface
 
             return uri;
         }
-
-        private static string loginUrl = @"/users/sign_in";
     }
 }
