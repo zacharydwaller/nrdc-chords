@@ -19,6 +19,11 @@ namespace NCInterface
             SessionDict = new Dictionary<string, Session>();
         }
 
+        /// <summary>
+        /// Initializes a new session and adds it to the dictionary. Does not begin streaming data.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static Container<string> InitializeSession(SessionInitializer args)
         {
             var validation = args.Validate();
@@ -51,6 +56,11 @@ namespace NCInterface
             }
         }
 
+        /// <summary>
+        /// Gets a Session by its key from the dictionary.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static Container<Session> GetSession(string key)
         {
             Session session;
@@ -65,6 +75,21 @@ namespace NCInterface
             }
         }
 
+        /// <summary>
+        /// Returns all sessions as a list
+        /// </summary>
+        /// <returns></returns>
+        public static Container<Session> GetSessionList()
+        {
+            return new Container<Session>(SessionDict.Values.ToList<Session>());
+        }
+
+        /// <summary>
+        /// Refreshes a session, streams all data from the last streamed time to the endTime. Or until Now if endTime is not provided.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
         public static Container RefreshSession(string key, string endTime = null)
         {
             // Get ending time
@@ -112,6 +137,10 @@ namespace NCInterface
             }
         }
 
+        /// <summary>
+        /// Generates a random unused session key
+        /// </summary>
+        /// <returns></returns>
         public static Container<string> GetRandomKey()
         {
             Random rand = new Random();

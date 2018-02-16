@@ -29,6 +29,10 @@ namespace NCInterface
 
         private static string KeyValue { get; set; } = "key";
 
+        /// <summary>
+        /// Initializes the Selenium webdriver and logs into the chords portal
+        /// </summary>
+        /// <param name="portalUrl"></param>
         public static void Initialize(string portalUrl)
         {
             PortalUrl = portalUrl;
@@ -73,6 +77,11 @@ namespace NCInterface
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Creates a new CHORDS instrument with the given name. Returns the instrument's ID
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static Container<int> CreateInstrument(string name)
         {
             string newInstrument = @"/instruments/new";
@@ -97,6 +106,11 @@ namespace NCInterface
             }
         }
 
+        /// <summary>
+        /// Deletes the CHORDS instrument that has the provided ID
+        /// </summary>
+        /// <param name="instrumentID"></param>
+        /// <returns></returns>
         public static Container<int> DeleteInstrument(int instrumentID)
         {
             string instrumentPage = @"/instruments/";
@@ -122,7 +136,11 @@ namespace NCInterface
             }
         }
 
-
+        /// <summary>
+        /// Maps CHORDS instrument variables to a session's list of streams
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns></returns>
         public static Container ConfigureVariables (Session session)
         {
             string instrumentIDPage = @"instruments/" + session.InstrumentID;
@@ -170,6 +188,12 @@ namespace NCInterface
             return new Container();
         }
 
+        /// <summary>
+        /// Streams a list of measurements to a CHORDS instrument provided by the session
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="measurementList"></param>
+        /// <returns></returns>
         public static Container PushMeasurementList(Session session, IList<Measurement> measurementList)
         {
             foreach(var meas in measurementList)
@@ -182,6 +206,12 @@ namespace NCInterface
             return new Container();
         }
 
+        /// <summary>
+        /// Pushes a single measurement to a CHORDS instrument provided by the session
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="measurement"></param>
+        /// <returns></returns>
         public static Container PushMeasurement(Session session, Measurement measurement)
         {
             string uri = CreateMeasurementUri(session, measurement);
@@ -211,7 +241,9 @@ namespace NCInterface
 
         private static string CreateMeasurementUri(Session session, Measurement measurement)
         {
-            string uri = String.Format("measurements/url_create?instrument_id={0}&{1}={2}&key={3}", session.InstrumentID.ToString(), measurement.Stream, measurement.Value, KeyValue);
+            string uri =
+                String.Format("measurements/url_create?instrument_id={0}&{1}={2}&key={3}",
+                session.InstrumentID.ToString(), measurement.Stream, measurement.Value, KeyValue);
 
             // Insert timestamp
             // Get measurement timestamp, using current local time for now

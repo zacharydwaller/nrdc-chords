@@ -70,6 +70,11 @@ namespace NCInterface
             }
         }
 
+        /// <summary>
+        /// Gets the metadata related to a sensor network
+        /// </summary>
+        /// <param name="networkAlias"></param>
+        /// <returns></returns>
         public static Container<Network> GetNetwork(string networkAlias)
         {
             var networkList = GetNetworkList();
