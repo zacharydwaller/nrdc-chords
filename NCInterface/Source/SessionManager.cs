@@ -85,34 +85,36 @@ namespace NCInterface
         }
 
         /// <summary>
-        /// Refreshes a session, streams all data from the last streamed time to the endTime. Or until Now if endTime is not provided.
+        /// Refreshes a session, streams all data from the last streamed time to the EndTime, or to Now if session is realtime.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="endTime"></param>
         /// <returns></returns>
-        public static Container RefreshSession(string key, string endTime = null)
+        public static Container RefreshSession(string key)
         {
-            // Get ending time
-            DateTime end;
-
-            if(endTime == null)
-            {
-                end = DateTime.UtcNow;
-            }
-            else
-            {
-                if(!DateTime.TryParse(endTime, out end))
-                {
-                    end = DateTime.UtcNow;
-                }
-            }
-
-            // Stream data
             var sessionContainer = GetSession(key);
             if (sessionContainer.Success)
             {
                 var session = sessionContainer.Data[0];
 
+                // Get ending time
+                DateTime end;
+                if (session.Realtime)
+                {
+                    end = DateTime.UtcNow;
+                }
+                else
+                {
+                    if (session.LastMeasTime >= session.EndTime)
+                    {
+                        // Non-realtime stream already completed
+                        return new Container();
+                    }
+
+                    end = session.EndTime;
+                }
+
+                // Stream data
                 var threads = new List<Thread>();
 
                 foreach (int id in session.StreamIDs)

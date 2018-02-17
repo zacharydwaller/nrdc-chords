@@ -16,9 +16,9 @@ namespace NCInterface.Controllers
     {
         [Route("NewSession")]
         [HttpGet]
-        public Container<string> InitializeSession([FromUri] string netAlias, [FromUri] int[] streamIDs, [FromUri] string startTime = null, [FromUri] string endTime = null)
+        public Container<string> InitializeSession([FromUri] string netAlias, [FromUri] int[] streamIDs, [FromUri] string startTime = null, [FromUri] string endTime = null, [FromUri] string description = "")
         {
-            var args = new SessionInitializer(netAlias, streamIDs, startTime, endTime);
+            var args = new SessionInitializer(netAlias, streamIDs, startTime, endTime, description);
            
             return SessionManager.InitializeSession(args);
         }
@@ -28,6 +28,13 @@ namespace NCInterface.Controllers
         public Container<Session> GetSession([FromUri] string key)
         {
             return SessionManager.GetSession(key);
+        }
+
+        [Route("GetSessionList")]
+        [HttpGet]
+        public Container<Session> GetSessionList()
+        {
+            return SessionManager.GetSessionList();
         }
 
         [Route("RefreshSession")]

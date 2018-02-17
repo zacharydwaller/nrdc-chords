@@ -34,6 +34,11 @@ namespace NCInterface.Structures
             // Push data
             var dataDownload = dataContainer.Data;
             var pushDataContainer = ChordsBot.PushMeasurementList(Session, dataDownload);
+
+            if(pushDataContainer.Success)
+            {
+                Session.Refresh(DateTime.Parse(dataDownload.Last().TimeStamp));
+            }
         }
     }
 }

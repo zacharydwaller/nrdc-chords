@@ -7,22 +7,25 @@ namespace NCInterface.Structures
 {
     public class SessionInitializer
     {
+        public string Description { get; set; }
         public string NetAlias { get; set; }
         public int[] StreamIDs { get; set; }
         public string StartTime { get; set; }
         public string EndTime { get; set; }
+        public bool Realtime { get; set; } = false;
 
         public SessionInitializer()
         {
 
         }
 
-        public SessionInitializer(string netAlias, int[] streamIDs, string startTime = null, string endTime = null)
+        public SessionInitializer(string netAlias, int[] streamIDs, string startTime = null, string endTime = null, string description = "")
         {
             NetAlias = netAlias;
             StreamIDs = streamIDs;
             StartTime = startTime;
             EndTime = endTime;
+            Description = description;
 
             Validate();
         }
@@ -43,10 +46,11 @@ namespace NCInterface.Structures
                 return new Container("StreamID list is null.");
             }
 
-            // if EndTime is empty, set it to Now
+            // if EndTime is empty, set it to Now and set the Realtime flag
             if (EndTime == null)
             {
                 EndTime = DateTime.UtcNow.ToString("s");
+                Realtime = true;
             }
 
             // If StartTime is empty, set it to EndTime - 24 horus
