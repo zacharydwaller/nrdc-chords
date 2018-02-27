@@ -176,6 +176,8 @@ function visualizeButtonClick()
         uri += "&endTime=" + date.toISOString();
     }
 
+    console.log(uri);
+
     $("#VisOptions").hide();
 
     $("#VisResult").show();
