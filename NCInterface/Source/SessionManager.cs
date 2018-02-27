@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Threading;
+using System.Text;
 using NCInterface.Structures;
 using NCInterface.Structures.Infrastructure;
 using NCInterface.Utilities;
@@ -120,10 +121,19 @@ namespace NCInterface
                 // Stream data
                 var threads = new List<Thread>();
 
+                StringBuilder sb = new StringBuilder();
+
                 foreach (int id in session.StreamIDs)
                 {
                     var refreshObj = new StreamRefresher(session, id, end);
-                    var thread = new Thread(refreshObj.Refresh);
+                    //var thread = new Thread(refreshObj.Refresh);
+
+                    string message = "";
+
+                    Thread thread = new Thread(() => { message = refreshObj.Refresh().Message; });
+
+                    sb.Append(message);
+
                     threads.Add(thread);
 
                     thread.Start();
@@ -134,7 +144,7 @@ namespace NCInterface
                     thread.Join();
                 }
 
-                return new Container();
+                return new Container(true, sb.ToString());
             }
             else
             {

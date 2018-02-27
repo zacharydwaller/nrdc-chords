@@ -101,7 +101,7 @@ namespace NCInterface
         /// <param name="networkAlias"></param>
         /// <returns></returns>
         public static Container<Site> GetSiteList(string networkAlias)
-        {;
+        {
             var urlContainer = GetInfrastructureUrl(networkAlias);
 
             // Couldn't find infrastructure Url

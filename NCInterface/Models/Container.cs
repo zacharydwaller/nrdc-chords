@@ -26,6 +26,17 @@ namespace NCInterface.Structures
             Success = false;
             Message = errorMessage;
         }
+
+        /// <summary>
+        ///     Contructor to set a flag and message;
+        /// </summary>
+        /// <param name="success"></param>
+        /// <param name="message"></param>
+        public Container(bool success, string message)
+        {
+            Success = success;
+            Message = message;
+        }
     }
 
     /// <summary>

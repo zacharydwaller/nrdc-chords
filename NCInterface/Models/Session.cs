@@ -47,10 +47,10 @@ namespace NCInterface.Structures
         /// Refreshes the session. Sets LastRefresh to current time and LastMeasTime to the endTime provided.
         /// </summary>
         /// <param name="endTime"></param>
-        public void Refresh(DateTime lastMeasTime)
+        public void Refresh(DateTime newLastMeasTime)
         {
             LastRefresh = DateTime.UtcNow;
-            LastMeasTime = lastMeasTime;
+            LastMeasTime = newLastMeasTime;
         }
     }
 }

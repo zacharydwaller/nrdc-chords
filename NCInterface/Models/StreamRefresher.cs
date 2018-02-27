@@ -19,26 +19,23 @@ namespace NCInterface.Structures
             EndTime = endTime;
         }
 
-        public void Refresh()
+        public Container Refresh()
         {
             // Get stream object
             var streamContainer = DataCenter.GetDataStream(Session.NetworkAlias, StreamID);
 
-            if (!streamContainer.Success) return;
+            if (!streamContainer.Success) return new Container(streamContainer.Message);
 
             // Get data download
             var dataContainer = DataCenter.GetMeasurements(Session.NetworkAlias, streamContainer.Data[0], Session.LastMeasTime, EndTime);
 
-            if (!dataContainer.Success) return;
+            if (!dataContainer.Success) return new Container(dataContainer.Message);
 
             // Push data
             var dataDownload = dataContainer.Data;
             var pushDataContainer = ChordsBot.PushMeasurementList(Session, dataDownload);
 
-            if(pushDataContainer.Success)
-            {
-                Session.Refresh(DateTime.Parse(dataDownload.Last().TimeStamp));
-            }
+            return new Container(true, string.Format("Stream {0} Pushed data from {1} to {2}; ", StreamID, Session.LastMeasTime.ToString("s"), EndTime.ToString("s")));
         }
     }
 }
