@@ -105,11 +105,14 @@ namespace NCInterface
                 }
                 else
                 {
+                    // TODO: This check is always true for some reason
+                    /*
                     if (session.LastMeasTime >= session.EndTime)
                     {
                         // Non-realtime stream already completed
                         return new Container();
                     }
+                    */
 
                     end = session.EndTime;
                 }
