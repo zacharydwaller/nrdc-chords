@@ -70,6 +70,11 @@ namespace NCInterface
             }
         }
 
+        /// <summary>
+        /// Gets the metadata related to a sensor network
+        /// </summary>
+        /// <param name="networkAlias"></param>
+        /// <returns></returns>
         public static Container<Network> GetNetwork(string networkAlias)
         {
             var networkList = GetNetworkList();
@@ -96,7 +101,7 @@ namespace NCInterface
         /// <param name="networkAlias"></param>
         /// <returns></returns>
         public static Container<Site> GetSiteList(string networkAlias)
-        {;
+        {
             var urlContainer = GetInfrastructureUrl(networkAlias);
 
             // Couldn't find infrastructure Url

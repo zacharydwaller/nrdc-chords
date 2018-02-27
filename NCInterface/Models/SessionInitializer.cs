@@ -7,22 +7,25 @@ namespace NCInterface.Structures
 {
     public class SessionInitializer
     {
+        public string Description { get; set; }
         public string NetAlias { get; set; }
         public int[] StreamIDs { get; set; }
         public string StartTime { get; set; }
         public string EndTime { get; set; }
+        public bool Realtime { get; set; } = false;
 
         public SessionInitializer()
         {
 
         }
 
-        public SessionInitializer(string netAlias, int[] streamIDs, string startTime = null, string endTime = null)
+        public SessionInitializer(string netAlias, int[] streamIDs, string startTime = null, string endTime = null, string description = "")
         {
             NetAlias = netAlias;
             StreamIDs = streamIDs;
             StartTime = startTime;
             EndTime = endTime;
+            Description = description;
 
             Validate();
         }
@@ -43,24 +46,71 @@ namespace NCInterface.Structures
                 return new Container("StreamID list is null.");
             }
 
-            // if EndTime is empty, set it to Now
-            if (EndTime == null)
+            // Process End and Start times
+            DateTime start, end;
+
+            // Check if EndTime is provided
+            if (EndTime != null)
             {
-                EndTime = DateTime.UtcNow.ToString("s");
+                // Try to parse
+                 if(DateTime.TryParse(EndTime, out end))
+                 {
+                    // Set time of EndTime to 11:59:59 PM
+                    // Gets the Date, which is at 0:00:00 hours
+                    // Adds 1 day to set it to the next day at 0:00:00 hrs
+                    // Minus 1 second to set it to original date at 23:59:59 hrs
+                    end = end.Date.AddDays(1).AddSeconds(-1);
+                }
+                 else
+                 {
+                    // Couldn't parse
+                    return new Container("EndTime could not be parsed.");
+                 }
+
+            }
+            else
+            {
+                // if EndTime is empty, set it to Now and make session realtime
+                end = DateTime.UtcNow;
+                Realtime = true;
             }
 
-            // If StartTime is empty, set it to EndTime - 24 horus
-            if (StartTime == null)
+            // Check if StartTime is provided
+            if (StartTime != null)
             {
-                StartTime = DateTime.Parse(EndTime).AddHours(-24).ToString("s");
+                // Try to parse
+                if (DateTime.TryParse(StartTime, out start))
+                {
+                    // Set start's time to 0:00:00 hrs
+                    start = start.Date;
+
+                    // If StartTime > EndTime reject the request
+                    if(start > end)
+                    {
+                        return new Container("StartTime cannot be greater than EndTime");
+                    }
+                }
+                else
+                {
+                    // Could not parse
+                    return new Container("StartTime could not be parsed.");
+                }
             }
+            else
+            {
+                // If Start is empty, set it to the end - 24 hours
+                start = end.AddHours(-24);
+            }
+
+            // Finally set the date time strings
+            StartTime = start.ToString("s");
+            EndTime = end.ToString("s");
 
             // Check IDs
             if (StreamIDs.Length <= 0)
             {
-                return new Container("List of StreamIDs is empty.");
+                return new Container("Must select at least one data stream.");
             }
-
 
             foreach(int id in StreamIDs)
             {
@@ -68,24 +118,6 @@ namespace NCInterface.Structures
                 {
                     return new Container(String.Format("Stream ID {0} is invalid", id));
                 }
-            }
-
-            // Check if StartTime, EndTime can be parsed
-            DateTime start, end;
-            
-            if(DateTime.TryParse(StartTime, out start) == false)
-            {
-                return new Container("StartTime could not be parsed.");
-            }
-            if(DateTime.TryParse(EndTime, out end) == false)
-            {
-                return new Container("EndTime could not be parsed.");
-            }
-            
-            // Make sure StartTime < EndTime
-            if (start >= end)
-            {
-                return new Container("EndTime is sooner than StartTime.");
             }
 
             return new Container();

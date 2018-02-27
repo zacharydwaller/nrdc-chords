@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Threading;
+using System.Text;
 using NCInterface.Structures;
 using NCInterface.Structures.Infrastructure;
 using NCInterface.Utilities;
@@ -18,6 +20,11 @@ namespace NCInterface
             SessionDict = new Dictionary<string, Session>();
         }
 
+        /// <summary>
+        /// Initializes a new session and adds it to the dictionary. Does not begin streaming data.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static Container<string> InitializeSession(SessionInitializer args)
         {
             var validation = args.Validate();
@@ -50,6 +57,11 @@ namespace NCInterface
             }
         }
 
+        /// <summary>
+        /// Gets a Session by its key from the dictionary.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static Container<Session> GetSession(string key)
         {
             Session session;
@@ -64,49 +76,75 @@ namespace NCInterface
             }
         }
 
-        public static Container RefreshSession(string key, string endTime = null)
+        /// <summary>
+        /// Returns all sessions as a list
+        /// </summary>
+        /// <returns></returns>
+        public static Container<Session> GetSessionList()
         {
-            // Get ending time
-            DateTime end;
+            return new Container<Session>(SessionDict.Values.ToList<Session>());
+        }
 
-            if(endTime == null)
-            {
-                end = DateTime.UtcNow;
-            }
-            else
-            {
-                if(!DateTime.TryParse(endTime, out end))
-                {
-                    end = DateTime.UtcNow;
-                }
-            }
-
-            // Stream data
+        /// <summary>
+        /// Refreshes a session, streams all data from the last streamed time to the EndTime, or to Now if session is realtime.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        public static Container RefreshSession(string key)
+        {
             var sessionContainer = GetSession(key);
             if (sessionContainer.Success)
             {
                 var session = sessionContainer.Data[0];
 
-                foreach (int id in session.StreamIDs)
+                // Get ending time
+                DateTime end;
+                if (session.Realtime)
                 {
-                    // Get stream object
-                    var streamContainer = DataCenter.GetDataStream(session.NetworkAlias, id);
+                    end = DateTime.UtcNow;
+                }
+                else
+                {
+                    // TODO: This check is always true for some reason
+                    /*
+                    if (session.LastMeasTime >= session.EndTime)
+                    {
+                        // Non-realtime stream already completed
+                        return new Container();
+                    }
+                    */
 
-                    if (!streamContainer.Success) continue;
-
-                    // Get data download
-                    var dataContainer = DataCenter.GetMeasurements(session.NetworkAlias, streamContainer.Data[0], session.LastMeasTime, end);
-
-                    if (!dataContainer.Success) continue;
-
-                    // Push data
-                    var dataDownload = dataContainer.Data;
-                    var pushDataContainer = ChordsBot.PushMeasurementList(session, dataDownload);
-
-                    if (!pushDataContainer.Success) return pushDataContainer;
+                    end = session.EndTime;
                 }
 
-                return new Container();
+                // Stream data
+                var threads = new List<Thread>();
+
+                StringBuilder sb = new StringBuilder();
+
+                foreach (int id in session.StreamIDs)
+                {
+                    var refreshObj = new StreamRefresher(session, id, end);
+                    //var thread = new Thread(refreshObj.Refresh);
+
+                    string message = "";
+
+                    Thread thread = new Thread(() => { message = refreshObj.Refresh().Message; });
+
+                    sb.Append(message);
+
+                    threads.Add(thread);
+
+                    thread.Start();
+                }
+
+                foreach(var thread in threads)
+                {
+                    thread.Join();
+                }
+
+                return new Container(true, sb.ToString());
             }
             else
             {
@@ -114,6 +152,10 @@ namespace NCInterface
             }
         }
 
+        /// <summary>
+        /// Generates a random unused session key
+        /// </summary>
+        /// <returns></returns>
         public static Container<string> GetRandomKey()
         {
             Random rand = new Random();
