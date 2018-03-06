@@ -1,4 +1,5 @@
-﻿var serviceUrl = "http://localhost:3485/";
+﻿//var serviceUrl = "http://localhost:3485/";
+var serviceUrl = "http://nrdcstudentweb.rd.unr.edu/team_16/Services/NCInterface/";
 var chordsUrl = "http://ec2-13-57-134-131.us-west-1.compute.amazonaws.com/";
 
 var selectedNetwork = "NevCAN";

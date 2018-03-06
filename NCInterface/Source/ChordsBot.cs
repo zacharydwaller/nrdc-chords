@@ -19,8 +19,8 @@ namespace NCInterface
     {
         public static string PortalUrl { get; private set; }
 
-        //private static PhantomJSDriver Driver { get; set; }
-        private static ChromeDriver Driver { get; set; }
+        private static PhantomJSDriver Driver { get; set; }
+        //private static ChromeDriver Driver { get; set; }
 
         private static HttpClient Client { get; set; }
 
@@ -37,8 +37,8 @@ namespace NCInterface
         {
             PortalUrl = portalUrl;
 
-            // Driver = new PhantomJSDriver();
-            Driver = new ChromeDriver();
+            Driver = new PhantomJSDriver();
+            //Driver = new ChromeDriver();
 
             Client = new HttpClient()
             {
