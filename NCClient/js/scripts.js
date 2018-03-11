@@ -2,11 +2,11 @@
 //var serviceUrl = "http://nrdcstudentweb.rd.unr.edu/team_16/Services/NCInterface/";
 var chordsUrl = "http://ec2-13-57-134-131.us-west-1.compute.amazonaws.com/";
 
-var selectedNetwork = "NevCAN";
-var selectedSite = 0;
-var selectedSystem = 0;
-var selectedDeployment = 0;
-var selectedStreams = new Set();
+var selectedNetwork;
+var selectedSite;
+var selectedSystem;
+var selectedDeployment;
+var selectedStreams;
 
 var hiClasses = "list-group-item hierarchy-item";
 
@@ -29,6 +29,22 @@ var defaultInterval = 60; // in seconds
 
 $(document).ready(function ()
 {
+    populateSessionList();
+    //setInterval(populateSessionList, 10000);
+
+    initialize();
+});
+
+function initialize()
+{
+    selectedNetwork = "NevCAN";
+    selectedSite = 0;
+    selectedSystem = 0;
+    selectedDeployment = 0;
+    selectedStreams = new Set();
+
+    $("#netTab").click();
+
     $(".hierarchy-item").remove();
 
     // Attach netbuttonClick function to network buttons 
@@ -42,9 +58,8 @@ $(document).ready(function ()
     // Retrieve NevCAN sites
     expandHierarchy(serviceUrl + "DataCenter/" + selectedNetwork + "/sites?", expandSites);
 
-    // Retrive active sessions
-    populateSessionList();
-
+    // Initialize Visualize tab
+    $("#VisOptions").show();
     $("#VisResult").hide();
 
     startCalendar = $("#startdate");
@@ -52,7 +67,7 @@ $(document).ready(function ()
 
     startCalendar.datepicker();
     endCalendar.datepicker();
-});
+}
 
 function sessionButtonClick()
 {
@@ -155,6 +170,33 @@ function selstreamButtonClick()
     updateSelectedStreams();
 }
 
+function attemptConnection()
+{
+    uri = serviceUrl + "NCInterface/";
+
+    console.log("Attempting to connect to NRDC-CHORDS Web service");
+
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: uri,
+
+        xhrFields: {
+            withCredentials: false
+        },
+
+        success: function (result)
+        {
+
+        },
+
+        error: function ()
+        {
+            $("#no-connection").append(noConnection);
+        }
+    });
+}
+
 function visualizeButtonClick()
 {
     uri = serviceUrl + "Session/newSession?"
@@ -194,6 +236,8 @@ function visualizeButtonClick()
 
     $("#VisResult").show();
     $("#VisResult").append(loader);
+    $("#sessionError").hide();
+    $("#sessionInstructions").show();
 
     $.ajax({
         type: "GET",
@@ -210,6 +254,9 @@ function visualizeButtonClick()
 
             if (result.Success)
             {
+                $("#sessionKey").show();
+                $("#sessionError").hide();
+
                 sessionKey = result.Data;
                 $("#sessionKey").append("Your Session Key: " + sessionKey);
                 openChordsSession(sessionKey);
@@ -220,14 +267,20 @@ function visualizeButtonClick()
                 intervalFunc = setInterval(refreshSession, interval);
 
                 console.log(interval);
+
+                // Refresh session list
+                populateSessionList();
             }
             else
             {
-                //$("#sessionKey").append(result.Message);
+                $("#sessionKey").empty();
+                $("#sessionInstructions").hide();
+                $("#sessionError").show();
+                $("#sessionError").append(result.Message);
                 console.error(result.Message);
 
                 $("#VisOptions").show();
-                $("#VisResult").hide();
+                //$("#VisResult").hide();
             }
         },
 
@@ -237,34 +290,7 @@ function visualizeButtonClick()
 
             console.error("Call to " + uri + " unable to be completed.");
 
-            $("#VisResult").append("Call to " + uri + " unable to be completed.");
-        }
-    });
-}
-
-function attemptConnection()
-{
-    uri = serviceUrl + "NCInterface/";
-
-    console.log("Attempting to connect to NRDC-CHORDS Web service");
-
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: uri,
-
-        xhrFields: {
-            withCredentials: false
-        },
-
-        success: function (result)
-        {
-            
-        },
-
-        error: function ()
-        {
-            $("#no-connection").append(noConnection);
+            $("#sessionError").append("Call to " + uri + " unable to be completed.");
         }
     });
 }
@@ -383,7 +409,7 @@ function populateSessionList()
 {
     var uri = serviceUrl + "Session/GetSessionList";
 
-    $("#session-list").append(loader);
+    //$("#session-list").append(loader);
 
     $.ajax({
         type: "GET",
@@ -396,7 +422,7 @@ function populateSessionList()
 
         success: function (result)
         {
-            $("#loading").remove();
+            $("#session-list").empty();
 
             //console.log(result);
             if (result.Success == true)
