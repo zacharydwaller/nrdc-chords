@@ -9,10 +9,11 @@ using NCInterface.Structures;
 namespace NCInterface.Controllers
 {
     [RoutePrefix("ChordsBot")]
-    public class ChordsBotController : ApiController //Creates API to call ChordsBot functions via HTTP
+    //Creates API to call ChordsBot functions via HTTP
+    public class ChordsBotController : ApiController 
     {
         /// <summary>
-        /// Calls the ChordsBot login function
+        /// Calls the ChordsBot ChordsLogin function
         /// </summary>
         /// <param name=""></param>
         /// <returns>String Container confirmation</returns>
@@ -24,7 +25,7 @@ namespace NCInterface.Controllers
         }
 
         /// <summary>
-        /// Calls the ChordsBot create instrument function
+        /// Calls the ChordsBot CreateInstrument function
         /// </summary>
         /// <param name=""></param>
         /// <returns>Instrument ID as an int Container</returns>
@@ -36,7 +37,7 @@ namespace NCInterface.Controllers
         }
 
         /// <summary>
-        /// Calls the ChordsBot delete instrument function  
+        /// Calls the ChordsBot DeleteInstrument function  
         /// </summary>
         /// <param name="instrumentId"></param>
         /// <returns>Instrument ID as an int Container</returns>
@@ -48,7 +49,7 @@ namespace NCInterface.Controllers
         }
 
         /// <summary>
-        /// Calls the ChordsBot configure variables function 
+        /// Prepares DateTime and int parameters, calls the ChordsBot ConfigureVariables function 
         /// </summary>
         /// <param name="instrumentId"></param>
         /// <returns>ChordsBot object Container corresponding to the session input</returns>
@@ -56,10 +57,13 @@ namespace NCInterface.Controllers
         [HttpGet]
         public Container ConfigureVariables([FromUri] int instrumentId)
         {
-            DateTime testDate = new DateTime(2008,5,1,8,30,52); //Creates a DateTime object at an arbitrary date
-            List<int> DataStreamID = new List<int>();//Creates a List of ints to identify datastreams
+            //Creates a DateTime object at an arbitrary date
+            DateTime testDate = new DateTime(2008,5,1,8,30,52);
+            //Creates a List of ints to identify datastreams
+            List<int> DataStreamID = new List<int>(); 
             DataStreamID.Add(1);
-            Session session = new Session("testKey", "nevcan", DataStreamID, testDate);//Creates a session object with the test DateTime object and list of DataStreamIDs
+            //Creates a session object with the test DateTime object and list of DataStreamIDs
+            Session session = new Session("testKey", "nevcan", DataStreamID, testDate); 
             return ChordsBot.ConfigureVariables(session);
         }
     }

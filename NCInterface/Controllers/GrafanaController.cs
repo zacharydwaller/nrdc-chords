@@ -11,38 +11,39 @@ using System.Threading.Tasks;
 using System.Net.Http.Headers;
 
 namespace NCInterface.Controllers
-{
+{ 
+    //Creates API to call GrafanaController functions via HTTP
     [RoutePrefix("Grafana")]
     public class GrafanaController : ApiController
-    {
+    { 
+        //Sets timeout time for HttpClient object
         private static HttpClient client = new HttpClient
         {
             Timeout = TimeSpan.FromMilliseconds(Config.DefaultTimeout)
-        };
+        }; 
+        //Sets API key and header to be able to make changes to Grafana
         private static string header = "Bearer";
-
         private static string credentials ="eyJrIjoicmtVcVA4MjN6dTVKWFNRWUliMUJmVTdVUlJKdWpOclEiLCJuIjoidGVzdDEiLCJpZCI6MX0=";
 
-
-
+        /// <summary>
+        /// Sets the user credentials for a new admin and posts request to Grafana
+        /// </summary>
+        /// <param name="adminName"></param>
+        /// <returns>A string containing the HTTP response to the post</returns>
         [Route("CreateAdmin")]
         [HttpGet]
         public string CreateAdmin(string adminName)
-
         {
-
             var uri = "http://ec2-13-57-134-131.us-west-1.compute.amazonaws.com:3000/api/auth/keys";
-            
             User testUser = new User { name = adminName, role = "Admin" };
-
+            //Serializes user information into JSON
             var jsonContent = JsonConvert.SerializeObject(testUser, Config.DefaultSerializationSettings);
-
+            //Encodes string for JSON
             var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");            
-
+            //Sets client authorization credentials
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(header,credentials);
-
+            //Gets and returns response from post
             var response = client.PostAsync(uri, stringContent).Result;
-
             return response.Content.ReadAsStringAsync().Result;
 
         }
@@ -55,9 +56,14 @@ namespace NCInterface.Controllers
          * 
          * Each items in a row are called a "panel" which can be multiple things that display information like graphs, tables, etc..
          * To create a panels, we need to initalize them and then send that information to a 'Row' object
-         * A dashboard will need to be initalize with its name and a list of rows.
+         * A dashboard will need to be initalized with its name and a list of rows.
          * 
          */
+        /// <summary>
+        /// Initiates and formats JSON Dashboard object to send data to Grafana
+        /// </summary>
+        /// <param name="dashName"></param>
+        /// <returns>A string containing the HTTP response to the POST</returns>
         [Route("CreateDashboard")]
         [HttpGet]
         public string CreateDashboard(string dashName)
@@ -65,7 +71,6 @@ namespace NCInterface.Controllers
         {
             //URI to contact Grafana's API for interacting with Dashboards
             var uri = "http://ec2-13-57-134-131.us-west-1.compute.amazonaws.com:3000/api/dashboards/db";
-
             //Creating lists to be use to initialize the Dashboard constructor
             var reqs = new List<Require>();
             var DashRows = new List<Row>();
@@ -76,16 +81,13 @@ namespace NCInterface.Controllers
             var timeRange = new Time { from = "now-1M/M", to = "now-1M/M" };
             Yaxes.Add(Yaxis);
             Yaxes.Add(Yaxis1);
-
             //Initializing the Dashboard's "requirement" objects
             var panelReqs = new Require { type = "panel", id = "graph", name = "graph" };
             var dataReqs = new Require { type = "datasource", id = "influxdb", name = "InfluxDB", version = "1.0.0" };
-
             //Panel initialization
             var panel = new Panel { title = "test",
                 bars = false,
                 datasource = "NRDC",
-              
                 lines = true,
                 linewidth = 1,
                 pointradius = 5,
@@ -98,9 +100,8 @@ namespace NCInterface.Controllers
                 xaxis = new Xaxis { mode = "time ", name = null, show = true },
                 yaxes = Yaxes,
                 legend = new Legend {avg = false, current = false, max = false, min = false, show = true, total = false, values = false }
-                
             };
-
+            //formats data and sends JSON request
             reqs.Add(panelReqs);
             reqs.Add(dataReqs);
             panelsList.Add(panel);
@@ -111,14 +112,7 @@ namespace NCInterface.Controllers
             var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(header, credentials);
             var response = client.PostAsync(uri, stringContent).Result;
-
             return response.Content.ReadAsStringAsync().Result;
-            ///return jsonContent;
-
         }
-
-
-
-
     }
 }

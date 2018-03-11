@@ -6,7 +6,8 @@ using NCInterface.Structures.Infrastructure;
 using NCInterface.Utilities;
 
 namespace NCInterface.Controllers
-{
+{ 
+    //Creates an API to return version number
     public class NCInterfaceController : ApiController
     {
         // GET: NCInterface

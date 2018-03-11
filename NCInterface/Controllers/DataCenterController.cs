@@ -9,21 +9,32 @@ using NCInterface.Utilities;
 
 namespace NCInterface.Controllers
 {
-    [RoutePrefix("DataCenter")]
+    //Creates API to call DataCenter functions via HTTP
+    [RoutePrefix("DataCenter")] 
     public class DataCenterController : ApiController
     {
+        //Sets timeout time for HttPClient object
         private static HttpClient client = new HttpClient
         {
             Timeout = TimeSpan.FromMilliseconds(Config.DefaultTimeout)
         };
 
-        // GET: DataCenter
+        /// <summary>
+        /// Calls the DataCenter GetNetworkList function
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns>Network Container of all sensor networks</returns>
         [HttpGet]
         public Container<Network> GetNetworkList()
         {
             return DataCenter.GetNetworkList();
         }
 
+        /// <summary>
+        /// Calls the DataCenter GetNetwork function
+        /// </summary>
+        /// <param name="networkAlias"></param>
+        /// <returns>Network Container with metadata of a network</returns>
         [Route("{networkAlias}")]
         [HttpGet]
         public Container<Network> GetNetwork(string networkAlias)
@@ -32,10 +43,10 @@ namespace NCInterface.Controllers
         }
 
         /// <summary>
-        /// Gets a list of sites from a network
+        /// Calls the DataCenter GetSiteList function
         /// </summary>
         /// <param name="networkAlias"></param>
-        /// <returns></returns>
+        /// <returns>A list of all sites in the given sensor network</returns>
         [Route("{networkAlias}/sites")]
         [HttpGet]
         public Container<Site> GetSiteList(string networkAlias)
@@ -44,11 +55,11 @@ namespace NCInterface.Controllers
         }
 
         /// <summary>
-        /// Gets site metadata given its ID.
+        /// Calls the DataCenter GetSite function
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <param name="siteID"></param>
-        /// <returns></returns>
+        /// <returns>A Site Container with the Site metadata for the given siteID</returns>
         [Route("{networkAlias}/sites")]
         [HttpGet]
         public Container<Site> GetSite(string networkAlias, [FromUri] int siteID)
@@ -57,11 +68,11 @@ namespace NCInterface.Controllers
         }
 
         /// <summary>
-        /// Gets a list of systems from the specified site.
+        /// Calls the DataCenter GetSystemList function
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <param name="siteID"></param>
-        /// <returns></returns>
+        /// <returns>An NrdcSystem Container with a list of all systems at the specified site</returns>
         [Route("{networkAlias}/systems")]
         [HttpGet]
         public Container<NrdcSystem> GetSystemList(string networkAlias, [FromUri] int siteID = 0)
@@ -70,12 +81,12 @@ namespace NCInterface.Controllers
         }
 
         /// <summary>
-        /// Gets the system metadata from a given site and system ID
+        /// Calls the DataCenter GetSystem function
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <param name="siteID"></param>
         /// <param name="systemID"></param>
-        /// <returns></returns>
+        /// <returns>An NrdcSystem Container with the system metadata for the given site and system ID</returns>
         [Route("{networkAlias}/systems")]
         [HttpGet]
         public Container<NrdcSystem> GetSystem(string networkAlias, [FromUri] int siteID, [FromUri] int systemID)
@@ -84,11 +95,11 @@ namespace NCInterface.Controllers
         }
 
         /// <summary>
-        /// Gets a list of deployments from the specified system.
+        /// Calls the DataCenter GetDeploymentList function
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <param name="systemID"></param>
-        /// <returns></returns>
+        /// <returns>A Deployment Container with a list of all Deployments in the given system</returns>
         [Route("{networkAlias}/deployments")]
         [HttpGet]
         public Container<Deployment> GetDeploymentList(string networkAlias, [FromUri] int systemID = 0)
@@ -102,7 +113,7 @@ namespace NCInterface.Controllers
         /// <param name="networkAlias"></param>
         /// <param name="systemID"></param>
         /// <param name="deploymentID"></param>
-        /// <returns></returns>
+        /// <returns>A Deployment Container with the Deployment metadata from the Deployment with the specified systemID and deploymentID</returns>
         [Route("{networkAlias}/deployments")]
         [HttpGet]
         public Container<Deployment> GetDeployment(string networkAlias, [FromUri] int systemID, [FromUri] int deploymentID)
@@ -111,11 +122,11 @@ namespace NCInterface.Controllers
         }
 
         /// <summary>
-        /// Gets a list of data streams from a specified deployment.
+        /// Calls the DataCenter GetDataStreams function
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <param name="deploymentID"></param>
-        /// <returns></returns>
+        /// <returns>A DataStream Container with all datastreams belonging to the specified Deployment</returns>
         [Route("{networkAlias}/streams")]
         [HttpGet]
         public Container<Structures.Data.DataStream> GetDataStreamList(string networkAlias, [FromUri] int deploymentID = 0)
@@ -124,15 +135,14 @@ namespace NCInterface.Controllers
         }
 
         /// <summary>
-        /// Gets a datastream by ID. Provide its deployment ID for faster searching.
-        /// Will search all streams in network if stream is not found within provided deployment (slow).
+        /// Calls the DataCenter GetDataStream function
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <param name="streamID"></param>
         /// <param name="deploymentID">
         /// Optional. Leave empty to search in all deployments in network or specify to get a quicker search.
         /// </param>
-        /// <returns></returns>
+        /// <returns>A DataStream container found by searching for the specified streamID</returns>
         [Route("{networkAlias}/streams")]
         [HttpGet]
         public Container<Structures.Data.DataStream> GetDataStream(string networkAlias, [FromUri] int streamID, [FromUri] int deploymentID = 0)
