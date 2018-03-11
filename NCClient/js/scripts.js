@@ -167,6 +167,9 @@ function visualizeButtonClick()
 
     var start = startCalendar.datepicker("getDate");
     var end = endCalendar.datepicker("getDate");
+
+    // Web service handles nulls
+    /*
     if (start != null)
     {
         var date = new Date(start);
@@ -180,6 +183,7 @@ function visualizeButtonClick()
 
         uri += "&endTime=" + date.toISOString();
     }
+    */
 
     console.log(uri);
 
@@ -391,7 +395,7 @@ function populateSessionList()
         {
             $("#loading").remove();
 
-            console.log(result);
+            //console.log(result);
             if (result.Success == true)
             {
                 if (result.Data.length == 0)
