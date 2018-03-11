@@ -7,6 +7,7 @@ namespace NCInterface.Structures
 {
     public class SessionInitializer
     {
+        public string Name { get; set; }
         public string Description { get; set; }
         public string NetAlias { get; set; }
         public int[] StreamIDs { get; set; }
@@ -19,12 +20,13 @@ namespace NCInterface.Structures
 
         }
 
-        public SessionInitializer(string netAlias, int[] streamIDs, string startTime = null, string endTime = null, string description = "")
+        public SessionInitializer(string netAlias, int[] streamIDs, string startTime = null, string endTime = null, string name = "", string description = "")
         {
             NetAlias = netAlias;
             StreamIDs = streamIDs;
             StartTime = startTime;
             EndTime = endTime;
+            Name = name;
             Description = description;
 
             Validate();
