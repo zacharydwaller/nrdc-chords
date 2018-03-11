@@ -42,6 +42,8 @@ function initialize()
 
     populateSessionList();
 
+    $("#visForm")[0].reset();
+
     $("#netTab").click();
 
     $(".hierarchy-item").remove();
@@ -93,6 +95,7 @@ function netbuttonClick()
     $(this).addClass("active");
 
     $(".hierarchy-item").remove();
+    $(".site-button").remove();
 
     expandHierarchy(serviceUrl + "DataCenter/" + selectedNetwork + "/sites?", expandSites);
 
@@ -508,6 +511,7 @@ function expandHierarchy(uri, callback)
 function expandSites(data)
 {
     hideHeaders();
+    $(".site-button").remove();
 
     for (var i = 0; i < data.length; i++)
     {
