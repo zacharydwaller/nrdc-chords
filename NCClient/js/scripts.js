@@ -160,11 +160,17 @@ function visualizeButtonClick()
     uri = serviceUrl + "Session/newSession?"
         + "netAlias=" + selectedNetwork;
 
+    // Add list of streams
     for (let id of selectedStreams)
     {
         uri += "&streamIDs=" + id;
     }
 
+    // Add name and description
+    uri += "&name=" + $("#sessionName").val();
+    uri += "&description=" + $("#sessionDescription").val();
+
+    // Add start and end date
     var start = startCalendar.datepicker("getDate");
     var end = endCalendar.datepicker("getDate");
 
@@ -404,7 +410,8 @@ function populateSessionList()
                 {
                     var session = result.Data[i];
                     var button = createButton("session-button", "#session-list", sessionButtonClick);
-                    button.innerHTML = "<h4 class=\"list-group-item-heading\">" + session.SessionKey
+                    button.innerHTML = "<h3 class=\"list-group-item-heading\">" + session.Name
+                        + "<p class=\"list-group-item-text\">" + session.Description + "</p>"
                         + "<p class=\"list-group-item-heading\">" + session.NetworkAlias + "</p>"
                         + "<p class=\"list-group-item-text\">" + "CHORDS Instrument: " + session.InstrumentID + "</p>"
                         + "<p class=\"list-group-item-text\">" + "Last Refresh: " + session.LastRefresh + "</p>";
