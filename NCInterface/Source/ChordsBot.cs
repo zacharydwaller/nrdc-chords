@@ -91,7 +91,7 @@ namespace NCInterface
 
             Driver.FindElementById("instrument_name").SendKeys(name);
             Driver.FindElementById("instrument_sample_rate_seconds").Clear();
-            Driver.FindElementById("instrument_sample_rate_seconds").SendKeys("60");
+            Driver.FindElementById("instrument_sample_rate_seconds").SendKeys("1");
             Driver.FindElementByName("commit").Click();
 
             int id;
