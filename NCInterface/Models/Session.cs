@@ -31,8 +31,17 @@ namespace NCInterface.Structures
 
         public Session(string sessionKey, SessionInitializer initializer)
         {
+            // If initializer name is null or empty string, set name to session key
+            if(initializer.Name == null || initializer.Name == "")
+            {
+                Name = sessionKey;
+            }
+            else
+            {
+                Name = initializer.Name;
+            }
+
             SessionKey = sessionKey;
-            Name = initializer.Name;
             Description = initializer.Description;
             NetworkAlias = initializer.NetAlias;
             StreamIDs = new List<int>(initializer.StreamIDs);

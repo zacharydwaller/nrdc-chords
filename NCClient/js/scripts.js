@@ -29,9 +29,6 @@ var defaultInterval = 60; // in seconds
 
 $(document).ready(function ()
 {
-    populateSessionList();
-    //setInterval(populateSessionList, 10000);
-
     initialize();
 });
 
@@ -42,6 +39,8 @@ function initialize()
     selectedSystem = 0;
     selectedDeployment = 0;
     selectedStreams = new Set();
+
+    populateSessionList();
 
     $("#netTab").click();
 
@@ -436,11 +435,22 @@ function populateSessionList()
                 {
                     var session = result.Data[i];
                     var button = createButton("session-button", "#session-list", sessionButtonClick);
+
+                    // Add session name to button
                     button.innerHTML = "<h3 class=\"list-group-item-heading\">" + session.Name
-                        + "<p class=\"list-group-item-text\">" + session.Description + "</p>"
-                        + "<p class=\"list-group-item-heading\">" + session.NetworkAlias + "</p>"
+
+                    // Add session description to button if description is set
+                    if (session.Description != null && session.Description != "")
+                    {
+                        button.innerHTML += "<p class=\"list-group-item-text\">" + session.Description + "</p>"
+                    }
+
+                    // Add rest of info to button
+                    button.innerHTML
+                        += "<p class=\"list-group-item-heading\">" + session.NetworkAlias + "</p>"
                         + "<p class=\"list-group-item-text\">" + "CHORDS Instrument: " + session.InstrumentID + "</p>"
                         + "<p class=\"list-group-item-text\">" + "Last Refresh: " + session.LastRefresh + "</p>";
+
                     $(button).attr("value", session.SessionKey);
                 }
             }
