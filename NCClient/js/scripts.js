@@ -42,8 +42,6 @@ function initialize()
 
     populateSessionList();
 
-    $("#visForm")[0].reset();
-
     $("#netTab").click();
 
     $(".hierarchy-item").remove();
