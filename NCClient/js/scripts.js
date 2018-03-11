@@ -1,5 +1,5 @@
-﻿//var serviceUrl = "http://localhost:3485/";
-var serviceUrl = "http://nrdcstudentweb.rd.unr.edu/team_16/Services/NCInterface/";
+﻿var serviceUrl = "http://localhost:3485/";
+//var serviceUrl = "http://nrdcstudentweb.rd.unr.edu/team_16/Services/NCInterface/";
 var chordsUrl = "http://ec2-13-57-134-131.us-west-1.compute.amazonaws.com/";
 
 var selectedNetwork = "NevCAN";
@@ -11,6 +11,8 @@ var selectedStreams = new Set();
 var hiClasses = "list-group-item hierarchy-item";
 
 var loader = "<img id=\"loading\" src=\"img/spinner.gif\" style=\"width:100px\" />";
+var noSessions = "<p id='no-sessions' class='text-muted'>No sessions found.</p>";
+var noConnection = "<h2 id='no-connections' class='text-danger'>Connection to NRDC-CHORDS Web Service unable to be made.</h2>"
 
 var systemsHeader;
 var deploymentsHeader;
@@ -34,6 +36,8 @@ $(document).ready(function ()
 
     getHeaders();
     hideHeaders();
+
+    attemptConnection();
 
     // Retrieve NevCAN sites
     expandHierarchy(serviceUrl + "DataCenter/" + selectedNetwork + "/sites?", expandSites);
@@ -231,6 +235,33 @@ function visualizeButtonClick()
     });
 }
 
+function attemptConnection()
+{
+    uri = serviceUrl + "NCInterface/";
+
+    console.log("Attempting to connect to NRDC-CHORDS Web service");
+
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: uri,
+
+        xhrFields: {
+            withCredentials: false
+        },
+
+        success: function (result)
+        {
+            
+        },
+
+        error: function ()
+        {
+            $("#no-connection").append(noConnection);
+        }
+    });
+}
+
 function refreshSession()
 {
     uri = serviceUrl + "Session/refreshSession?"
@@ -360,9 +391,14 @@ function populateSessionList()
         {
             $("#loading").remove();
 
-            //console.log(result);
+            console.log(result);
             if (result.Success == true)
             {
+                if (result.Data.length == 0)
+                {
+                    $("#session-list").append(noSessions);
+                }
+
                 for (var i = 0; i < result.Data.length; i++)
                 {
                     var session = result.Data[i];
