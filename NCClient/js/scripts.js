@@ -168,8 +168,6 @@ function visualizeButtonClick()
     var start = startCalendar.datepicker("getDate");
     var end = endCalendar.datepicker("getDate");
 
-    // Web service handles nulls
-    /*
     if (start != null)
     {
         var date = new Date(start);
@@ -183,7 +181,6 @@ function visualizeButtonClick()
 
         uri += "&endTime=" + date.toISOString();
     }
-    */
 
     console.log(uri);
 
