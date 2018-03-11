@@ -196,6 +196,7 @@ namespace NCInterface
         /// <returns></returns>
         public static Container PushMeasurementList(Session session, IList<Measurement> measurementList)
         {
+            // Cannot push measurements in parallel, CHORDS doesn't handle receiving out-of-order measurements well
             foreach(var meas in measurementList)
             {
                 var container = PushMeasurement(session, meas);
