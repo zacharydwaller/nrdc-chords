@@ -42,6 +42,9 @@ function initialize()
 
     populateSessionList();
 
+    // Clear all inputs
+    $(":input").val("");
+
     $("#netTab").click();
 
     $(".hierarchy-item").remove();
