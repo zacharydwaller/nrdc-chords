@@ -189,11 +189,12 @@ function attemptConnection()
 
         success: function (result)
         {
-
+            console.log("Connected succeeded");
         },
 
         error: function ()
         {
+            console.log("Connection failed");
             $("#no-connection").append(noConnection);
         }
     });
