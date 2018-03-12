@@ -66,5 +66,20 @@ namespace NCInterface.Controllers
             Session session = new Session("testKey", "nevcan", DataStreamID, testDate); 
             return ChordsBot.ConfigureVariables(session);
         }
+
+
+        /// <summary>
+        /// Get information about target data so that Grafana know which datastreams on CHORDS to plot on a specific graph
+        /// </summary>
+        /// <param name="instrumentId"></param>
+        /// <returns>ChordsBot object Container corresponding to the session input</returns>
+        [Route("GetTarget")]
+        [HttpGet]
+        public Container GetTarget([FromUri] string SessionKey)
+        {
+            return ChordsBot.GetTarget(SessionKey);
+        }
+
+
     }
 }

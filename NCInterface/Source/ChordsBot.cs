@@ -163,20 +163,7 @@ namespace NCInterface
                 Table.FindElement(By.CssSelector("input")).Clear();
                 Table.FindElement(By.CssSelector("input")).SendKeys(Stream.Data[0].Units.Name);
             }
-            /*
-            var testStream = DataCenter.GetDataStream(session.NetworkAlias, session.StreamIDs[0]);
-            var testData = testStream.Data;
-
-            var testTable = Driver.FindElement(By.XPath("/html/body/div[2]/div[10]/div/table/tbody/tr[last()]/td[3]"));
-            testTable.FindElement(By.CssSelector("input")).Clear();
-            testTable.FindElement(By.CssSelector("input")).SendKeys(testStream.Data[0].Units.Name);
-            // testTable.FindElement(By.CssSelector("input")).Click();
-            testTable.FindElement(By.CssSelector("input")).SendKeys(Keys.Down);
-            //  Driver.FindElement(By.CssSelector("div")).Click();
-            // testTable.FindElement(By.CssSelector("input")).SendKeys(Keys.Enter);
-            
-            */
-            //*[@id="unit_for_tag_47"]
+          
             return new Container();
         }
 
@@ -252,5 +239,22 @@ namespace NCInterface
             uri += string.Format("&at={0}", timestamp);
             return uri;
         }
+
+        public static Container GetTarget(string SessionKey)
+        {
+            List<int> targets = new List<int>();
+            string instrumentIDPage = @"instruments/";
+            Driver.Url = PortalUrl + instrumentIDPage;
+            Driver.Navigate();
+            int i = 1;
+            var table = Driver.FindElement(By.XPath("//*[@id='summarytable']/table/tbody/tr[" +(i+2) + "]/td[3]") );
+            //var tableBody = table.FindElements(By.TagName("tbody"));
+            var tableRows = table.FindElements(By.TagName("tr"));
+            //*[@id="summarytable"]/table/tbody/tr[39]
+            
+            //*[@id="summarytable"]/table
+            return new Container(table.GetAttribute("innerText") );
+        }
+
     }
 }

@@ -9,13 +9,17 @@ using NCInterface.Structures.Grafana;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.PhantomJS;
 
 namespace NCInterface.Controllers
 { 
     //Creates API to call GrafanaController functions via HTTP
     [RoutePrefix("Grafana")]
     public class GrafanaController : ApiController
-    { 
+    {
+
         //Sets timeout time for HttpClient object
         private static HttpClient client = new HttpClient
         {
@@ -66,7 +70,7 @@ namespace NCInterface.Controllers
         /// <returns>A string containing the HTTP response to the POST</returns>
         [Route("CreateDashboard")]
         [HttpGet]
-        public string CreateDashboard(string dashName)
+        public string CreateDashboard(string dashName, string sessionKey)
 
         {
             //URI to contact Grafana's API for interacting with Dashboards
@@ -81,9 +85,10 @@ namespace NCInterface.Controllers
             var timeRange = new Time { from = "now-1M/M", to = "now-1M/M" };
             Yaxes.Add(Yaxis);
             Yaxes.Add(Yaxis1);
-            //Initializing the Dashboard's "requirement" objects
+            //Initializing the Dashboard's "requirement" objects and target objects for Panel
             var panelReqs = new Require { type = "panel", id = "graph", name = "graph" };
             var dataReqs = new Require { type = "datasource", id = "influxdb", name = "InfluxDB", version = "1.0.0" };
+            ChordsBot.GetTarget(sessionKey);
             //Panel initialization
             var panel = new Panel { title = "test",
                 bars = false,
@@ -113,6 +118,9 @@ namespace NCInterface.Controllers
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(header, credentials);
             var response = client.PostAsync(uri, stringContent).Result;
             return response.Content.ReadAsStringAsync().Result;
+
+            
+
         }
     }
 }
