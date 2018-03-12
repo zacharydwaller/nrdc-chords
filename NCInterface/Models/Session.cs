@@ -4,7 +4,8 @@ using System.Linq;
 using System.Web;
 
 namespace NCInterface.Structures
-{
+{ 
+    //Contains DataStream as well as time information for CHORDS
     public class Session
     {
         public string SessionKey { get; private set; }
@@ -17,6 +18,15 @@ namespace NCInterface.Structures
         public DateTime EndTime { get; private set; }
         public bool Realtime { get; private set; }
 
+        /// <summary>
+        /// Initializes Session with desired data from parameters for a session that has not been measured before
+        /// </summary>
+        /// <param name="sessionKey"></param>
+        /// <param name="networkAlias"></param>
+        /// <param name="streamIDs"></param> 
+        /// <param name="startTime"></param> 
+        /// <param name="realtime"></param> 
+        /// <param name="description"></param>
         public Session(string sessionKey, string networkAlias, List<int> streamIDs, DateTime startTime, bool realtime = false, string description = "")
         {
             SessionKey = sessionKey;
@@ -27,6 +37,11 @@ namespace NCInterface.Structures
             Description = description;
         }
 
+        /// <summary>
+        /// Initializes Session with desired data from parameters using SessionInitializer 
+        /// </summary>
+        /// <param name="sessionKey"></param>
+        /// <param name="initializer"></param>
         public Session(string sessionKey, SessionInitializer initializer)
         {
             SessionKey = sessionKey;
@@ -38,6 +53,10 @@ namespace NCInterface.Structures
             Realtime = initializer.Realtime;
         }
 
+        /// <summary>
+        /// Sets instrument ID
+        /// </summary>
+        /// <param name="id"></param>
         public void SetInstrument(int id)
         {
             InstrumentID = id;

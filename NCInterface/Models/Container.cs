@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 
 namespace NCInterface.Structures
-{
+{ 
+    //Contains success and error messages for storing HTTP responses
     public class Container
     {
         public bool Success { get; set; }
