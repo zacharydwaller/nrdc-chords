@@ -115,7 +115,7 @@ namespace NCInterface.Structures.Grafana
 
     public class Panel
     {
-        public AliasColors aliasColors { get; set; }
+       // public AliasColors aliasColors { get; set; }
         public bool bars { get; set; }
         public string datasource { get; set; }
         public int fill { get; set; }
@@ -123,13 +123,13 @@ namespace NCInterface.Structures.Grafana
         public Legend legend { get; set; }
         public bool lines { get; set; }
         public int linewidth { get; set; }
-        public List<object> links { get; set; }
+       // public List<object> links { get; set; }
         public string nullPointMode { get; set; }
         public bool percentage { get; set; }
         public int pointradius { get; set; }
         public bool points { get; set; }
         public string renderer { get; set; }
-        public List<object> seriesOverrides { get; set; }
+    //    public List<object> seriesOverrides { get; set; }
         public int span { get; set; }
         public bool stack { get; set; }
         public bool steppedLine { get; set; }
