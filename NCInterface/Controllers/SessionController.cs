@@ -16,9 +16,17 @@ namespace NCInterface.Controllers
     {
         [Route("NewSession")]
         [HttpGet]
-        public Container<string> InitializeSession([FromUri] string netAlias, [FromUri] int[] streamIDs, [FromUri] string startTime = null, [FromUri] string endTime = null, [FromUri] string description = "")
+        public Container<string> InitializeSession
+            (
+                [FromUri] string netAlias,
+                [FromUri] int[] streamIDs,
+                [FromUri] string startTime = null,
+                [FromUri] string endTime = null,
+                [FromUri] string name = "",
+                [FromUri] string description = ""
+            )
         {
-            var args = new SessionInitializer(netAlias, streamIDs, startTime, endTime, description);
+            var args = new SessionInitializer(netAlias, streamIDs, startTime, endTime, name, description);
            
             return SessionManager.InitializeSession(args);
         }

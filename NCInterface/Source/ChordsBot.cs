@@ -37,7 +37,7 @@ namespace NCInterface
         {
             PortalUrl = portalUrl;
 
-            // Driver = new PhantomJSDriver();
+            //Driver = new PhantomJSDriver();
             Driver = new ChromeDriver();
 
             Client = new HttpClient()
@@ -91,7 +91,7 @@ namespace NCInterface
 
             Driver.FindElementById("instrument_name").SendKeys(name);
             Driver.FindElementById("instrument_sample_rate_seconds").Clear();
-            Driver.FindElementById("instrument_sample_rate_seconds").SendKeys("60");
+            Driver.FindElementById("instrument_sample_rate_seconds").SendKeys("1");
             Driver.FindElementByName("commit").Click();
 
             int id;
@@ -196,6 +196,7 @@ namespace NCInterface
         /// <returns></returns>
         public static Container PushMeasurementList(Session session, IList<Measurement> measurementList)
         {
+            // Cannot push measurements in parallel, CHORDS doesn't handle receiving out-of-order measurements well
             foreach(var meas in measurementList)
             {
                 var container = PushMeasurement(session, meas);
