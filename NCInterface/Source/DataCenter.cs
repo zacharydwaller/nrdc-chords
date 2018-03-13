@@ -8,7 +8,8 @@ using NCInterface.Structures;
 using NCInterface.Structures.Infrastructure;
 
 namespace NCInterface
-{
+{  
+    //Manages URL dictionaries and provides functions for retrieving NRDC data
     public static class DataCenter
     {
         /// <summary>
@@ -23,6 +24,7 @@ namespace NCInterface
         /// </summary>
         public static Dictionary<string, string> DataUrlDict { get; private set; }
 
+        //Sets HttpClient Timeout time
         private static HttpClient http = new HttpClient
         {
             Timeout = TimeSpan.FromMilliseconds(Config.DefaultTimeout)
@@ -41,14 +43,12 @@ namespace NCInterface
         /// <summary>
         ///     Gets all of the sensor networks in NRDC. Populates the Data and Infrastructure Url dictionaries.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A Network Container with either the list of all networks in a list or a failure message</returns>
         public static Container<Network> GetNetworkList()
         {
             string uri = Config.NetworkDiscoveryUrl;
             string message = GetHttpContent(uri);
-
             var networkList = JsonConvert.DeserializeObject<Container<Network>>(message, Config.DefaultDeserializationSettings);
-
             if (networkList.Success)
             {
                 // Populate dictionaries with network Urls
@@ -61,7 +61,6 @@ namespace NCInterface
                     DataUrlDict[network.Alias] = network.DataUrl;
                     InfrastructureUrlDict[network.Alias] = network.InfrastructureUrl;
                 }
-
                 return networkList;
             }
             else
@@ -74,15 +73,13 @@ namespace NCInterface
         /// Gets the metadata related to a sensor network
         /// </summary>
         /// <param name="networkAlias"></param>
-        /// <returns></returns>
+        /// <returns>A network container with a success or failure message string</returns>
         public static Container<Network> GetNetwork(string networkAlias)
         {
             var networkList = GetNetworkList();
-
             if(networkList.Success)
             {
                 var network = networkList.Data.FirstOrDefault(n => n.Alias.Equals(networkAlias, StringComparison.InvariantCultureIgnoreCase));
-                
                 if(network != null)
                 {
                     return new Container<Network>(network);
@@ -99,22 +96,18 @@ namespace NCInterface
         ///     Returns a list of all the sites in a given sensor network.
         /// </summary>
         /// <param name="networkAlias"></param>
-        /// <returns></returns>
+        /// <returns>A site container with a list of all sites or a failure message</returns>
         public static Container<Site> GetSiteList(string networkAlias)
         {
             var urlContainer = GetInfrastructureUrl(networkAlias);
-
             // Couldn't find infrastructure Url
             if (!urlContainer.Success)
             {
                 return new Container<Site>(urlContainer.Message);
             }
-
             string uri = urlContainer.Data[0] + "infrastructure/sites";
             string message = GetHttpContent(uri);
-
             var sitelist = JsonConvert.DeserializeObject<Container<Site>>(message, Config.DefaultDeserializationSettings);
-
             if (sitelist.Success)
             {
                 return sitelist;
@@ -130,7 +123,7 @@ namespace NCInterface
         /// </summary>
         /// <param name="sensorNetwork"></param>
         /// <param name="siteID"></param>
-        /// <returns></returns>
+        /// <returns>A site Container with either the desired site or a failure message</returns>
         public static Container<Site> GetSite(string sensorNetwork, int siteID)
         {
             var siteList = GetSiteList(sensorNetwork);
@@ -148,7 +141,6 @@ namespace NCInterface
                     return new Container<Site>("Site not found. ID: " + siteID.ToString());
                 }
             }
-
             return new Container<Site>(siteList.Message);
         }
 
@@ -157,22 +149,18 @@ namespace NCInterface
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <param name="siteID"></param>
-        /// <returns></returns>
+        /// <returns>An NrdcSystem Container of either all of the systems at the site or a failure message</returns>
         public static Container<NrdcSystem> GetSystemList(string networkAlias, int siteID)
         {
             var urlContainer = GetInfrastructureUrl(networkAlias);
-
             // Couldn't find infrastructure Url
             if (!urlContainer.Success)
             {
                 return new Container<NrdcSystem>(urlContainer.Message);
             }
-
             string uri = urlContainer.Data[0] + "infrastructure/site/" + siteID.ToString() + "/systems";
             string message = GetHttpContent(uri);
-
             var systemList = JsonConvert.DeserializeObject<Container<NrdcSystem>>(message, Config.DefaultDeserializationSettings);
-
             if (systemList.Data != null && systemList.Data.Count != 0)
             {
                 return systemList;
@@ -189,15 +177,13 @@ namespace NCInterface
         /// <param name="sensorNetwork"></param>
         /// <param name="siteID"></param>
         /// <param name="systemID"></param>
-        /// <returns></returns>
+        /// <returns> An NrdcSystem Container with either the desired system or a failure message</returns>
         public static Container<NrdcSystem> GetSystem(string sensorNetwork, int siteID, int systemID)
         {
             var systemList = GetSystemList(sensorNetwork, siteID);
-
             if (systemList.Success)
             {
                 var system = systemList.Data.FirstOrDefault(s => s.ID == systemID);
-
                 if (system != null)
                 {
                     return new Container<NrdcSystem>(system);
@@ -207,7 +193,6 @@ namespace NCInterface
                     return new Container<NrdcSystem>("System not found. Site " + siteID + ", System ID: " + systemID.ToString());
                 }
             }
-
             return new Container<NrdcSystem> (systemList.Message);
         }
 
@@ -216,22 +201,18 @@ namespace NCInterface
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <param name="systemID"></param>
-        /// <returns></returns>
+        /// <returns>A Deployment Container with a list of all deployments or a failure message</returns>
         public static Container<Deployment> GetDeploymentList(string networkAlias, int systemID)
         {
             var urlContainer = GetInfrastructureUrl(networkAlias);
-
             // Couldn't find infrastructure Url
             if (!urlContainer.Success)
             {
                 return new Container<Deployment>(urlContainer.Message);
             }
-
             var uri = urlContainer.Data[0] + "infrastructure/system/" + systemID.ToString() + "/deployments";
             var message = GetHttpContent(uri);
-
             var deploymentList = JsonConvert.DeserializeObject<Container<Deployment>>(message, Config.DefaultDeserializationSettings);
-
             if (deploymentList.Data != null && deploymentList.Data.Count != 0)
             {
                 return deploymentList;
@@ -248,7 +229,7 @@ namespace NCInterface
         /// <param name="networkAlias"></param>
         /// <param name="systemID"></param>
         /// <param name="deploymentID"></param>
-        /// <returns></returns>
+        /// <returns>A Deployment Container with deployment data for the specified deploymentID or a failure message</returns>
         public static Container<Deployment> GetDeployment(string networkAlias, int systemID, int deploymentID)
         {
             var deploymentList = GetDeploymentList(networkAlias, systemID);
@@ -274,23 +255,19 @@ namespace NCInterface
         /// </summary>
         /// <param name="networkAlias"></param>
         /// <param name="deploymentID"></param>
-        /// <returns></returns>
+        /// <returns>Datastream Container with list of all streams or a failure message</returns>
         public static Container<Structures.Data.DataStream> GetDataStreams(string networkAlias, int deploymentID)
         {
             var urlContainer = GetDataUrl(networkAlias);
-
             // Couldn't find data services Url
             if (!urlContainer.Success)
             {
                 return new Container<Structures.Data.DataStream>(urlContainer.Message);
             }
-
             // Get data streams
             string uri = urlContainer.Data[0] + "data/streams/deployment/" + deploymentID.ToString();
             string message = GetHttpContent(uri);
-
             var streamList = JsonConvert.DeserializeObject<Container<Structures.Data.DataStream>>(message, Config.DefaultDeserializationSettings);
-
             // Check stream list
             if (streamList.Success)
             {
@@ -320,50 +297,41 @@ namespace NCInterface
         /// <param name="deploymentID">
         ///     Optional. Leave empty to search in all deployments in network or specify to get a quicker search.
         /// </param>
-        /// <returns></returns>
+        /// <returns>Datastream Container with desired stream or a failure message</returns>
         public static Container<Structures.Data.DataStream> GetDataStream(string networkAlias, int streamID, int deploymentID = -1)
         {
             var urlContainer = GetDataUrl(networkAlias);
-
             // Couldn't find data services Url
             if (!urlContainer.Success)
             {
                 return new Container<Structures.Data.DataStream>(urlContainer.Message);
             }
-
             string[] uri = new string[2];
             string message;
-
             uri[0] = urlContainer.Data[0] + "data/streams/deployment/" + deploymentID.ToString();
             uri[1] = urlContainer.Data[0] + "data/streams/all";
-
             // Check via deployment ID first, then via all streams
             for (int i = 0; i < 2; i++)
             {
                 // Deployment ID not provided
                 if (i == 0 && deploymentID <= 0) continue;
-
                 // Check data stream list
                 message = GetHttpContent(uri[i]);
                 var streamList = JsonConvert.DeserializeObject<Container<Structures.Data.DataStream>>(message, Config.DefaultDeserializationSettings);
                 var stream = streamList.Data.FirstOrDefault(s => s.ID == streamID);
-
                 // Stream found
                 if (stream != null)
                 {
                     return new Container<Structures.Data.DataStream>(stream);
                 }
             }
-
             // Stream not found
             string failMessage = "Data Stream not found. Stream ID: " + streamID;
-
             // Add deployment ID to fail message if it was provided
             if (deploymentID > 0)
             {
                 failMessage = failMessage + " Deployment ID: " + deploymentID;
             }
-
             return new Container<Structures.Data.DataStream>(failMessage);
         }
 
@@ -373,36 +341,28 @@ namespace NCInterface
         /// <param name="stream">Data stream to retrieve measurements from. Get this from the GetDataStream function.</param>
         /// <param name="startTime"></param>
         /// <param name="endTime"></param>
-        /// <returns>A list of measurements</returns>
+        /// <returns>A Measurement Container with the list of measurements or a failure message</returns>
         public static Container<Structures.Data.Measurement> GetMeasurements(string networkAlias, Structures.Data.DataStream stream, DateTime startTime, DateTime endTime)
         {
             // Create stream request HTTP message
             string startTimeString = startTime.ToUniversalTime().ToString("s");
             string endTimeString = endTime.ToUniversalTime().ToString("s");
             var dataSpecification = new Structures.Data.DataSpecification(stream, startTimeString, endTimeString);
-
             var jsonContent = JsonConvert.SerializeObject(dataSpecification, Config.DefaultSerializationSettings);
             var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
             // Create HTTP POST
             var urlContainer = GetDataUrl(networkAlias);
-
             if (!urlContainer.Success)
             {
                 return new Container<Structures.Data.Measurement>(urlContainer.Message);
             }
-
             string uri = urlContainer.Data[0] + "data/download";
-
             var response = http.PostAsync(uri, stringContent).Result;
-
             // Check HTTP response
             if (response.IsSuccessStatusCode)
             {
                 string content = response.Content.ReadAsStringAsync().Result;
-
                 var dataDownloadResponse = JsonConvert.DeserializeObject<Structures.Data.DataDownloadResponse>(content, Config.DefaultDeserializationSettings);
-
                 // Check data download response
                 if (dataDownloadResponse.Success)
                 {
@@ -410,7 +370,6 @@ namespace NCInterface
                     if (dataDownloadResponse.Data.TotalNumberOfMeasurements > 0)
                     {
                         var measurementList = dataDownloadResponse.Data.Measurements;
-
                         return new Container<Structures.Data.Measurement>(measurementList);
                     }
                     else
@@ -436,7 +395,7 @@ namespace NCInterface
         ///     Http.GetAsync wrapper. Makes a GET call to the uri and returns the response content as a string.
         /// </summary>
         /// <param name="uri"></param>
-        /// <returns></returns>
+        /// <returns>String HTTP response</returns>
         public static string GetHttpContent(string uri)
         {
             var response = http.GetAsync(uri).Result;
@@ -447,17 +406,15 @@ namespace NCInterface
         ///     Returns the Infrastructure Url for the specified sensor network. Returns empty string if no Url was found.
         /// </summary>
         /// <param name="networkAlias"></param>
-        /// <returns></returns>
+        /// <returns>String container with the URL or an error message</returns>
         private static Container<string> GetInfrastructureUrl(string networkAlias)
         {
             string infrastructureUrl;
-
             // Check for url in dictionary
             if (!InfrastructureUrlDict.TryGetValue(networkAlias, out infrastructureUrl))
             {
                 // Couldn't find in dictionary, call GetNetworks to populate dictionaries and try again
                 var networkList = GetNetworkList();
-
                 if (networkList.Success)
                 {
                     // Try the dictionary again
@@ -466,11 +423,9 @@ namespace NCInterface
                         return new Container<string>(infrastructureUrl, true);
                     }
                 }
-
                 // Still couldn't find url, return empty string
                 return new Container<string>("Couldn't find Infrastructure Services Url for Sensor Network: " + networkAlias);
             }
-
             // Url was in dictionary
             return new Container<string>(infrastructureUrl, true);
         }
@@ -479,17 +434,15 @@ namespace NCInterface
         ///     Returns the Data Url for the specified sensor network. Returns empty string if no Url was found.
         /// </summary>
         /// <param name="networkAlias"></param>
-        /// <returns></returns>
+        /// <returns>A string container with the data dictionary URL or a failure message</returns>
         private static Container<string> GetDataUrl(string networkAlias)
         {
             string dataUrl;
-
             // Check for url in dictionary
             if (!DataUrlDict.TryGetValue(networkAlias, out dataUrl))
             {
                 // Couldn't find in dictionary, call GetNetworks to populate dictionaries and try again
                 var networkList = GetNetworkList();
-
                 if (networkList.Success)
                 {
                     // Try the dictionary again
@@ -498,11 +451,9 @@ namespace NCInterface
                         return new Container<string>(dataUrl, true);
                     }
                 }
-
                 // Still couldn't find url, return empty string
                 return new Container<string>("Couldn't find Data Services Url for Sensor Network: " + networkAlias);
             }
-
             // Url was in dictionary
             return new Container<string>(dataUrl, true);
         }
