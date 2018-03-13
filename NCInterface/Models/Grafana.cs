@@ -3,20 +3,23 @@ using Newtonsoft.Json;
 
 namespace NCInterface.Structures.Grafana
 
-{
+{ 
+    //Contains authorization credentials to interact with Grafana
     public  class GrafanaAPI
     {
      public static string APIKey = "eyJrIjoicmtVcVA4MjN6dTVKWFNRWUliMUJmVTdVUlJKdWpOclEiLCJuIjoidGVzdDEiLCJpZCI6MX0";
         //eyJrIjoicmtVcVA4MjN6dTVKWFNRWUliMUJmVTdVUlJKdWpOclEiLCJuIjoidGVzdDEiLCJpZCI6MX0=
      public static string Header = "Bearer";
-    }
+    } 
+
+    //Contains user data for Grafana
     public class User
     {
         public string name { get; set; }
         public string role { get; set; }
     }
 
-
+    //Organizes data in a way that can be sent to Grafana
     public class Dashboard
     {
         [JsonProperty("title")]
@@ -32,6 +35,7 @@ namespace NCInterface.Structures.Grafana
         public List<object> thresholds { get; set; }
     }
 
+    //Class to hold input data for Grafana
     public class Input
     {
         public string name { get; set; }
@@ -41,7 +45,8 @@ namespace NCInterface.Structures.Grafana
         public string pluginId { get; set; }
         public string pluginName { get; set; }
     }
-
+      
+    //Class designating which fields are required for Grafana
     public class Require
     {
         public string type { get; set; }
@@ -50,6 +55,7 @@ namespace NCInterface.Structures.Grafana
         public string version { get; set; }
     }
 
+    //Stores Annotation data from Grafana Dashboard
     public class Annotations
     {
         public List<object> list { get; set; }
@@ -59,6 +65,7 @@ namespace NCInterface.Structures.Grafana
     {
     }
 
+    //Stores Legend data from Grafana Dashboard
     public class Legend
     {
         public bool avg { get; set; }
@@ -69,13 +76,15 @@ namespace NCInterface.Structures.Grafana
         public bool total { get; set; }
         public bool values { get; set; }
     }
-
+     
+    //Stores GroupBy data from Grafana Dashboard
     public class GroupBy
     {
         public List<string> @params { get; set; }
         public string type { get; set; }
     }
 
+    //Stores Target data from Grafana Dashboard
     public class Target
     {
         public string dsType { get; set; }
@@ -88,6 +97,7 @@ namespace NCInterface.Structures.Grafana
         public List<object> tags { get; set; }
     }
 
+    //Stores Tooltip data from Grafana Dashboard
     public class Tooltip
     {
         public bool shared { get; set; }
@@ -95,6 +105,7 @@ namespace NCInterface.Structures.Grafana
         public string value_type { get; set; }
     }
 
+    //Stores Xaxis data from Grafana Dashboard
     public class Xaxis
     {
         public string mode { get; set; }
@@ -103,6 +114,7 @@ namespace NCInterface.Structures.Grafana
         public List<object> values { get; set; }
     }
 
+    //Stores Yaxis data from Grafana Dashboard
     public class Yax
     {
         public string format { get; set; }
@@ -113,9 +125,10 @@ namespace NCInterface.Structures.Grafana
         public bool show = true;
     }
 
+    //Stores Panel data from Grafana Dashboard
     public class Panel
     {
-       // public AliasColors aliasColors { get; set; }
+      //  public AliasColors aliasColors { get; set; }
         public bool bars { get; set; }
         public string datasource { get; set; }
         public int fill { get; set; }
@@ -129,7 +142,7 @@ namespace NCInterface.Structures.Grafana
         public int pointradius { get; set; }
         public bool points { get; set; }
         public string renderer { get; set; }
-    //    public List<object> seriesOverrides { get; set; }
+      //  public List<object> seriesOverrides { get; set; }
         public int span { get; set; }
         public bool stack { get; set; }
         public bool steppedLine { get; set; }
@@ -145,6 +158,7 @@ namespace NCInterface.Structures.Grafana
        // public Yax yaxis {get; set;}
     }
 
+    //Stores Row data from Grafana Dashboard
     public class Row
     {
         public bool collapse { get; set; }
@@ -158,26 +172,29 @@ namespace NCInterface.Structures.Grafana
         public string titleSize { get; set; }
     }
 
+    //Stores Templating data from Grafana Dashboard
     public class Templating
     {
         public List<object> list { get; set; }
     }
 
+    //Stores Time data from Grafana Dashboard
     public class Time
     {
         public string from { get; set; }
         public string to { get; set; }
     }
 
+    //Stores Timepicker data from Grafana Dashboard
     public class Timepicker
     {
         public List<string> refresh_intervals { get; set; }
         public List<string> time_options { get; set; }
     }
 
+    //Stores Response data from Grafana Dashboard
     public class Response
     {
-
         [JsonProperty("dashboard")]
         public Dashboard dashboard { get; set; }
         public List<Input> __inputs { get; set; }
@@ -188,7 +205,7 @@ namespace NCInterface.Structures.Grafana
         public int graphTooltip { get; set; }
         public bool hideControls { get; set; }
         public object id { get; set; }
-        public List<object> links { get; set; }
+      //  public List<object> links { get; set; }
         public List<Row> rows { get; set; }
         public int schemaVersion { get; set; }
         public string style { get; set; }
@@ -200,5 +217,4 @@ namespace NCInterface.Structures.Grafana
         public string title { get; set; }
         public int version { get; set; }
     }
-
 }

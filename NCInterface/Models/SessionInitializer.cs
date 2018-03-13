@@ -14,12 +14,19 @@ namespace NCInterface.Structures
         public string StartTime { get; set; }
         public string EndTime { get; set; }
         public bool Realtime { get; set; } = false;
-
         public SessionInitializer()
         {
 
         }
 
+        /// <summary>
+        /// Stores desired data for session validation
+        /// </summary>
+        /// <param name="netAlias"></param>
+        /// <param name="streamIDs"></param>
+        /// <param name="startTime"></param>  
+        /// <param name=endTime"></param>  
+        /// <param name="description"></param> 
         public SessionInitializer(string netAlias, int[] streamIDs, string startTime = null, string endTime = null, string name = "", string description = "")
         {
             NetAlias = netAlias;
@@ -28,14 +35,13 @@ namespace NCInterface.Structures
             EndTime = endTime;
             Name = name;
             Description = description;
-
             Validate();
         }
 
         /// <summary>
         /// Returns true if Session Initializer args are valid.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>String container with a success or failure message</returns>
         public Container Validate()
         {
             // Check nulls
@@ -47,10 +53,8 @@ namespace NCInterface.Structures
             {
                 return new Container("StreamID list is null.");
             }
-
             // Process End and Start times
             DateTime start, end;
-
             // Check if EndTime is provided
             if (EndTime != null)
             {
@@ -68,7 +72,6 @@ namespace NCInterface.Structures
                     // Couldn't parse
                     return new Container("EndTime could not be parsed.");
                  }
-
             }
             else
             {
@@ -76,7 +79,6 @@ namespace NCInterface.Structures
                 end = DateTime.UtcNow;
                 Realtime = true;
             }
-
             // Check if StartTime is provided
             if (StartTime != null)
             {
@@ -85,7 +87,6 @@ namespace NCInterface.Structures
                 {
                     // Set start's time to 0:00:00 hrs
                     start = start.Date;
-
                     // If StartTime > EndTime reject the request
                     if(start > end)
                     {
@@ -103,17 +104,14 @@ namespace NCInterface.Structures
                 // If Start is empty, set it to the end - 24 hours
                 start = end.AddHours(-24);
             }
-
             // Finally set the date time strings
             StartTime = start.ToString("s");
             EndTime = end.ToString("s");
-
             // Check IDs
             if (StreamIDs.Length <= 0)
             {
                 return new Container("Must select at least one data stream.");
             }
-
             foreach(int id in StreamIDs)
             {
                 if (id <= 0)
@@ -121,7 +119,6 @@ namespace NCInterface.Structures
                     return new Container(String.Format("Stream ID {0} is invalid", id));
                 }
             }
-
             return new Container();
         }
     }
