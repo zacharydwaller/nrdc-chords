@@ -136,7 +136,7 @@ namespace NCInterface.Structures.Grafana
         public Legend legend { get; set; }
         public bool lines { get; set; }
         public int linewidth { get; set; }
-        public List<object> links { get; set; }
+       // public List<object> links { get; set; }
         public string nullPointMode { get; set; }
         public bool percentage { get; set; }
         public int pointradius { get; set; }

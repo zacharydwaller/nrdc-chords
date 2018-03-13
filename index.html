@@ -1,0 +1,334 @@
+﻿<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="Zachary Waller, Pat J, Paul Marquis, Tom Trowbridge" />
+
+    <title>NRDC-CHORDS Webpage</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+    <!-- Our Stylesheet -->
+    <link rel="stylesheet" href="NCClient/css/style.css" />
+
+    <style>
+        p {
+            color: rgb(128, 128, 128);
+            font-size: large;
+        }
+
+        small {
+            color: rgb(128, 128, 128);
+        }
+
+        .panel {
+            border-color: rgba(0, 0, 0, 0.25);
+        }
+    </style>
+
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Bootstrap Core JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Our scripts-->
+
+
+
+</head>
+
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">NRDC-CHORDS</a>
+            </div>
+
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="#home">Home</a>
+                </li>
+                <li>
+                    <a href="#about">About</a>
+                </li>
+                <li>
+                    <a href="#team">The Team</a>
+                </li>
+                <li>
+                    <a href="#resources">Resources</a>
+                </li>
+            </ul>
+
+        </div>
+
+    </nav>
+
+    <div class="container">
+
+        <div class="panel text-center">
+
+            <!-- Jumbotron -->
+            <div id="home" class="jumbotron text-center">
+
+                <p>
+                    <br />
+                    Department of Computer Science and Engineering
+                    <br />
+                    University of Nevada, Reno
+                </p>
+                <h1>A Generalized Software Interface for CHORDS</h1>
+                <p>
+                    Team 16
+                    <br />
+                    CS 426 - Senior Projects in Computer Science
+                    <br />
+                    Spring 2018
+                </p>
+                <p>
+                    Instructors:
+                    <br />
+                    Dr. Sergiu Dascalu, Devrin Lee
+                </p>
+                <p>
+                    External Advisors:
+                    <br />
+                    Vinh Le, Connor Scully-Allison, Hannah Munoz
+                </p>
+                <small>
+                    Both instructors are affiliated with the University of Nevada, Reno. Dr. Dascalu is affiliated with the Nevada Research Data Center (NRDC)
+                    <br />
+                    All external advisors are affiliated with both the University of Nevada, Reno and the NRDC
+                </small>
+
+            </div>
+
+            <!-- About the Project -->
+            <div id="about">
+
+                <h1>About the NRDC</h1>
+                <div class="text-justify">
+                    <p class="text-center">
+                        Mission Statement from the
+                        <a href="http://www.sensor.nevada.edu/NRDC/">NRDC Homepage:</a>
+                    </p>
+                    <p>
+                        The Nevada Research Data Center serves in a critical role of science
+                        cyberinfrastructure for sensor-based research data management. We
+                        facilitate the acquisition, transport, storage, query, and dissemination
+                        of observational data created by automated digital sensor systems. The
+                        NRDC participates in cutting-edge software and systems development to
+                        enhance next-generation science that leverages the Internet of Things (IoT).
+                        Our goal is to transform the scale, quality, impact, and bottom-line cost
+                        of research projects in Nevada that seek to deploy automated sensor systems
+                        as part of their scientific workflow.
+                    </p>
+                </div>
+
+                <h1>About This Project</h1>
+                <div class="text-justify">
+                    <p>
+                        The goal of this project is to create an open-source near-realtime
+                        interface between the Nevada Research Data Center and CHORDS,
+                        a cloud-hosted data visualization package. While this project is
+                        primarily being built for the NRDC, there will be an emphasis on
+                        tooling the project to be as generalized and generic as possible.
+                        The goal end product will be a plug-and-play solution that will
+                        allow any small or medium sized science team to take advantage of
+                        the benefits of data visualization at no cost and limited technical
+                        knowledge. An open-source approach will allow for wide adaptability
+                        and customization of the package and be offered as a free alternative
+                        to existing proprietary data visualization solutions.
+                        <br />
+                        <br />
+                        Data visualization is an important tool for scientists working
+                        with large and constantly updating data sets. However, scientists
+                        are usually presented with two options for robust visualization:
+                        expensive proprietary solutions, or programming language libraries
+                        that require developer-level knowledge to use. Our project will
+                        benefit scientists by giving them the full benefits of data
+                        visualization as a free and easy-to-use online client. This will save
+                        science teams the cost of integrating proprietary solutions and
+                        also enable teams with little-to-no technical knowledge to use our
+                        product. In addition, our project will also be open source, which
+                        will allow teams with the technical skill to fork the source code
+                        and build their own custom solution using our platform.
+                    </p>
+
+                    <!-- Technologies Used -->
+                    <div class="container-fluid text-center">
+
+                        <h2>Technologies Used</h2>
+
+                        <div class="row">
+
+                            <div class="col-sm-3"></div>
+
+                            <div class="col-sm-2">
+                                <a href="https://www.microsoft.com/net/download/dotnet-framework-runtime" target="_blank">
+                                    <img src="https://docs.microsoft.com/en-us/dotnet/images/hub/netframework.svg" style="width:100px" />
+                                </a>
+                                <p>.NET Framework</p>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <a href="https://msdn.microsoft.com/en-us/library/dn448365(v=vs.118).aspx" target="_blank">
+                                    <img src="https://www-asp.azureedge.net/v-2017-12-07-003/images/ui/asplogo-square.png" style="width:100px" />
+                                </a>
+                                <p>ASP.NET Web API</p>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <a href="https://www.newtonsoft.com/json" target="_blank">
+                                    <img src="https://avatars1.githubusercontent.com/u/14144343?s=400&v=4" style="width:100px" />
+                                </a>
+                                <p>Json.NET</p>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-4"></div>
+
+                            <div class="col-sm-2">
+                                <a href="http://www.seleniumhq.org/" target="_blank">
+                                    <img src="http://www.seleniumhq.org/images/big-logo.png" style="width:100px" />
+                                </a>
+                                <p>Selenium</p>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <a href="http://phantomjs.org/" target="_blank">
+                                    <img src="https://pbs.twimg.com/profile_images/1884362265/phantomjs_400x400.png" style="width:100px" />
+                                </a>
+                                <p>PhantomJS</p>
+                            </div>
+
+                            <div class="col-sm-4"></div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-4"></div>
+
+                            <div class="col-sm-2">
+                                <a href="https://getbootstrap.com/" target="_blank">
+                                    <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" style="width:100px" />
+                                </a>
+                                <p>Bootstrap</p>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <a href="https://jquery.com/" target="_blank">
+                                    <img src="https://avatars0.githubusercontent.com/u/70142?s=200&v=4" style="width:100px" />
+                                </a>
+                                <p>jQuery</p>
+                            </div>
+
+                            <div class="col-sm-4"></div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr />
+
+            <!-- About the Team -->
+            <div id="team">
+
+                <h1>About the Team</h1>
+                <p class="text-justify">
+                    <b>Zachary Waller</b>, born and raised in Reno, is experienced with C++ as well as C# and the .NET
+                    framework. He has a strong interest in web services and Human-Computer Interaction.
+                    <br />
+                    <br />
+                    <b>Pattaphol Jirasessakul</b> is experienced with Python, C++, and R with interests in big data,
+                    statistics, data mining, and web design. He hopes to get some experience in C# with this project
+                    along with some experience in data visualization.
+                    <br />
+                    <br />
+                    <b>Paul Marquis</b> is a Las Vegas native with experience in C++, python and an interest in
+                    big data and data streaming technologies.
+                    <br />
+                    <br />
+                    <b>Tom Trowbridge</b>, a Las Vegas native,  is experienced with C++ and Java, and is interested in
+                    cloud hosted services relating to big data.
+                </p>
+
+            </div>
+
+            <hr />
+
+            <!-- Project Related Resources -->
+            <div id="resources">
+
+                <h1>Project Resources</h1>
+
+                <h3>Problem Domain Book</h3>
+                <a href="http://shop.oreilly.com/product/9780596519216.do" target="_blank">
+                    <img src="https://covers.oreillystatic.com/images/9780596519216/lrg.jpg" style="width:150px" />
+                </a>
+                <p>RESTful .NET by Jon Flanders</p>
+
+                <h3>Related/Useful Websites</h3>
+                <p>
+                    <a href="http://www.sensor.nevada.edu/NRDC/">Nevada Research Data Center</a>
+                </p>
+                <p>
+                    <a href="https://msdn.microsoft.com/en-us/library/mt174857(v=vs.118).aspx">Microsoft Developer Network Web API 2 Documentation</a>
+                </p>
+                <p>
+                    <a href="https://madhatted.com/2013/3/19/suggested-rest-api-practices">REST API Best Practices by Matthew Beale</a>
+                </p>
+                <p>
+                    <a href="https://github.com/NCAR/chords">CHORDS Source and Documentation</a>
+                </p>
+
+                <h3>Techical Reports and Conference Papers</h3>
+                <p>
+                    <a href="http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6562707">Big-Data Visualization</a>
+                    <br />
+                    by Daniel Keim, Huamin Qu, and Kwan-Liu Ma
+                </p>
+
+                <h3>News and Other Information</h3>
+                <p>
+                    <a href="https://singularityhub.com/2017/01/23/big-data-is-helping-us-see-environmental-problems-in-a-whole-new-light/">Big Data is Helping Us See Environmental Problems in a Whole New Light</a>
+                    <br />
+                    by Peter Rejcek
+                </p>
+                <p>
+                    <a href="http://www.sustainablebrands.com/news_and_views/ict_big_data/saurabh_tyagi/what_does_big_data_mean_sustainability">What Does Big Data Mean For Sustatinability?</a>
+                    <br />
+                    by Saurabh Tyagi
+                </p>
+
+            </div>
+
+            <footer class="panel-footer">
+
+                <p>
+                    <div style="">Supported by NSF grant # IIA-1301726</div>
+                </p>
+
+            </footer>
+
+        </div>
+
+
+    </div>
+
+
+
+</body>
+</html>
