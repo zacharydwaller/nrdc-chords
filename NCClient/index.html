@@ -7,7 +7,7 @@
     <meta name="description" content="" />
     <meta name="author" content="Zachary Waller, Pat J, Paul Marquis, Tom Trowbridge" />
 
-    <title>NRDC-CHORDS Web Client</title>
+    <title>NRDC-CHORDS</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
@@ -39,12 +39,12 @@
         <div class="container">
 
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">NRDC-CHORDS Client</a>
+                <a class="navbar-brand" href="#">NRDC-CHORDS</a>
             </div>
 
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
-                <li><a data-toggle="modal" data-target="#aboutModal">About</a></li>
+                <li><a href="about.html">About</a></li>
             </ul>
 
         </div>
@@ -57,13 +57,17 @@
 
             <!-- Tabs -->
             <ul class="panel-header nav nav-tabs text-center lead">
-                <li class="col-lg-4 active"><a data-toggle="tab" href="#NetContent">Select a Sensor Network</a></li>
+                <li class="col-lg-4 active"><a id="netTab" data-toggle="tab" href="#NetContent">Select a Sensor Network</a></li>
                 <li class="col-lg-4"><a id="streamTab" data-toggle="tab" href="#StreamContent">Select Data Streams</a></li>
                 <li class="col-lg-4"><a data-toggle="tab" href="#VisContent">Visualize</a></li>
             </ul>
 
             <!-- Tab Contents -->
             <div class="panel-body tab-content">
+
+                <div id="no-connection">
+                    <!-- "No Connection to NRDC-CHORDS Web Service" notification goes here -->
+                </div>
 
                 <!-- Select Network Tab -->
                 <div id="NetContent" class="tab-pane fade in active">
@@ -100,11 +104,15 @@
 
                     </div>
 
-                    <!-- Active Sessions -->
-                    <div id="session-list" class="list-group">
+                    <hr />
 
+                    <!-- Active Sessions -->
+                    <h3>Active Sessions</h3>
+                    <p>Click on a session to resume</p>
+                    <div id="session-list" class="well list-group">
+                        
                     </div>
-                    
+
                 </div>
 
                 <!-- Select Stream Tab -->
@@ -161,6 +169,16 @@
                 <!-- Visualize Tab -->
                 <div id="VisContent" class="tab-pane fade">
 
+                    <!-- Visualize Results -->
+                    <div id="VisResult">
+                        <h2 id="sessionKey"></h2>
+                        <h2 id="sessionError" class="text-danger"></h2>
+                        <h3 id="sessionInstructions">
+                            Feel free to rename the CHORDS instrument and variable/stream names. Do not edit the variable shortname or else
+                            the streaming service will not work.
+                        </h3>
+                    </div>
+
                     <!-- Visualize Options -->
                     <div id="VisOptions">
                         <div class="container">
@@ -170,38 +188,31 @@
                                 <div class="col-lg-6">
                                     <h2>Begin New Visualization</h2>
                                     <hr class="half-rule" />
+                                    <h3>Session Name: <input type="text" id="sessionName" /></h3>
+                                    <h3>Description: <input type="text" id="sessionDescription" /></h3>
                                     <h3>Start Date: <input type="text" id="startdate" /></h3>
                                     <h3>End Date: <input type="text" id="enddate" /></h3>
                                     <button class="btn btn-lg btn-default" onclick="visualizeButtonClick()">Start Session</button>
                                 </div>
 
-                                <!--
-                                <div class="col-lg-6">
-                                    <h2>Resume Visualization</h2>
-                                    <hr class="half-rule" />
-                                    <h3>Refresh Delay (sec): <input type="text" id="refreshdelay2" value="60" /></h3>
-                                    <h3>Session Key: <input type="text" id="keyInput" value="" /></h3>
-                                    <button class="btn btn-lg btn-default" onclick="resumeButtonClick()">Resume Session</button>
-                                </div>
-                                -->
-
                             </div>
 
                         </div>
-                        
+
                     </div>
 
-                    <!-- Visualize Results -->
-                    <div id="VisResult">
-                        <h2 id="sessionKey"></h2>
-                        <h3>Feel free to rename the CHORDS instrument and variable/stream names. Do not edit the variable shortname or else
-                        the streaming service will not work.</h3>
+                    <hr class="half-rule" />
+
+                    <!-- Start over button -->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <button class="btn btn-lg btn-default" onclick="initialize()">Start Over</button>
+                        </div>
                     </div>
 
                 </div>
 
             </div>
-
         </div>
 
     </div>
