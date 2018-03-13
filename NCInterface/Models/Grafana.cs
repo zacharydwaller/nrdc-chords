@@ -128,7 +128,7 @@ namespace NCInterface.Structures.Grafana
     //Stores Panel data from Grafana Dashboard
     public class Panel
     {
-        public AliasColors aliasColors { get; set; }
+      //  public AliasColors aliasColors { get; set; }
         public bool bars { get; set; }
         public string datasource { get; set; }
         public int fill { get; set; }
@@ -142,7 +142,7 @@ namespace NCInterface.Structures.Grafana
         public int pointradius { get; set; }
         public bool points { get; set; }
         public string renderer { get; set; }
-        public List<object> seriesOverrides { get; set; }
+      //  public List<object> seriesOverrides { get; set; }
         public int span { get; set; }
         public bool stack { get; set; }
         public bool steppedLine { get; set; }
@@ -205,7 +205,7 @@ namespace NCInterface.Structures.Grafana
         public int graphTooltip { get; set; }
         public bool hideControls { get; set; }
         public object id { get; set; }
-        public List<object> links { get; set; }
+      //  public List<object> links { get; set; }
         public List<Row> rows { get; set; }
         public int schemaVersion { get; set; }
         public string style { get; set; }

@@ -91,12 +91,17 @@ namespace NCInterface.Controllers
             ChordsBot.GetTarget(sessionKey);
             //Panel initialization
             var panel = new Panel { title = "test",
+                //  aliasColors = { },
                 bars = false,
                 datasource = "NRDC",
+                fill = 1,
+                nullPointMode = "null",
                 lines = true,
+                // links = { },
                 linewidth = 1,
                 pointradius = 5,
                 renderer = "flot",
+                //seriesOverrides = { },
                 span = 12,
                 stack = false,
                 steppedLine = false,
@@ -104,7 +109,7 @@ namespace NCInterface.Controllers
                 type = "graph",
                 xaxis = new Xaxis { mode = "time ", name = null, show = true },
                 yaxes = Yaxes,
-                legend = new Legend {avg = false, current = false, max = false, min = false, show = true, total = false, values = false }
+                legend = new Legend { avg = false, current = false, max = false, min = false, show = true, total = false, values = false }
             };
             //formats data and sends JSON request
             reqs.Add(panelReqs);
