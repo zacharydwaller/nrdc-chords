@@ -75,9 +75,9 @@ namespace NCInterface.Controllers
         /// <returns>ChordsBot object Container corresponding to the session input</returns>
         [Route("GetTarget")]
         [HttpGet]
-        public Container GetTarget([FromUri] string SessionKey)
+        public List<string> GetTarget([FromUri] int instrumentId)
         {
-            return ChordsBot.GetTarget(SessionKey);
+            return ChordsBot.GetTarget(instrumentId);
         }
 
 

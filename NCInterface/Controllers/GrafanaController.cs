@@ -88,7 +88,7 @@ namespace NCInterface.Controllers
             //Initializing the Dashboard's "requirement" objects and target objects for Panel
             var panelReqs = new Require { type = "panel", id = "graph", name = "graph" };
             var dataReqs = new Require { type = "datasource", id = "influxdb", name = "InfluxDB", version = "1.0.0" };
-            ChordsBot.GetTarget(sessionKey);
+          //  ChordsBot.GetTarget(sessionKey);
             //Panel initialization
             var panel = new Panel { title = "test",
                 //  aliasColors = { },

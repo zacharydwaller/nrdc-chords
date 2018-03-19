@@ -254,15 +254,17 @@ namespace NCInterface
             var rows = table.FindElements(By.TagName("tr"));
             var linQRows = rows.Where(b => b.GetAttribute("innerText").Contains(instrumentID.ToString())).ToList();
 
-            foreach (IWebElement row in linQRows)
+             foreach (IWebElement row in linQRows)
             {
-                var stringData = row.GetAttribute("innerText").Replace("\r\n", " ").Split();
+                var stringdata = row.GetAttribute("innerText").Replace("\r\n", " ").Split();
 
-                dataList.Add(stringData[10]);
+                dataList.Add(stringdata[stringdata.Length-2].ToString());
             }
 
             return dataList;
-            //return new Container(idrow[1].GetAttribute("innerText").Replace("\r\n", " "));
+            
+
+            
 
 
         }
