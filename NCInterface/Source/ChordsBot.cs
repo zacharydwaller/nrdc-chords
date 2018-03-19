@@ -93,7 +93,7 @@ namespace NCInterface
             //Finds name and sample rate fields, clears old data and updates with new data
             Driver.FindElementById("instrument_name").SendKeys(name);
             Driver.FindElementById("instrument_sample_rate_seconds").Clear();
-            Driver.FindElementById("instrument_sample_rate_seconds").SendKeys("60");
+            Driver.FindElementById("instrument_sample_rate_seconds").SendKeys("1");
             Driver.FindElementByName("commit").Click();
             int id;
             string idString = Driver.Url.Substring(Driver.Url.LastIndexOf("/")+1);
@@ -175,6 +175,7 @@ namespace NCInterface
         /// <returns>String Container with a success or failure message</returns>
         public static Container PushMeasurementList(Session session, IList<Measurement> measurementList)
         {
+            // Cannot push measurements in parallel, CHORDS doesn't handle receiving out-of-order measurements well
             foreach(var meas in measurementList)
             {
                 var container = PushMeasurement(session, meas);
