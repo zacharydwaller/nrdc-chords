@@ -241,19 +241,31 @@ namespace NCInterface
             return uri;
         }
 
+
+
+        /// <summary>
+        /// Get information about target data by passing in a Session object so that Grafana know which datastreams on CHORDS to plot on a specific graph
+        /// </summary>
+        /// <param name="instrumentId"></param>
+        /// <returns>A list of strings containing the variable IDs of each datastreams in the Session object</returns>
         public static List<string> GetTarget(int instrumentID)
         {
 
             List<string> dataList = new List<string>();
             string instrumentIDPage = @"instruments/";
 
+            //Navigate to the CHORDS page with the instrument list
             Driver.Url = PortalUrl + instrumentIDPage;
             Driver.Navigate();
 
+            //Find the table and row containing the variable Id's of each datastreams
             var table = Driver.FindElementById("summarytable");
             var rows = table.FindElements(By.TagName("tr"));
+
+            //Query for rows that contains the Instrument ID of the datastreams in the Session object and put results into a list
             var linQRows = rows.Where(b => b.GetAttribute("innerText").Contains(instrumentID.ToString())).ToList();
 
+            //For each rows in linQRows, parse the variable ID and push it to another list that will be returned.
              foreach (IWebElement row in linQRows)
             {
                 var stringdata = row.GetAttribute("innerText").Replace("\r\n", " ").Split();
