@@ -240,20 +240,34 @@ namespace NCInterface
             return uri;
         }
 
-        public static Container GetTarget(string SessionKey)
+        public static List<string> GetTarget(int instrumentID)
         {
-            List<int> targets = new List<int>();
+             
+            List<string> dataList = new List<string>();
             string instrumentIDPage = @"instruments/";
+             
+
             Driver.Url = PortalUrl + instrumentIDPage;
             Driver.Navigate();
-            int i = 1;
-            var table = Driver.FindElement(By.XPath("//*[@id='summarytable']/table/tbody/tr[" +(i+2) + "]/td[3]") );
-            //var tableBody = table.FindElements(By.TagName("tbody"));
-            var tableRows = table.FindElements(By.TagName("tr"));
-            //*[@id="summarytable"]/table/tbody/tr[39]
+             
+             
+            var table = Driver.FindElementById("summarytable");
+            var rows = table.FindElements(By.TagName("tr"));
+          
+            var linQRows = rows.Where(b => b.GetAttribute("innerText").Contains(instrumentID.ToString())).ToList();
             
-            //*[@id="summarytable"]/table
-            return new Container(table.GetAttribute("innerText") );
+            foreach ( IWebElement row in linQRows )
+            {
+                var stringData = row.GetAttribute("innerText").Replace("\r\n", " ").Split();
+                 
+                dataList.Add(stringData[10]);
+            }
+            
+
+            return dataList;
+            //return new Container(idrow[1].GetAttribute("innerText").Replace("\r\n", " "));
+
+
         }
 
     }
