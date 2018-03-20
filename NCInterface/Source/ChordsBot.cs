@@ -12,6 +12,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.PhantomJS;
 using NCInterface.Structures;
 using NCInterface.Structures.Data;
+using NCInterface.Controllers;
 
 namespace NCInterface
 { 
@@ -163,7 +164,9 @@ namespace NCInterface
                 Table.FindElement(By.CssSelector("input")).Clear();
                 Table.FindElement(By.CssSelector("input")).SendKeys(Stream.Data[0].Units.Name);
             }
-          
+
+            GrafanaManager.CreateDashboard(session);
+
             return new Container();
         }
 
