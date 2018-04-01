@@ -544,6 +544,12 @@ function expandDeployments(data)
         button.innerHTML = data[i].Name;
         $(button).attr("value", data[i].ID)
     }
+} 
+
+function returnData(data) {
+
+    var name = data[0].Property.Name;
+    return name.toString();
 }
 
 function expandStreams(data)
