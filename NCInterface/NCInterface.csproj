@@ -100,7 +100,6 @@
     <Compile Include="Utilities\Version.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Start\MapsAPI.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Web.config">

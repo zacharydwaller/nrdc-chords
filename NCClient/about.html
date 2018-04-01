@@ -18,6 +18,11 @@
             font-size: large;
         }
 
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+
         small {
             color: rgb(128, 128, 128);
         }
@@ -255,6 +260,31 @@
                     by Saurabh Tyagi
                 </p>
             </div>
+            <h3>My Google Maps Demo</h3>
+            <div id="map"></div>
+            <script> 
+                import "scripts.js";
+                function initMap() {
+                    var uluru = { lat: 50.00, lng: 80.45 };
+                    var b = { lat: 80, lng: 80.45 }; 
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: 4,
+                        center: uluru
+                    });
+                    var marker = new google.maps.Marker({
+                        position: uluru,
+                        map: map
+                    }); 
+                    
+                    var marker = new google.maps.Marker({
+                        position: b,
+                        map: map
+                    });
+                }
+            </script>
+            <script async defer
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLPTXlVP6FbkUzx87cUkohN1ZxoaUx22A&callback=initMap">
+            </script>
             <footer class="panel-footer">
                 <p>
                     <div style="">Supported by NSF grant # IIA-1301726</div>
