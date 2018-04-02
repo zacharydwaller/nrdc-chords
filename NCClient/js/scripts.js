@@ -26,10 +26,51 @@ var sessionKey;
 var intervalFunc;
 
 var defaultInterval = 60; // in seconds
+var serviceUrl = "http://localhost:3485/";
+var selectedNetwork = "NevCAN";
+//import scripts from '\NCClient\js\scripts.js';
+//scripts.expandHierarchies();
+function initMap() {
+    var siteName = notExpandHierarchy(serviceUrl + "DataCenter/" + selectedNetwork + "/sites?", returnLocation);
+   // var siteName = returnLocation();
+    var locations = [
+        [siteName , -33.890542, 151.274856, 4],
+        ['Coogee Beach', -33.923036, 151.259052, 5],
+        ['Cronulla Beach', -34.028249, 151.157507, 3],
+        ['Manly Beach', -33.80010128657071, 151.28747820854187, 2],
+        ['Maroubra Beach', -33.950198, 151.259302, 1]
+    ];
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 10,
+        center: new google.maps.LatLng(-33.92, 151.25),
+        mapTypeId: google.maps.MapTypeId.terrain,
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {
+        marker = new google.maps.Marker({
+            position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+            map: map
+        });
+
+        google.maps.event.addListener(marker, 'click', (function (marker, i) {
+            return function () {
+                infowindow.setContent(locations[i][0]);
+                infowindow.open(map, marker);
+            }
+        })(marker, i));
+    }
+}
 
 $(document).ready(function ()
 {
+   // initMap();
     initialize();
+     
 });
 
 function initialize()
@@ -84,6 +125,9 @@ function sessionButtonClick()
 
     openChordsSession(sessionKey);
 }
+
+ 
+
 
 function netbuttonClick()
 {
@@ -471,6 +515,46 @@ function populateSessionList()
     });
 }
 
+function returnLocation(data) {
+
+   return ("Lol")
+}
+
+
+function notExpandHierarchy(uri, callback ) {
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: uri,
+
+        xhrFields: {
+            withCredentials: false
+        },
+
+        success: function (result) {
+            $("#loading").remove();
+
+            //console.log(result);
+            if (result.Success === true) {
+                return "test";
+            }
+            else {
+                console.error(result.Message);
+                return "test2";
+            }
+        },
+
+        error: function () {
+            $("#loading").remove();
+
+            console.error("Call to " + uri + " unable to be completed.");
+            return "test3";
+        }
+    });
+
+    return "test4";
+}
+
 function expandHierarchy(uri, callback)
 {
     $.ajax({
@@ -505,6 +589,8 @@ function expandHierarchy(uri, callback)
         }
     });
 }
+
+
 
 function expandSites(data)
 {
