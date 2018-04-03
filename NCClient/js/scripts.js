@@ -26,14 +26,53 @@ var sessionKey;
 var intervalFunc;
 
 var defaultInterval = 60; // in seconds
+var serviceUrl = "http://localhost:3485/";
+var selectedNetwork = "NevCAN";
+//import scripts from '\NCClient\js\scripts.js';
+//scripts.expandHierarchies();
+function initMap() {
+    var siteName = notExpandHierarchy(serviceUrl + "DataCenter/" + selectedNetwork + "/sites?", returnLocation);
+    // var siteName = returnLocation();
+    var locations = [
+        [siteName, -33.890542, 151.274856, 4],
+        ['Coogee Beach', -33.923036, 151.259052, 5],
+        ['Cronulla Beach', -34.028249, 151.157507, 3],
+        ['Manly Beach', -33.80010128657071, 151.28747820854187, 2],
+        ['Maroubra Beach', -33.950198, 151.259302, 1]
+    ];
 
-$(document).ready(function ()
-{
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 10,
+        center: new google.maps.LatLng(-33.92, 151.25),
+        mapTypeId: google.maps.MapTypeId.terrain,
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {
+        marker = new google.maps.Marker({
+            position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+            map: map
+        });
+
+        google.maps.event.addListener(marker, 'click', (function (marker, i) {
+            return function () {
+                infowindow.setContent(locations[i][0]);
+                infowindow.open(map, marker);
+            }
+        })(marker, i));
+    }
+}
+
+$(document).ready(function () {
+    // initMap();
     initialize();
+
 });
 
-function initialize()
-{
+function initialize() {
     selectedNetwork = "NevCAN";
     selectedSite = 0;
     selectedSystem = 0;
@@ -68,8 +107,7 @@ function initialize()
     endCalendar.datepicker();
 }
 
-function sessionButtonClick()
-{
+function sessionButtonClick() {
     sessionKey = $(this).attr("value");
     interval = defaultInterval * 1000;
 
@@ -85,8 +123,10 @@ function sessionButtonClick()
     openChordsSession(sessionKey);
 }
 
-function netbuttonClick()
-{
+
+
+
+function netbuttonClick() {
     selectedNetwork = $(this).attr("value");
 
     $(".net-button").removeClass("active");
@@ -100,8 +140,7 @@ function netbuttonClick()
     $("#streamTab").click();
 }
 
-function siteButtonClick()
-{
+function siteButtonClick() {
     selectedSite = $(this).attr("value");
 
     $(".site-button").removeClass("active");
@@ -115,8 +154,7 @@ function siteButtonClick()
     expandHierarchy(serviceUrl + "DataCenter/" + selectedNetwork + "/systems?siteID=" + selectedSite, expandSystems);
 }
 
-function systemButtonClick()
-{
+function systemButtonClick() {
     selectedSystem = $(this).attr("value");
 
     $(".system-button").removeClass("active");
@@ -129,8 +167,7 @@ function systemButtonClick()
     expandHierarchy(serviceUrl + "DataCenter/" + selectedNetwork + "/deployments?systemID=" + selectedSystem, expandDeployments);
 }
 
-function deploymentButtonClick()
-{
+function deploymentButtonClick() {
     selectedDeployment = $(this).attr("value");
 
     $(".deployment-button").removeClass("active");
@@ -142,17 +179,14 @@ function deploymentButtonClick()
     expandHierarchy(serviceUrl + "DataCenter/" + selectedNetwork + "/streams?deploymentID=" + selectedDeployment, expandStreams);
 }
 
-function streamButtonClick()
-{
+function streamButtonClick() {
     var id = $(this).attr("value");
 
-    if (selectedStreams.has(id))
-    {
+    if (selectedStreams.has(id)) {
         selectedStreams.delete(id);
         $(this).removeClass("active");
     }
-    else
-    {
+    else {
         selectedStreams.add(id);
         $(this).addClass("active");
     }
@@ -160,8 +194,7 @@ function streamButtonClick()
     updateSelectedStreams();
 }
 
-function selstreamButtonClick()
-{
+function selstreamButtonClick() {
     var id = $(this).attr("value");
 
     selectedStreams.delete(id);
@@ -170,8 +203,7 @@ function selstreamButtonClick()
     updateSelectedStreams();
 }
 
-function attemptConnection()
-{
+function attemptConnection() {
     uri = serviceUrl + "NCInterface/";
 
     console.log("Attempting to connect to NRDC-CHORDS Web service");
@@ -185,27 +217,23 @@ function attemptConnection()
             withCredentials: false
         },
 
-        success: function (result)
-        {
+        success: function (result) {
             console.log("Connected succeeded");
         },
 
-        error: function ()
-        {
+        error: function () {
             console.log("Connection failed");
             $("#no-connection").append(noConnection);
         }
     });
 }
 
-function visualizeButtonClick()
-{
+function visualizeButtonClick() {
     uri = serviceUrl + "Session/newSession?"
         + "netAlias=" + selectedNetwork;
 
     // Add list of streams
-    for (let id of selectedStreams)
-    {
+    for (let id of selectedStreams) {
         uri += "&streamIDs=" + id;
     }
 
@@ -217,15 +245,13 @@ function visualizeButtonClick()
     var start = startCalendar.datepicker("getDate");
     var end = endCalendar.datepicker("getDate");
 
-    if (start != null)
-    {
+    if (start != null) {
         var date = new Date(start);
 
-        uri += "&startTime=" + date.toISOString(); 
+        uri += "&startTime=" + date.toISOString();
     }
 
-    if (end != null)
-    {
+    if (end != null) {
         var date = new Date(end);
 
         uri += "&endTime=" + date.toISOString();
@@ -249,12 +275,10 @@ function visualizeButtonClick()
             withCredentials: false
         },
 
-        success: function (result)
-        {
+        success: function (result) {
             $("#loading").remove();
 
-            if (result.Success)
-            {
+            if (result.Success) {
                 $("#sessionKey").show();
                 $("#sessionError").hide();
 
@@ -272,8 +296,7 @@ function visualizeButtonClick()
                 // Refresh session list
                 populateSessionList();
             }
-            else
-            {
+            else {
                 $("#sessionKey").empty();
                 $("#sessionInstructions").hide();
                 $("#sessionError").show();
@@ -285,8 +308,7 @@ function visualizeButtonClick()
             }
         },
 
-        error: function ()
-        {
+        error: function () {
             $("#loading").remove();
 
             console.error("Call to " + uri + " unable to be completed.");
@@ -296,8 +318,7 @@ function visualizeButtonClick()
     });
 }
 
-function refreshSession()
-{
+function refreshSession() {
     uri = serviceUrl + "Session/refreshSession?"
         + "key=" + sessionKey;
 
@@ -312,17 +333,14 @@ function refreshSession()
             withCredentials: false
         },
 
-        success: function (result)
-        {
-            if (!result.success)
-            {
+        success: function (result) {
+            if (!result.success) {
                 $("#sessionKey").append("<br>" + result.Message);
                 clearInterval(intervalFunc);
             }
         },
 
-        error: function ()
-        {
+        error: function () {
             console.error("Call to " + uri + " unable to be completed.");
             console.error(result.Message);
 
@@ -332,8 +350,7 @@ function refreshSession()
     });
 }
 
-function openChordsSession(key)
-{
+function openChordsSession(key) {
     var uri = serviceUrl + "Session/GetSession?key=" + key;
 
     $.ajax({
@@ -345,14 +362,11 @@ function openChordsSession(key)
             withCredentials: false
         },
 
-        success: function (result)
-        {
-            if (result.Success)
-            {
+        success: function (result) {
+            if (result.Success) {
                 window.open(chordsUrl + "instruments/" + result.Data[0].InstrumentID, "_blank");
             }
-            else
-            {
+            else {
                 //$("#sessionKey").append(result.Message);
                 console.error(result.Message);
 
@@ -361,8 +375,7 @@ function openChordsSession(key)
             }
         },
 
-        error: function ()
-        {
+        error: function () {
             $("#loading").remove();
 
             console.error("Call to " + uri + " unable to be completed.");
@@ -372,28 +385,23 @@ function openChordsSession(key)
     });
 }
 
-function updateSelectedStreams()
-{
-    if (selectedStreams.size > 0)
-    {
+function updateSelectedStreams() {
+    if (selectedStreams.size > 0) {
         selectedStreamsHeader.show();
     }
-    else
-    {
+    else {
         selectedStreamsHeader.hide();
     }
 
     expandSelectedStreams();
 }
 
-function fadeInButton(button)
-{
+function fadeInButton(button) {
     $(button).hide();
     $(button).fadeIn();
 }
 
-function createButton(buttonClass, listName, callback)
-{
+function createButton(buttonClass, listName, callback) {
     var item = document.createElement("a");
 
     $(item).addClass(hiClasses);
@@ -406,8 +414,7 @@ function createButton(buttonClass, listName, callback)
     return item;
 }
 
-function populateSessionList()
-{
+function populateSessionList() {
     var uri = serviceUrl + "Session/GetSessionList";
 
     //$("#session-list").append(loader);
@@ -421,20 +428,16 @@ function populateSessionList()
             withCredentials: false
         },
 
-        success: function (result)
-        {
+        success: function (result) {
             $("#session-list").empty();
 
             //console.log(result);
-            if (result.Success == true)
-            {
-                if (result.Data.length == 0)
-                {
+            if (result.Success == true) {
+                if (result.Data.length == 0) {
                     $("#session-list").append(noSessions);
                 }
 
-                for (var i = 0; i < result.Data.length; i++)
-                {
+                for (var i = 0; i < result.Data.length; i++) {
                     var session = result.Data[i];
                     var button = createButton("session-button", "#session-list", sessionButtonClick);
 
@@ -442,8 +445,7 @@ function populateSessionList()
                     button.innerHTML = "<h3 class=\"list-group-item-heading\">" + session.Name
 
                     // Add session description to button if description is set
-                    if (session.Description != null && session.Description != "")
-                    {
+                    if (session.Description != null && session.Description != "") {
                         button.innerHTML += "<p class=\"list-group-item-text\">" + session.Description + "</p>"
                     }
 
@@ -456,14 +458,12 @@ function populateSessionList()
                     $(button).attr("value", session.SessionKey);
                 }
             }
-            else
-            {
+            else {
                 console.error(result.Message);
             }
         },
 
-        error: function ()
-        {
+        error: function () {
             $("#loading").remove();
 
             console.error("Call to " + uri + " unable to be completed.");
@@ -471,8 +471,13 @@ function populateSessionList()
     });
 }
 
-function expandHierarchy(uri, callback)
-{
+function returnLocation(data) {
+
+    return ("Lol")
+}
+
+
+function notExpandHierarchy(uri, callback) {
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -482,23 +487,53 @@ function expandHierarchy(uri, callback)
             withCredentials: false
         },
 
-        success: function (result)
-        {
+        success: function (result) {
             $("#loading").remove();
 
             //console.log(result);
-            if (result.Success == true)
-            {
+            if (result.Success === true) {
+                return "test";
+            }
+            else {
+                console.error(result.Message);
+                return "test2";
+            }
+        },
+
+        error: function () {
+            $("#loading").remove();
+
+            console.error("Call to " + uri + " unable to be completed.");
+            return "test3";
+        }
+    });
+
+    return "test4";
+}
+
+function expandHierarchy(uri, callback) {
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: uri,
+
+        xhrFields: {
+            withCredentials: false
+        },
+
+        success: function (result) {
+            $("#loading").remove();
+
+            //console.log(result);
+            if (result.Success == true) {
                 callback(result.Data);
             }
-            else
-            {
+            else {
                 console.error(result.Message);
             }
         },
 
-        error: function ()
-        {
+        error: function () {
             $("#loading").remove();
 
             console.error("Call to " + uri + " unable to be completed.");
@@ -506,52 +541,52 @@ function expandHierarchy(uri, callback)
     });
 }
 
-function expandSites(data)
-{
+
+
+function expandSites(data) {
     hideHeaders();
     $(".site-button").remove();
 
-    for (var i = 0; i < data.length; i++)
-    {
+    for (var i = 0; i < data.length; i++) {
         var button = createButton("site-button", "#site-list", siteButtonClick);
         button.innerHTML = data[i].Alias;
         $(button).attr("value", data[i].ID)
     }
 }
 
-function expandSystems(data)
-{
+function expandSystems(data) {
     systemsHeader.show();
     deploymentsHeader.hide();
     streamsHeader.hide();
 
-    for (var i = 0; i < data.length; i++)
-    {
+    for (var i = 0; i < data.length; i++) {
         var button = createButton("system-button", "#system-list", systemButtonClick);
         button.innerHTML = data[i].Name;
         $(button).attr("value", data[i].ID)
     }
 }
 
-function expandDeployments(data)
-{
+function expandDeployments(data) {
     deploymentsHeader.show();
     streamsHeader.hide();
 
-    for (var i = 0; i < data.length; i++)
-    {
+    for (var i = 0; i < data.length; i++) {
         var button = createButton("deployment-button", "#deployment-list", deploymentButtonClick);
         button.innerHTML = data[i].Name;
         $(button).attr("value", data[i].ID)
     }
 }
 
-function expandStreams(data)
-{
+function returnData(data) {
+
+    var name = data[0].Property.Name;
+    return name.toString();
+}
+
+function expandStreams(data) {
     streamsHeader.show();
 
-    for (var i = 0; i < data.length; i++)
-    {
+    for (var i = 0; i < data.length; i++) {
         var button = createButton("stream-button", "#stream-list", streamButtonClick);
         button.innerHTML =
             "<h4 class=\"list-group-item-heading\">" + data[i].ID + " - " + data[i].Property.Name + "</h4>" +
@@ -560,35 +595,30 @@ function expandStreams(data)
             "<p class=\"list-group-item-text\">" + "Interval: " + data[i].MeasurementInterval + "</p>";
         $(button).attr("value", data[i].ID)
 
-        if (selectedStreams.has(data[i].ID.toString()))
-        {
+        if (selectedStreams.has(data[i].ID.toString())) {
             $(button).addClass("active");
         }
     }
 }
 
-function expandSelectedStreams()
-{
+function expandSelectedStreams() {
     $(".selstream-button").remove();
 
-    for (let id of selectedStreams)
-    {
+    for (let id of selectedStreams) {
         var button = createButton("selstream-button", "#selstream-list", selstreamButtonClick);
         button.innerHTML = id;
         $(button).attr("value", id)
     }
 }
 
-function getHeaders()
-{
+function getHeaders() {
     systemsHeader = $("#systems-header");
     deploymentsHeader = $("#deployments-header");
     streamsHeader = $("#streams-header");
     selectedStreamsHeader = $("#selectedstreams-header");
 }
 
-function hideHeaders()
-{
+function hideHeaders() {
     systemsHeader.hide();
     deploymentsHeader.hide();
     streamsHeader.hide();
