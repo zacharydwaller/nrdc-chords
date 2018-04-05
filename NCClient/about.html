@@ -20,7 +20,7 @@
 
         #map {
             height: 400px;
-            width: 400px;
+            width: 100%;
         }
 
         small {
@@ -39,45 +39,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- Our scripts-->
 
-    <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLPTXlVP6FbkUzx87cUkohN1ZxoaUx22A&callback=initMap">
-    </script>
+
     <script type="text/javascript" src="js/scripts.js"></script>
 
-    <script type="text/javascript">
-                        //var serviceUrl = "http://localhost:3485/";
-                        //var selectedNetwork = "NevCAN";
-                        //import scripts from '\NCClient\js\scripts.js';
-                        //scripts.expandHierarchies();
-                        //function initmap() {
-                        //    var sitename = expandhierarchy(serviceurl + "datacenter/" + selectednetwork + "/sites?", returndata);
-                        //    var locations = [
-                        //        [sitename, -33.890542, 151.274856, 4],
-                        //        ['coogee beach', -33.923036, 151.259052, 5],
-                        //        ['cronulla beach', -34.028249, 151.157507, 3],
-                        //        ['manly beach', -33.80010128657071, 151.28747820854187, 2],
-                        //        ['maroubra beach', -33.950198, 151.259302, 1]
-                        //    ];
-                        //    var map = new google.maps.map(document.getelementbyid('map'), {
-                        //        zoom: 10,
-                        //        center: new google.maps.latlng(-33.92, 151.25),
-                        //        maptypeid: google.maps.maptypeid.terrain,
-                        //    });
-                        //    var infowindow = new google.maps.infowindow();
-                        //    var marker, i;
-                        //    for (i = 0; i < locations.length; i++) {
-                        //        marker = new google.maps.marker({
-                        //            position: new google.maps.latlng(locations[i][1], locations[i][2]),
-                        //            map: map
-                        //        });
-                        //        google.maps.event.addlistener(marker, 'click', (function (marker, i) {
-                        //            return function () {
-                        //                infowindow.setcontent(locations[i][0]);
-                        //                infowindow.open(map, marker);
-                        //            }
-                        //        })(marker, i));
-                        //    }
-                        //}
+    <script type="text/javascript"></script>
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLPTXlVP6FbkUzx87cUkohN1ZxoaUx22A&callback=initMap">
     </script>
 
 </head>
@@ -301,7 +269,7 @@
                     by Saurabh Tyagi
                 </p>
             </div>
-            <h3>My Google Maps Demo</h3>
+            <h3>Measurement Site Locations</h3>
             <div id="map"></div>
 
             <footer class="panel-footer">
