@@ -41,18 +41,22 @@ function initMap(data) {
         center: new google.maps.LatLng(37.85, -115.6003),
         mapTypeId: google.maps.MapTypeId.terrain,
     });
-    var sites = ["nevCan", "WalkerBasinHydro", "SolarNexus"];
+    var networks = ["nevCan", "WalkerBasinHydro", "SolarNexus"];
     var infowindow = new google.maps.InfoWindow(); 
     var marker, i;
-    for (index = 0; index < 3; index++) {
-        uri = serviceUrl + "DataCenter/" + sites[index] + "/sites?";
+    for (networksIndex = 0; networksIndex < networks.length; networksIndex++)
+    {
+        uri = serviceUrl + "DataCenter/" + networks[networksIndex] + "/sites?";
         expandHierarchy(uri, function (data) { 
-            for (i = 0; i < data.length; i++) { 
-                marker = new google.maps.Marker({
+            for (i = 0; i < data.length; i++)
+            { 
+                marker = new google.maps.Marker
+                    ({
                         position: new google.maps.LatLng(data[i].Latitude, data[i].Longitude),
                         map: map 
                     });
-                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                google.maps.event.addListener(marker, 'click', (function (marker, i)
+                    {
                         return function () {
                             infowindow.setContent(data[i]["Alias"]);
                             infowindow.open(map, marker);
