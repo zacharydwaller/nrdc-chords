@@ -36,33 +36,31 @@ function initMap(data) {
     var uri = serviceUrl + "DataCenter/" + selectedNetwork + "/sites?";
     //var siteName = notExpandHierarchy(uri, returnLocation);
     // var siteName = returnLocation();
-    
-
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 6,
         center: new google.maps.LatLng(37.85, -115.6003),
         mapTypeId: google.maps.MapTypeId.terrain,
     });
-
-    var infowindow = new google.maps.InfoWindow();
-
+    var sites = ["nevCan", "WalkerBasinHydro", "SolarNexus"];
+    var infowindow = new google.maps.InfoWindow(); 
     var marker, i;
-    
-    expandHierarchy(uri, function (data) { 
-        for (i = 0; i < data.length; i++) { 
-            marker = new google.maps.Marker({
-                position: new google.maps.LatLng(data[i].Latitude, data[i].Longitude),
-                map: map 
-                 
-            });
-            google.maps.event.addListener(marker, 'click', (function (marker, i) {
-                return function () {
-                    infowindow.setContent(data[i]["Alias"]);
-                    infowindow.open(map, marker);
-                }
-            })(marker, i));
-        }
-    });  
+    for (index = 0; index < 3; index++) {
+        uri = serviceUrl + "DataCenter/" + sites[index] + "/sites?";
+        expandHierarchy(uri, function (data) { 
+            for (i = 0; i < data.length; i++) { 
+                marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(data[i].Latitude, data[i].Longitude),
+                        map: map 
+                    });
+                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                        return function () {
+                            infowindow.setContent(data[i]["Alias"]);
+                            infowindow.open(map, marker);
+                        }
+                    })(marker, i));
+            }
+        });    
+    }
 }
 
 $(document).ready(function () {
