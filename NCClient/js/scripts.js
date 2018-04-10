@@ -34,32 +34,40 @@ var uri = serviceUrl + "DataCenter/" + selectedNetwork + "/sites?";
 
 function initMap(data) {
     var uri = serviceUrl + "DataCenter/" + selectedNetwork + "/sites?";
-    //var siteName = notExpandHierarchy(uri, returnLocation);
-    // var siteName = returnLocation();
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 6,
         center: new google.maps.LatLng(37.85, -115.6003),
-        mapTypeId: google.maps.MapTypeId.terrain,
+        mapTypeId: 'satellite',
     });
+     
     var networks = ["nevCan", "WalkerBasinHydro", "SolarNexus"];
-    var infowindow = new google.maps.InfoWindow(); 
+    var infowindow = new google.maps.InfoWindow({
+        content:' <img src="img/walkerriver.jpg" class="img-circle" style="width:200px" />',
+    }); 
     var marker, i;
     for (networksIndex = 0; networksIndex < networks.length; networksIndex++)
     {
+        image = "img/snakerange.jpg"
         uri = serviceUrl + "DataCenter/" + networks[networksIndex] + "/sites?";
         expandHierarchy(uri, function (data) { 
             for (i = 0; i < data.length; i++)
             { 
+
+
                 marker = new google.maps.Marker
                     ({
+                 
                         position: new google.maps.LatLng(data[i].Latitude, data[i].Longitude),
-                        map: map 
+                        map: map,
+                         
+                         
                     });
                 google.maps.event.addListener(marker, 'click', (function (marker, i)
                     {
                         return function () {
                             infowindow.setContent(data[i]["Alias"]);
                             infowindow.open(map, marker);
+                             
                         }
                     })(marker, i));
             }
@@ -474,11 +482,7 @@ function populateSessionList() {
     });
 }
 
-function returnLocation(data) {
-    testVar = data
-  // console.log(data);
-    return String(testVar);
-}
+ 
 
 
 function getData(uri, callback) {
