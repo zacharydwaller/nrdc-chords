@@ -44,35 +44,61 @@ function initMap(data) {
     var infowindow = new google.maps.InfoWindow({
         content:' <img src="img/walkerriver.jpg" class="img-circle" style="width:200px" />',
     }); 
+    var holderObj = {};
+    var holder = [];
+    var holders = [];
     var marker, i;
+    var mapIndex = 0;
     for (networksIndex = 0; networksIndex < networks.length; networksIndex++)
     {
         image = "img/snakerange.jpg"
         uri = serviceUrl + "DataCenter/" + networks[networksIndex] + "/sites?";
-        expandHierarchy(uri, function (data) { 
-            for (i = 0; i < data.length; i++)
-            { 
+        expandHierarchy(uri, function (data) {
+            for (i = 0; i < data.length; i++) {
 
+                holderObj["Alias"] = data[i].Alias;
+                holderObj["Latitude"] = data[i].Latitude;
+                holderObj["Longitude"] = data[i].Longitude;
+                //holderObj["pictures "]
+                holder.push(holderObj);
+                holderObj = [];
+            }
+            holders.push(holder);
+           // holder = [];
+        }).then(function (value)
 
-                marker = new google.maps.Marker
-                    ({
-                 
-                        position: new google.maps.LatLng(data[i].Latitude, data[i].Longitude),
-                        map: map,
-                         
-                         
+        {
+            mapIndex++;
+            if (mapIndex < 2) {
+                console.log(mapIndex);
+                for (i = 0; i < holder.length; i++)
+                {
+
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(holder[i].Latitude, holder[i].Longitude),
+                        map: map
                     });
-                google.maps.event.addListener(marker, 'click', (function (marker, i)
-                    {
+
+                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
                         return function () {
-                            infowindow.setContent(data[i]["Alias"]);
+                           // infowindow.setContent(holder[i]["Alias"]);
+                            infowindow.setContent('<div><strong>'  + holder[i].Alias
+                                + '</strong><br>' + 'Site Latitude:' + holder[i].Latitude +
+                                '<br>' + 'Site Longitude:'+ holder[i].Longitude + '<br>'+ '</div>');
+                           // infowindow.open(map, marker);
                             infowindow.open(map, marker);
-                             
+
                         }
                     })(marker, i));
+
+
+                }
+                
             }
-        });    
+       });
+
     }
+     
 }
 
 $(document).ready(function () {
@@ -115,7 +141,7 @@ function initialize() {
     startCalendar.datepicker();
     endCalendar.datepicker();
 
-    getData(uri, initMap);
+    
 }
 
 function sessionButtonClick() {
@@ -514,7 +540,7 @@ function getData(uri, callback) {
 }
 
 function expandHierarchy(uri, callback) {
-    $.ajax({
+  return  $.ajax({
         type: "GET",
         dataType: "json",
         url: uri,
