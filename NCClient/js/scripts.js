@@ -59,6 +59,7 @@ function initMap(data) {
                 holderObj["Alias"] = data[i].Alias;
                 holderObj["Latitude"] = data[i].Latitude;
                 holderObj["Longitude"] = data[i].Longitude;
+                holderObj["Name"] = data[i].Name;
                 //holderObj["pictures "]
                 holder.push(holderObj);
                 holderObj = [];
@@ -82,10 +83,11 @@ function initMap(data) {
                     google.maps.event.addListener(marker, 'click', (function (marker, i) {
                         return function () {
                            // infowindow.setContent(holder[i]["Alias"]);
-                            infowindow.setContent('<div><strong>'  + holder[i].Alias
-                                + '</strong><br>' + 'Site Latitude:' + holder[i].Latitude +
+                            infowindow.setContent('<div><strong>' + holder[i].Alias
+                                + '</strong><br>' + 'Site Name:' + holder[i].Name + '<br>'+
+                                 'Site Latitude:' + holder[i].Latitude +
                                 '<br>' + 'Site Longitude:'+ holder[i].Longitude + '<br>'+ '</div>');
-                           // infowindow.open(map, marker);
+                            
                             infowindow.open(map, marker);
 
                         }
