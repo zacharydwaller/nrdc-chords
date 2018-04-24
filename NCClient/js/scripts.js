@@ -30,10 +30,56 @@ var serviceUrl = "http://localhost:3485/";
 var selectedNetwork = "NevCAN";
 var uri = serviceUrl + "DataCenter/" + selectedNetwork + "/sites?";
 
+var imageUri = "http://sensor.nevada.edu/Services/GIDMIS/Imagery/NRDC.Services.Images.ImageryService.svc/"
+var latestImage = "NevCAN/images/export/stream/latest"; //requires "Stream" which is an int and "TimeStampImages" which is a boolean
 
+function getImages(data)
+{
+    var uri = imageUri + latestImage;
+    var stream = { 'Stream': 1 , 'TimeStampImages': true };
+    return $.ajax({
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+
+        },
+        type: "POST",
+        data: JSON.stringify(stream),
+        dataType: "json",
+        url: uri,
+       
+         
+
+        xhrFields: {
+            withCredentials: false
+        },
+
+        success: function (result) {
+            $("#loading").remove();
+
+            //console.log(result);
+            if (result.Success == true) {
+               // callback(result.Data);
+                console.log(result.Data);
+            }
+            else {
+                console.error(result.Message);
+            }
+        },
+
+        error: function () {
+            $("#loading").remove();
+
+            console.error("Call to " + uri + " unable to be completed.");
+        }
+    });
+
+
+}
 
 function initMap(data) {
     var uri = serviceUrl + "DataCenter/" + selectedNetwork + "/sites?";
+     
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 6,
         center: new google.maps.LatLng(37.85, -115.6003),
@@ -46,7 +92,7 @@ function initMap(data) {
     }); 
     var holderObj = {};
     var holder = [];
-    var holders = [];
+    var holders = []; 
     var marker, i;
     var mapIndex = 0;
     for (networksIndex = 0; networksIndex < networks.length; networksIndex++)
@@ -63,6 +109,7 @@ function initMap(data) {
                 //holderObj["pictures "]
                 holder.push(holderObj);
                 holderObj = [];
+               // console.log(holderObj["Alias"]);
             }
             holders.push(holder);
            // holder = [];
@@ -74,14 +121,16 @@ function initMap(data) {
                 console.log(mapIndex);
                 for (i = 0; i < holder.length; i++)
                 {
-
-                    marker = new google.maps.Marker({
+                    marker = new google.maps.Marker
+                        ({
                         position: new google.maps.LatLng(holder[i].Latitude, holder[i].Longitude),
                         map: map
-                    });
+                         });
 
-                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
-                        return function () {
+                    google.maps.event.addListener(marker, 'click', (function (marker, i)
+                    {
+                        return function ()
+                        {
                            // infowindow.setContent(holder[i]["Alias"]);
                             infowindow.setContent('<div><strong>' + holder[i].Alias
                                 + '</strong><br>' + 'Site Name:' + holder[i].Name + '<br>'+
@@ -98,13 +147,21 @@ function initMap(data) {
                 
             }
        });
-
+       // console.log(holder);
+      //  getImages();
     }
      
 }
 
 $(document).ready(function () {
     // initMap();
+    //$.ajaxSetup({
+    //    headers: {
+    //        'Content-Type': 'application/json',
+    //        'Accept': 'application/json'
+    //    }
+    //});
+
     initialize();
 
 });
@@ -142,7 +199,7 @@ function initialize() {
 
     startCalendar.datepicker();
     endCalendar.datepicker();
-
+    getImages();
     
 }
 
