@@ -30,13 +30,13 @@ var serviceUrl = "http://localhost:3485/";
 var selectedNetwork = "NevCAN";
 var uri = serviceUrl + "DataCenter/" + selectedNetwork + "/sites?";
 
-var imageUri = "http://sensor.nevada.edu/Services/GIDMIS/Imagery/NRDC.Services.Images.ImageryService.svc/"
-var latestImage = "NevCAN/images/export/stream/latest"; //requires "Stream" which is an int and "TimeStampImages" which is a boolean
+var imageAPI = "http://sensor.nevada.edu/Services/GIDMIS/Imagery/NRDC.Services.Images.ImageryService.svc/"
+var latestImage = "NevCAN/images/export/site/latest"; //requires "Stream" which is an int and "TimeStampImages" which is a boolean
 
-function getImages(data)
+function getImages(uri,stream,callback)
 {
-    var uri = imageUri + latestImage;
-    var stream = { 'Stream': 1 , 'TimeStampImages': true };
+     
+    var streamObj = stream;
     return $.ajax({
         headers: {
             'Content-Type': 'application/json',
@@ -59,11 +59,46 @@ function getImages(data)
 
             //console.log(result);
             if (result.Success == true) {
-               // callback(result.Data);
-                console.log(result.Data);
+                callback(result.Data);
+               // console.log(result.Data);
             }
             else {
                 console.error(result.Message);
+            }
+        },
+
+        error: function () {
+            $("#loading").remove();
+            console.log(uri);
+            console.error("Call to " + uri + " unable to be completed.");
+        }
+    });
+
+
+}
+
+function checkImage(statusUri) {
+    return $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: statusUri,
+
+        xhrFields: {
+            withCredentials: false
+        },
+
+        success: function (result) {
+            $("#loading").remove();
+
+            //console.log(result);
+            if (result.Data.IsComplete == false) {
+                checkImage(statusUri);
+                
+            }
+            else {
+                 
+                console.error(result.Message);
+                console.log(result.Data);
             }
         },
 
@@ -73,9 +108,9 @@ function getImages(data)
             console.error("Call to " + uri + " unable to be completed.");
         }
     });
-
-
 }
+
+
 
 function initMap(data) {
     var uri = serviceUrl + "DataCenter/" + selectedNetwork + "/sites?";
@@ -86,16 +121,16 @@ function initMap(data) {
         mapTypeId: 'satellite',
     });
      
-    var networks = ["nevCan", "WalkerBasinHydro", "SolarNexus"];
+    var networks = ["NevCan", "WalkerBasinHydro", "SolarNexus"];
     var infowindow = new google.maps.InfoWindow({
         content:' <img src="img/walkerriver.jpg" class="img-circle" style="width:200px" />',
     }); 
     var holderObj = {};
     var holder = [];
-    var holders = []; 
+    var imgHolder = [];
     var marker, i;
     var mapIndex = 0;
-    for (networksIndex = 0; networksIndex < networks.length; networksIndex++)
+    for (let networksIndex = 0; networksIndex < networks.length; networksIndex++)
     {
         image = "img/snakerange.jpg"
         uri = serviceUrl + "DataCenter/" + networks[networksIndex] + "/sites?";
@@ -106,61 +141,76 @@ function initMap(data) {
                 holderObj["Latitude"] = data[i].Latitude;
                 holderObj["Longitude"] = data[i].Longitude;
                 holderObj["Name"] = data[i].Name;
+                holderObj["ID"] = data[i].ID;
+                holderObj["Network"] = networks[networksIndex];
                 //holderObj["pictures "]
                 holder.push(holderObj);
+                // console.log(holderObj);
                 holderObj = [];
-               // console.log(holderObj["Alias"]);
-            }
-            holders.push(holder);
-           // holder = [];
-        }).then(function (value)
 
-        {
+            }
+             
+        }).then(function (value) {
             mapIndex++;
             if (mapIndex < 2) {
                 console.log(mapIndex);
-                for (i = 0; i < holder.length; i++)
-                {
+                for (let i = 0; i < holder.length; i++) {
                     marker = new google.maps.Marker
                         ({
-                        position: new google.maps.LatLng(holder[i].Latitude, holder[i].Longitude),
-                        map: map
-                         });
+                            position: new google.maps.LatLng(holder[i].Latitude, holder[i].Longitude),
+                            map: map
+                        });
+                    
+                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                        return function () {
+                            var imageUri = imageAPI + holder[i].Network + "/images/export/site/latest";
+                            var stream = { 'Stream': holder[i].ID, 'TimeStampImages': true }
+                            getImages(imageUri, stream, function (data) {
+                                imgHolder.JobID = data.JobID;
 
-                    google.maps.event.addListener(marker, 'click', (function (marker, i)
-                    {
-                        return function ()
-                        {
-                           // infowindow.setContent(holder[i]["Alias"]);
-                            infowindow.setContent('<div><strong>' + holder[i].Alias
-                                + '</strong><br>' + 'Site Name:' + holder[i].Name + '<br>'+
-                                 'Site Latitude:' + holder[i].Latitude +
-                                '<br>' + 'Site Longitude:'+ holder[i].Longitude + '<br>'+ '</div>');
+                            }).then(function (value) { //once we have the location and filename, put it on the marker
+                                var statusUri = imageAPI + holder[i].Network + "/images/export/" + imgHolder.JobID + "/status";
+
+                                if (value.Data.IsComplete == false) {
+                                    
+                                    checkImage(statusUri).then(function (value) {
+                                        console.log(value.Data.IsComplete);
+
+                                    });
+                                }
+
+                            }).then(function (value) { //once we have the location and filename, put it on the marker
+
+                                console.log(imgHolder.WebBaseAddress + imgHolder.FileName);
+                                infowindow.setContent('<div><strong>' + holder[i].Alias
+                                    + '</strong><br>' + 'Site Name: ' + holder[i].Name + '<br>' +
+                                    'Site Latitude: ' + holder[i].Latitude +
+                                    '<br>' + 'Site Longitude: ' + holder[i].Longitude + '<br>' +
+                                    'Site Network: ' + holder[i].Network +
+                                    '<br>' + '<img src="' + imgHolder.WebBaseAddress + imgHolder.FileName + '" , alt="Site Picture" height="200" width="300">' + '</div>');
+
+                                infowindow.open(map, marker);
+
+                            });
+                               
+
+
                             
-                            infowindow.open(map, marker);
-
                         }
                     })(marker, i));
 
 
                 }
-                
+
             }
-       });
-       // console.log(holder);
-      //  getImages();
+        }); 
+       
     }
      
 }
 
 $(document).ready(function () {
-    // initMap();
-    //$.ajaxSetup({
-    //    headers: {
-    //        'Content-Type': 'application/json',
-    //        'Accept': 'application/json'
-    //    }
-    //});
+ 
 
     initialize();
 
@@ -199,7 +249,7 @@ function initialize() {
 
     startCalendar.datepicker();
     endCalendar.datepicker();
-    getImages();
+   
     
 }
 
@@ -570,33 +620,7 @@ function populateSessionList() {
  
 
 
-function getData(uri, callback) {
-    
-    $.ajax({
-        type: "get",
-        datatype: "json",
-        url: uri,
 
-        xhrfields: {
-            withcredentials: false
-        },
-
-        success: function (result) {
-            $("#loading").remove();
-            callback(result.Data[0]["Alias"]);
-             
-            
-        },
-
-        error: function () {
-            $("#loading").remove();
-            console.error("call to " + uri + " unable to be completed.");
-        }
-    });
-
-     
-    
-}
 
 function expandHierarchy(uri, callback) {
   return  $.ajax({
@@ -613,6 +637,7 @@ function expandHierarchy(uri, callback) {
 
             //console.log(result);
             if (result.Success == true) {
+              //  console.log("test " + uri);
                 callback(result.Data);
             }
             else {
