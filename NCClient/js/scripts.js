@@ -189,7 +189,7 @@ function initMap(data) {
                                                     'Site Latitude: ' + holder[i].Latitude +
                                                     '<br>' + 'Site Longitude: ' + holder[i].Longitude + '<br>' +
                                                     'Site Network: ' + holder[i].Network +
-                                                    '<br>' + '<img src="' + imgHolder.WebBaseAddress + "/" +imgHolder.FileNames[2] + '" , alt="Site Picture" height="200" width="300">' + '</div>');
+                                                    '<br>' + '<img src="' + imgHolder.WebBaseAddress + "/" +imgHolder.FileNames[2] + '" , alt="Site Picture" height="500" width="500">' + '</div>');
 
                                                 infowindow.open(map, marker);
 
