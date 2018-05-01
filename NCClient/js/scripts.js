@@ -77,7 +77,7 @@ function getImages(uri,stream,callback)
 
 }
 
-function checkImage(statusUri) {
+async function checkImage(statusUri,callback) {
     return $.ajax({
         type: "GET",
         dataType: "json",
@@ -91,14 +91,15 @@ function checkImage(statusUri) {
             $("#loading").remove();
 
             //console.log(result);
-            if (result.Data.IsComplete == false) {
-                checkImage(statusUri);
+            if (result.Data.IsComplete == true) {
+                callback(result.Data);
+                 
                 
             }
             else {
                  
-                console.error(result.Message);
-                console.log(result.Data);
+                console.error(result.Data);
+                
             }
         },
 
@@ -168,30 +169,39 @@ function initMap(data) {
                             getImages(imageUri, stream, function (data) {
                                 imgHolder.JobID = data.JobID;
 
-                            }).then(function (value) { //once we have the location and filename, put it on the marker
+                            }).then(function (value) { //check if job is complete
                                 var statusUri = imageAPI + holder[i].Network + "/images/export/" + imgHolder.JobID + "/status";
+                                setTimeout(function () {
+                                    checkImage(statusUri, function (data) {
+                                        imgHolder.status = data.IsComplete
 
-                                if (value.Data.IsComplete == false) {
-                                    
-                                    checkImage(statusUri).then(function (value) {
-                                        console.log(value.Data.IsComplete);
+                                    }).then(function (value) { //if job is complete, get location of pictures and their names
+                                        var locationUri = imageAPI + holder[i].Network + "/images/export/" + imgHolder.JobID + "/location"
+                                        expandHierarchy(locationUri, function (data) {
+                                            imgHolder.WebBaseAddress = data.WebBaseAddress;
+                                            imgHolder.FileNames = data.FileNames;
+                                        })
+                                            .then(function (value) {//post site info to markers on click
+
+                                               // console.log(imgHolder.FileNames);
+                                                infowindow.setContent('<div><strong>' + holder[i].Alias
+                                                    + '</strong><br>' + 'Site Name: ' + holder[i].Name + '<br>' +
+                                                    'Site Latitude: ' + holder[i].Latitude +
+                                                    '<br>' + 'Site Longitude: ' + holder[i].Longitude + '<br>' +
+                                                    'Site Network: ' + holder[i].Network +
+                                                    '<br>' + '<img src="' + imgHolder.WebBaseAddress + "/" +imgHolder.FileNames[2] + '" , alt="Site Picture" height="200" width="300">' + '</div>');
+
+                                                infowindow.open(map, marker);
+
+
+                                            });
+                                         
 
                                     });
-                                }
+                                },  3800);
+                               
 
-                            }).then(function (value) { //once we have the location and filename, put it on the marker
-
-                                console.log(imgHolder.WebBaseAddress + imgHolder.FileName);
-                                infowindow.setContent('<div><strong>' + holder[i].Alias
-                                    + '</strong><br>' + 'Site Name: ' + holder[i].Name + '<br>' +
-                                    'Site Latitude: ' + holder[i].Latitude +
-                                    '<br>' + 'Site Longitude: ' + holder[i].Longitude + '<br>' +
-                                    'Site Network: ' + holder[i].Network +
-                                    '<br>' + '<img src="' + imgHolder.WebBaseAddress + imgHolder.FileName + '" , alt="Site Picture" height="200" width="300">' + '</div>');
-
-                                infowindow.open(map, marker);
-
-                            });
+                            }) 
                                
 
 
