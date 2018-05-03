@@ -12,6 +12,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.PhantomJS;
 using NCInterface.Structures;
 using NCInterface.Structures.Data;
+using NCInterface.Controllers;
 
 namespace NCInterface
 { 
@@ -19,8 +20,8 @@ namespace NCInterface
     public static class ChordsBot
     {
         public static string PortalUrl { get; private set; }
-        //private static PhantomJSDriver Driver { get; set; }
-        private static ChromeDriver Driver { get; set; }
+        private static PhantomJSDriver Driver { get; set; }
+        //private static ChromeDriver Driver { get; set; }
         private static HttpClient Client { get; set; }
         //sets log in information for CHORDS account 
         private static string Email { get; set; } = @"chords@mailinator.com";
@@ -35,8 +36,8 @@ namespace NCInterface
         {
             PortalUrl = portalUrl;
 
-            //Driver = new PhantomJSDriver();
-            Driver = new ChromeDriver();
+            Driver = new PhantomJSDriver();
+            //Driver = new ChromeDriver();
 
             Client = new HttpClient()
             {
@@ -163,7 +164,9 @@ namespace NCInterface
                 Table.FindElement(By.CssSelector("input")).Clear();
                 Table.FindElement(By.CssSelector("input")).SendKeys(Stream.Data[0].Units.Name);
             }
-          
+
+            GrafanaManager.CreateDashboard(session);
+
             return new Container();
         }
 
@@ -241,20 +244,44 @@ namespace NCInterface
             return uri;
         }
 
-        public static Container GetTarget(string SessionKey)
+
+
+        /// <summary>
+        /// Get information about target data by passing in a Session object so that Grafana know which datastreams on CHORDS to plot on a specific graph
+        /// </summary>
+        /// <param name="instrumentId"></param>
+        /// <returns>A list of strings containing the variable IDs of each datastreams in the Session object</returns>
+        public static List<string> GetTarget(int instrumentID)
         {
-            List<int> targets = new List<int>();
+
+            List<string> dataList = new List<string>();
             string instrumentIDPage = @"instruments/";
+
+            //Navigate to the CHORDS page with the instrument list
             Driver.Url = PortalUrl + instrumentIDPage;
             Driver.Navigate();
-            int i = 1;
-            var table = Driver.FindElement(By.XPath("//*[@id='summarytable']/table/tbody/tr[" +(i+2) + "]/td[3]") );
-            //var tableBody = table.FindElements(By.TagName("tbody"));
-            var tableRows = table.FindElements(By.TagName("tr"));
-            //*[@id="summarytable"]/table/tbody/tr[39]
+
+            //Find the table and row containing the variable Id's of each datastreams
+            var table = Driver.FindElementById("summarytable");
+            var rows = table.FindElements(By.TagName("tr"));
+
+            //Query for rows that contains the Instrument ID of the datastreams in the Session object and put results into a list
+            var linQRows = rows.Where(b => b.GetAttribute("innerText").Contains(instrumentID.ToString())).ToList();
+
+            //For each rows in linQRows, parse the variable ID and push it to another list that will be returned.
+             foreach (IWebElement row in linQRows)
+            {
+                var stringdata = row.GetAttribute("innerText").Replace("\r\n", " ").Split();
+
+                dataList.Add(stringdata[stringdata.Length-2].ToString());
+            }
+
+            return dataList;
             
-            //*[@id="summarytable"]/table
-            return new Container(table.GetAttribute("innerText") );
+
+            
+
+
         }
 
     }

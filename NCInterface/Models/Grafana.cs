@@ -28,11 +28,12 @@ namespace NCInterface.Structures.Grafana
         public List<Row> rows { get; set; }
         [JsonProperty("time")]
         public Time time { get; set; }
-
         [JsonProperty("version")]
         public int version { get; set; }
         [JsonProperty("thresholds")]
         public List<object> thresholds { get; set; }
+        [JsonProperty("refresh")]
+        public string refresh { get; set; }
     }
 
     //Class to hold input data for Grafana
@@ -87,6 +88,7 @@ namespace NCInterface.Structures.Grafana
     //Stores Target data from Grafana Dashboard
     public class Target
     {
+        public string alias { get; set; }
         public string dsType { get; set; }
         public List<GroupBy> groupBy { get; set; }
         public string measurement { get; set; }
@@ -94,7 +96,14 @@ namespace NCInterface.Structures.Grafana
         public string refId { get; set; }
         public string resultFormat { get; set; }
        // public List<List<>> select { get; set; }
-        public List<object> tags { get; set; }
+        public List<Tag> tags { get; set; }
+    }
+
+    public class Tag
+    {
+        public string key { get; set; }
+        public string @operator { get; set; }
+        public string value { get; set; }
     }
 
     //Stores Tooltip data from Grafana Dashboard
@@ -131,6 +140,7 @@ namespace NCInterface.Structures.Grafana
       //  public AliasColors aliasColors { get; set; }
         public bool bars { get; set; }
         public string datasource { get; set; }
+        public string description { get; set; }
         public int fill { get; set; }
         public int id { get; set; }
         public Legend legend { get; set; }

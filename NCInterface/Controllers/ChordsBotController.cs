@@ -69,15 +69,15 @@ namespace NCInterface.Controllers
 
 
         /// <summary>
-        /// Get information about target data so that Grafana know which datastreams on CHORDS to plot on a specific graph
+        /// Get information about target data by passing in a Session object so that Grafana know which datastreams on CHORDS to plot on a specific graph
         /// </summary>
         /// <param name="instrumentId"></param>
-        /// <returns>ChordsBot object Container corresponding to the session input</returns>
+        /// <returns>A list of strings containing the variable IDs of each datastreams in the Session object</returns>
         [Route("GetTarget")]
         [HttpGet]
-        public Container GetTarget([FromUri] string SessionKey)
+        public List<string> GetTarget([FromUri] int instrumentId)
         {
-            return ChordsBot.GetTarget(SessionKey);
+            return ChordsBot.GetTarget(instrumentId);
         }
 
 

@@ -78,13 +78,13 @@
     <Compile Include="Configuration\Chords.cs" />
     <Compile Include="Controllers\ChordsBotController.cs" />
     <Compile Include="Controllers\DataCenterController.cs" />
-    <Compile Include="Controllers\GrafanaController.cs" />
     <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="Models\Grafana.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\SessionInitializer.cs" />
     <Compile Include="Models\StreamRefresher.cs" />
     <Compile Include="Source\ChordsBot.cs" />
+    <Compile Include="Source\GrafanaManager.cs" />
     <Compile Include="Source\ConfigManager.cs" />
     <Compile Include="Configuration\DataCenter.cs" />
     <Compile Include="Controllers\NCInterfaceController.cs" />

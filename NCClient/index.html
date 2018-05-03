@@ -6,7 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="Zachary Waller, Pat J, Paul Marquis, Tom Trowbridge" />
-
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
     <title>NRDC-CHORDS</title>
 
     <!-- Bootstrap Core CSS -->
@@ -27,8 +32,14 @@
     <!-- Bootstrap Core JS -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+
+
     <!-- Our scripts-->
     <script src="js/scripts.js"></script>
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLPTXlVP6FbkUzx87cUkohN1ZxoaUx22A&callback=initMap">
+    </script>
 
 </head>
 
@@ -110,8 +121,13 @@
                     <h3>Active Sessions</h3>
                     <p>Click on a session to resume</p>
                     <div id="session-list" class="well list-group">
-                        
+
                     </div>
+
+                    <hr /> 
+
+                    <h3>Measurement Site Locations</h3>
+                    <div id="map"></div>
 
                 </div>
 
@@ -158,7 +174,7 @@
                         <div class="col-sm-3">
                             <h3 id="selectedstreams-header">Selected Streams</h3>
                             <div id="selstream-list" class="list-group pre pre-scrollable">
-                                
+
                             </div>
                         </div>
 
@@ -262,8 +278,8 @@
 
             </div>
 
-        </div>
+        </div> 
     </div>
-
+    
 </body>
 </html>
