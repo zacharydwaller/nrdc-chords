@@ -20,8 +20,8 @@ namespace NCInterface
     public static class ChordsBot
     {
         public static string PortalUrl { get; private set; }
-        //private static PhantomJSDriver Driver { get; set; }
-        private static ChromeDriver Driver { get; set; }
+        private static PhantomJSDriver Driver { get; set; }
+        //private static ChromeDriver Driver { get; set; }
         private static HttpClient Client { get; set; }
         //sets log in information for CHORDS account 
         private static string Email { get; set; } = @"chords@mailinator.com";
@@ -36,8 +36,8 @@ namespace NCInterface
         {
             PortalUrl = portalUrl;
 
-            //Driver = new PhantomJSDriver();
-            Driver = new ChromeDriver();
+            Driver = new PhantomJSDriver();
+            //Driver = new ChromeDriver();
 
             Client = new HttpClient()
             {
