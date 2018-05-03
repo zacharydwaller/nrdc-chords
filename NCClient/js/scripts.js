@@ -26,7 +26,6 @@ var sessionKey;
 var intervalFunc;
 
 var defaultInterval = 60; // in seconds
-var serviceUrl = "http://localhost:3485/";
 var selectedNetwork = "NevCAN";
 var uri = serviceUrl + "DataCenter/" + selectedNetwork + "/sites?";
 
