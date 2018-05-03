@@ -607,8 +607,8 @@ function populateSessionList() {
                     // Add rest of info to button
                     button.innerHTML
                         += "<p class=\"list-group-item-heading\">" + session.NetworkAlias + "</p>"
-                        + "<p class=\"list-group-item-text\">" + "CHORDS Instrument: " + session.InstrumentID + "</p>"
-                        + "<p class=\"list-group-item-text\">" + "Last Refresh: " + session.LastRefresh + "</p>";
+                        + "<p class=\"list-group-item-text\">" + "CHORDS Instrument: " + session.InstrumentID + "</p>";
+                        //+ "<p class=\"list-group-item-text\">" + "Last Refresh: " + session.LastRefresh + "</p>";
 
                     $(button).attr("value", session.SessionKey);
                 }
