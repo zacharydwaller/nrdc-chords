@@ -1,5 +1,13 @@
 # NRDC-CHORDS
-A Generalized Interface for CHORDS
+A Generalized Interface for CHORDS.
+
+Senior project in Software Engineering at the University of Nevada, Reno. Part of the NSF-funded Track 1 Nexus Project, a government funded environmental research study in Nevada.
+
+My team and I developed a web service called NRDC-CHORDS that collected environmental sensor data from the Nevada Research Data Center (NRDC) and streamed it in real-time to a cloud-based data visualization technology called CHORDS. As well as a responsive web client that dynamically generates its content with live NRDC infrastructure metadata.
+
+We worked closely with earth scientists to elicit functionality requirements and verify progress. The open source package we built is currently in use by the Desert Research Institute for use with their lysimeter array and have a published paper with several other articles referencing our work.
+
+The associated techologies for this project include .NET Framework, ASP.NET Web API, and jQuery.
 
 ### Project Site
 
